@@ -3,9 +3,17 @@ import Webcam from 'react-webcam';
 
 const Camera = () => {
   const [devices, setDevices] = useState([]);
+  const [deviceId, setDeviceId] = useState('');
 
   const handleDevices = useCallback((mediaDevices) => {
-    setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'));
+    const videoDevices = mediaDevices.filter(({ kind }) => kind === 'videoinput');
+    setDevices(videoDevices);
+
+    // Prefer the back camera by default if available
+    const backCamera = videoDevices.find(({ label }) =>
+      label.toLowerCase().includes('back')
+    );
+    setDeviceId(backCamera ? backCamera.deviceId : videoDevices[0]?.deviceId);
   }, []);
 
   useEffect(() => {
@@ -14,13 +22,17 @@ const Camera = () => {
 
   return (
     <>
+      {deviceId && (
+        <Webcam
+          audio={false}
+          videoConstraints={{ deviceId: deviceId }}
+        />
+      )}
       {devices.map((device, index) => (
         <div key={device.deviceId}>
-          <Webcam
-            audio={false}
-            videoConstraints={{ deviceId: device.deviceId }}
-          />
-          <p>{device.label || `Device ${index + 1}`}</p>
+          <button onClick={() => setDeviceId(device.deviceId)}>
+            {device.label || `Device ${index + 1}`}
+          </button>
         </div>
       ))}
     </>
@@ -28,4 +40,3 @@ const Camera = () => {
 };
 
 export default Camera;
-
