@@ -8,6 +8,7 @@ import { FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaMobile } from "react-icons/fa";
 import { useRef, useEffect, useState } from 'react';
+import Camera from '../Components/Camera';
 const Register = () => {
 
     const [fname, setfname] = useState('');
@@ -35,17 +36,19 @@ const Register = () => {
             <div className='bg-gradient-to-r from-violet-500 to-fuchsia-500 '>
 
                 <div className='flex justify-center '>
-
+Prakashcameres<Camera/>
                     <div className='backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Register</span>
                         <h1>Persional Details</h1>
+                       
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <span className='text-xl text-slate-400'>First Name</span>
                                 <FaUser className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setfname(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                        </div>
+                        </div> 
+                        
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <span className='text-xl text-slate-400'>Last Name</span>
@@ -72,7 +75,7 @@ const Register = () => {
                         <h1>Face Register</h1>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid justify-center p-2 relative rounded mb-3'>
                             <div className='flex items-center  mb-4'>
-                                <Webcam className='bg-red-500  w-[95%] rounded' ref={webcamRef} screenshotFormat="image/jpeg" />
+                                <Webcam className='w-[95%] rounded' ref={webcamRef} screenshotFormat="image/jpeg" />
                             </div>
                             <button className='bg-slate-700 rounded text-white'>Capture Face</button>
                         </div>
