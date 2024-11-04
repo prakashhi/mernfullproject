@@ -2,7 +2,7 @@ import React from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
-import {FaLocationDot} from "react-icons/fa6"
+import { FaLocationDot } from "react-icons/fa6"
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -19,15 +19,12 @@ const Register = () => {
     const [workLatitude, setworkLatitude] = useState('');
     const [workLongitude, setworkLongitude] = useState('');
     const [upass, setupass] = useState('');
-    const webcamRef = useRef(null);
+
 
     const submit = async (e) => {
         e.preventDefault();
         console.log(fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass)
-
-         await axios.post('api/register_data', { fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass })
-        
-
+        await axios.post('api/register_data', { fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass })
     }
 
 
@@ -36,19 +33,19 @@ const Register = () => {
             <div className='bg-gradient-to-r from-violet-500 to-fuchsia-500 '>
 
                 <div className='flex justify-center '>
-Prakashcameres<Camera/>
-                    <div className='backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
+
+                    <div className='max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Register</span>
                         <h1>Persional Details</h1>
-                       
+
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <span className='text-xl text-slate-400'>First Name</span>
                                 <FaUser className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setfname(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                        </div> 
-                        
+                        </div>
+
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <span className='text-xl text-slate-400'>Last Name</span>
@@ -73,12 +70,7 @@ Prakashcameres<Camera/>
 
 
                         <h1>Face Register</h1>
-                        <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid justify-center p-2 relative rounded mb-3'>
-                            <div className='flex items-center  mb-4'>
-                                <Webcam className='w-[95%] rounded' ref={webcamRef} screenshotFormat="image/jpeg" />
-                            </div>
-                            <button className='bg-slate-700 rounded text-white'>Capture Face</button>
-                        </div>
+                        <Camera />
 
 
 
@@ -97,13 +89,13 @@ Prakashcameres<Camera/>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800   p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <input onChange={(e) => { setworkLatitude(e.target.value) }} placeholder="User workLatitude" className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                                <FaLocationDot className='text-white text-xl'/>
+                                <FaLocationDot className='text-white text-xl' />
                             </div>
                         </div>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800   p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <input onChange={(e) => { setworkLongitude(e.target.value) }} placeholder="User workLongitude" className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                                <FaLocationDot className='text-white text-xl'/>
+                                <FaLocationDot className='text-white text-xl' />
                             </div>
                         </div>
 
