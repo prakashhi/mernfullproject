@@ -1,38 +1,55 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
+import * as faceapi from 'face-api.js';
 
-const CameraCapture = () => {
+const Camera = () => {
+
   const webcamRef = useRef(null);
-  const [image, setImage] = useState(null);
+  const [modelsLoaded, setModelsLoaded] = useState(false);
 
-  // Capture image from webcam
-  const capture = () => {
-    const capturedImage = webcamRef.current.getScreenshot();
-    setImage(capturedImage);
+  useEffect(() => {
+    const loadModels = async () => {
+      await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+      setModelsLoaded(true);
+    };
+    loadModels();
+  }, []);
+
+  const handleCapture = async () => {
+    if (webcamRef.current && modelsLoaded) {
+      const video = webcamRef.current.video;
+      const detection = await faceapi
+        .detectSingleFace(video)
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+      console.log(detection);
+    }
   };
 
-  return (
-    <div>
-      {!image ? (
-        <Webcam
-          audio={false}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-          videoConstraints={{ facingMode: "environment" }} // Use back camera
-        />
-      ) : (
-        <img src={image} alt="Captured" />
-      )}
-      
-      <div>
-        {!image ? (
-          <button onClick={capture}>Capture Photo</button>
-        ) : (
-          <button onClick={() => setImage(null)}>Retake</button>
-        )}
-      </div>
-    </div>
-  );
-};
+  const loadModels = async () => {
+    // Load the models from the specified URI
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+  };
 
-export default CameraCapture;
+  const FaceRecognition = () => {
+    useEffect(() => {
+      loadModels();
+    }, []);
+
+    return (
+      <>
+        <div>
+          <Webcam ref={webcamRef} />
+          <button onClick={handleCapture}>Capture and Detect Face</button>
+        </div>
+
+      </>
+    );
+  }
+}
+
+export default Camera;
