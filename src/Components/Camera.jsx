@@ -1,42 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import Webcam from 'react-webcam';
 
 const Camera = () => {
-  const [devices, setDevices] = useState([]);
-  const [deviceId, setDeviceId] = useState('');
-
-  const handleDevices = useCallback((mediaDevices) => {
-    const videoDevices = mediaDevices.filter(({ kind }) => kind === 'videoinput');
-    setDevices(videoDevices);
-
-    // Prefer the back camera by default if available
-    const backCamera = videoDevices.find(({ label }) =>
-      label.toLowerCase().includes('back')
-    );
-    setDeviceId(backCamera ? backCamera.deviceId : videoDevices[0]?.deviceId);
-  }, []);
-
-  useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then(handleDevices);
-  }, [handleDevices]);
+  const videoConstraints = {
+    facingMode: { exact: "environment" } // Targets the back camera on mobile devices
+  };
 
   return (
-    <>
-      {deviceId && (
-        <Webcam
-          audio={false}
-          videoConstraints={{ deviceId: deviceId }}
-        />
-      )}
-      {devices.map((device, index) => (
-        <div key={device.deviceId}>
-          <button onClick={() => setDeviceId(device.deviceId)}>
-            {device.label || `Device ${index + 1}`}
-          </button>
-        </div>
-      ))}
-    </>
+    <div>
+      <Webcam
+        audio={false}
+        videoConstraints={videoConstraints}
+        screenshotFormat="image/jpeg"
+      />
+      <p>Using mobile camera</p>
+    </div>
   );
 };
-
-export default Camera;
