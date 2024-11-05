@@ -98,6 +98,7 @@ const Camera = () => {
           <p>No face detected</p>
         )}
       </div>
+      <h1>Encode:{faceEncodings}</h1>
     </div>
 
     </>
