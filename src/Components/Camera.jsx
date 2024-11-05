@@ -8,6 +8,7 @@ const Camera = () => {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [faceEncodings, setFaceEncodings] = useState(null);
   const [savedEncodings, setSavedEncodings] = useState([]); // State to store saved encodings
+  const [blinkDetected, setBlinkDetected] = useState(false);
 
   // Load face-api.js models
   useEffect(() => {
@@ -29,6 +30,7 @@ const Camera = () => {
     if (modelsLoaded) {
       const interval = setInterval(() => {
         detectFace();
+        
       }, 500); // Run every 500ms
 
       return () => clearInterval(interval);
@@ -58,8 +60,10 @@ const Camera = () => {
 
       if (detections.length > 0) {
         setFaceEncodings(detections.map(d => d.descriptor));
+        detectBlink(detections[0].landmarks);
       } else {
         setFaceEncodings(null);
+        setBlinkDetected(false);
       }
 
       // Clear canvas and draw detections
@@ -70,6 +74,27 @@ const Camera = () => {
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
     }
   };
+
+    // Blink detection using Eye Aspect Ratio (EAR)
+    const detectBlink = (landmarks) => {
+      const calculateEAR = (eye) => {
+        const distVertical1 = faceapi.euclideanDistance(eye[1], eye[5]);
+        const distVertical2 = faceapi.euclideanDistance(eye[2], eye[4]);
+        const distHorizontal = faceapi.euclideanDistance(eye[0], eye[3]);
+        return (distVertical1 + distVertical2) / (2.0 * distHorizontal);
+      };
+  
+      const leftEAR = calculateEAR(landmarks.getLeftEye());
+      const rightEAR = calculateEAR(landmarks.getRightEye());
+      const avgEAR = (leftEAR + rightEAR) / 2.0;
+      const blinkThreshold = 0.25; // Adjust threshold if necessary
+  
+      if (avgEAR < blinkThreshold) {
+        setBlinkDetected(true);
+      } else {
+        setBlinkDetected(false);
+      }
+    };
 
   // Save the current face encoding
   const saveFaceEncoding = () => {
@@ -120,6 +145,15 @@ const Camera = () => {
           <p>No saved encodings</p>
         )}
       </div>
+
+       {/* Display blink detection status */}
+       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
+        <h3 className="font-bold">Blink Status:</h3>
+        {blinkDetected ? <p>Blink detected!</p> : <p>Please blink to verify liveness</p>}
+      </div>
+
+     
+
     </div>
   );
 };
