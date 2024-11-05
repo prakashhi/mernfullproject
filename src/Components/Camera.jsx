@@ -1,15 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
-import axios from 'axios'; // Import axios for API requests
 
 const Camera = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [faceEncodings, setFaceEncodings] = useState(null);
-  const [savedEncodings, setSavedEncodings] = useState([]);
-  const [blinkDetected, setBlinkDetected] = useState(false);
+  const [savedEncodings, setSavedEncodings] = useState([]); // State to store saved encodings
 
   // Load face-api.js models
   useEffect(() => {
@@ -39,15 +37,20 @@ const Camera = () => {
 
   // Detect face from webcam feed
   const detectFace = async () => {
-    if (webcamRef.current && webcamRef.current.video.readyState === 4) {
+    if (
+      webcamRef.current &&
+      webcamRef.current.video.readyState === 4
+    ) {
       const video = webcamRef.current.video;
       const displaySize = {
         width: video.videoWidth,
         height: video.videoHeight,
       };
 
+      // Match the canvas to video dimensions
       faceapi.matchDimensions(canvasRef.current, displaySize);
 
+      // Detect face and landmarks
       const detections = await faceapi
         .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 512, scoreThreshold: 0.5 }))
         .withFaceLandmarks()
@@ -55,12 +58,11 @@ const Camera = () => {
 
       if (detections.length > 0) {
         setFaceEncodings(detections.map(d => d.descriptor));
-        detectBlink(detections[0].landmarks); // Detect blink using first face's landmarks
       } else {
         setFaceEncodings(null);
-        setBlinkDetected(false); // Reset blink status if no face detected
       }
 
+      // Clear canvas and draw detections
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       const ctx = canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -69,41 +71,10 @@ const Camera = () => {
     }
   };
 
-  // Blink detection using Eye Aspect Ratio (EAR)
-  const detectBlink = (landmarks) => {
-    const calculateEAR = (eye) => {
-      const distVertical1 = faceapi.euclideanDistance(eye[1], eye[5]);
-      const distVertical2 = faceapi.euclideanDistance(eye[2], eye[4]);
-      const distHorizontal = faceapi.euclideanDistance(eye[0], eye[3]);
-      return (distVertical1 + distVertical2) / (2.0 * distHorizontal);
-    };
-
-    const leftEAR = calculateEAR(landmarks.getLeftEye());
-    const rightEAR = calculateEAR(landmarks.getRightEye());
-    const avgEAR = (leftEAR + rightEAR) / 2.0;
-    const blinkThreshold = 0.25; // Adjust threshold if necessary
-
-    if (avgEAR < blinkThreshold) {
-      setBlinkDetected(true);
-    } else {
-      setBlinkDetected(false);
-    }
-  };
-
-  // Save the current face encoding if blink is detected
-  const saveFaceEncoding = async () => {
-    if (faceEncodings && blinkDetected) {
+  // Save the current face encoding
+  const saveFaceEncoding = () => {
+    if (faceEncodings) {
       setSavedEncodings([...savedEncodings, ...faceEncodings]);
-      try {
-        // Replace with your actual API endpoint
-        await axios.post('http://localhost:5000/save-face-encoding', { encoding: faceEncodings });
-        alert("Face encoding saved to the database.");
-      } catch (error) {
-        console.error("Error saving encoding:", error);
-        alert("Failed to save face encoding.");
-      }
-    } else {
-      alert("Please make sure your face is detected and blink to confirm liveness.");
     }
   };
 
@@ -117,7 +88,7 @@ const Camera = () => {
         Detect Face
       </button>
       <button onClick={saveFaceEncoding} className='bg-green-300 rounded ml-2'>
-        Capture Face & Save Encoding
+        Save Face Encoding
       </button>
       
       {/* Display live face encodings */}
@@ -133,12 +104,6 @@ const Camera = () => {
         ) : (
           <p>No face detected</p>
         )}
-      </div>
-
-      {/* Display blink detection status */}
-      <div className='bg-white text-gray-700 p-3 rounded mt-3'>
-        <h3 className="font-bold">Blink Status:</h3>
-        {blinkDetected ? <p>Blink detected!</p> : <p>Please blink to verify liveness</p>}
       </div>
 
       {/* Display saved face encodings */}

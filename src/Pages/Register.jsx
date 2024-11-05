@@ -1,6 +1,8 @@
 import React from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
+import { IoCloseCircle } from 'react-icons/io5';
+import { IoReorderThreeOutline } from "react-icons/io5"
 import axios from 'axios';
 import { FaLocationDot } from "react-icons/fa6"
 import { FaUser } from "react-icons/fa";
@@ -25,6 +27,12 @@ const Register = () => {
         e.preventDefault();
         console.log(fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass)
         await axios.post('api/register_data', { fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass })
+    }
+    const ham = () => {
+        document.getElementById('hamb').style.left = "0"
+    }
+    const close = () => {
+        document.getElementById('hamb').style.left = "-1000px"
     }
 
 
@@ -70,8 +78,19 @@ const Register = () => {
 
 
                         <h1>Face Register</h1>
-                        <Camera />
+                        <div className='text-3xl text-bold' onClick={ham}>
+                            <IoReorderThreeOutline />
+                        </div>
+                        <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-gradient-to-r from-emerald-400 to-cyan-400 text-white p-5 absolute h-[100%] rounded  w-[100%] z-[1] transition-all  m-1'>
+                            <div className='grid gap-5 '>
+                                <div onClick={close} className='text-2xl'>
+                                    <IoCloseCircle />
+                                </div>
 
+                                <Camera />
+                            </div>
+
+                        </div>
 
 
 
