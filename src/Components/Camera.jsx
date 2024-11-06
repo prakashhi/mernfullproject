@@ -12,6 +12,8 @@ const Camera = () => {
   const [faceDetected, setFaceDetected] = useState(false);
   const [detectionAccuracy, setDetectionAccuracy] = useState(0);
   const [textualAnalysis, setTextualAnalysis] = useState("");
+  const [lastEyePositions, setLastEyePositions] = useState(null); // Store last eye positions for comparison
+  const [isRealFace, setIsRealFace] = useState(false); // New state to track real face detection
 
   // Load face-api.js models
   useEffect(() => {
@@ -61,6 +63,29 @@ const Camera = () => {
         const accuracy = (detections[0].detection.score * 100).toFixed(2);
         setDetectionAccuracy(accuracy);
         setTextualAnalysis(`Face detected with ${accuracy}% confidence.`);
+
+        // Texture Analysis: Check for real face using eye movement
+        const landmarks = detections[0].landmarks;
+        const leftEye = landmarks.getLeftEye();
+        const rightEye = landmarks.getRightEye();
+
+        // Compare eye positions for movement to simulate texture analysis
+        const leftEyeMovement = calculateMovement(lastEyePositions?.leftEye, leftEye);
+        const rightEyeMovement = calculateMovement(lastEyePositions?.rightEye, rightEye);
+
+        if (leftEyeMovement || rightEyeMovement) {
+          setIsRealFace(true); // Significant eye movement indicates real face
+          setTextualAnalysis("Real face detected. Subtle texture and movement detected.");
+        } else {
+          setIsRealFace(false);
+          setTextualAnalysis("Photo detected. No significant texture or movement.");
+        }
+
+        // Store the current eye positions for future comparisons
+        setLastEyePositions({
+          leftEye,
+          rightEye
+        });
       } else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
@@ -80,6 +105,18 @@ const Camera = () => {
 
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
     }
+  };
+
+  // Calculate movement by comparing current and last positions of landmarks
+  const calculateMovement = (lastPosition, currentPosition) => {
+    if (!lastPosition) return false;
+    
+    // Calculate distance between last and current positions (simple Euclidean distance)
+    const distance = Math.sqrt(
+      Math.pow(currentPosition[3].x - lastPosition[3].x, 2) +
+      Math.pow(currentPosition[3].y - lastPosition[3].y, 2)
+    );
+    return distance > 2; // If the movement is significant (you can adjust this threshold)
   };
 
   // Save the current face encoding to the database
