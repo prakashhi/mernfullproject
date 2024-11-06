@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
-// import cv from 'opencv.js'; // Optional for advanced LBP
+
 
 const Camera = () => {
   const webcamRef = useRef(null);
@@ -9,7 +9,8 @@ const Camera = () => {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [faceEncodings, setFaceEncodings] = useState(null);
   const [savedEncodings, setSavedEncodings] = useState([]);
-  const [textureScore, setTextureScore] = useState(null); // To hold texture analysis score
+  const [textureScore, setTextureScore] = useState(null);
+  const [expression, setExpression] = useState(""); // To hold detected expression
 
   // Load face-api.js models
   useEffect(() => {
@@ -18,6 +19,7 @@ const Camera = () => {
         await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+        await faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         setModelsLoaded(true);
       } catch (error) {
         console.error("Error loading models:", error);
@@ -32,12 +34,11 @@ const Camera = () => {
       const interval = setInterval(() => {
         detectFace();
       }, 500); // Run every 500ms
-
       return () => clearInterval(interval);
     }
   }, [modelsLoaded]);
 
-  // Detect face and perform texture analysis
+  // Detect face and expressions and perform texture analysis
   const detectFace = async () => {
     if (webcamRef.current && webcamRef.current.video.readyState === 4) {
       const video = webcamRef.current.video;
@@ -46,29 +47,42 @@ const Camera = () => {
       // Match canvas to video dimensions
       faceapi.matchDimensions(canvasRef.current, displaySize);
 
-      // Detect face and landmarks
+      // Detect face, expressions, and descriptors
       const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.9 })) // Only detect with 90% confidence or higher
         .withFaceLandmarks()
+        .withFaceExpressions()
         .withFaceDescriptors();
 
       if (detections.length > 0) {
+        // Extract and set face encoding
         const encoding = detections.map(d => d.descriptor);
         setFaceEncodings(encoding);
-        
-        // Perform texture analysis to validate liveness
-        const textureScore = performTextureAnalysis(video);
-        setTextureScore(textureScore);
+
+        // Identify and set the most prominent expression
+        const expressions = detections[0].expressions;
+        const bestExpression = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
+        setExpression(bestExpression);
+
+        // Perform automatic texture analysis for liveness detection
+        const score = performTextureAnalysis(video);
+        setTextureScore(score);
+
+        // If the face is real (based on texture analysis), save encoding
+        if (score < 0.6) { // Threshold; adjust based on testing
+          saveFaceEncoding(encoding);
+        }
       } else {
         setFaceEncodings(null);
       }
 
-      // Clear canvas and draw detections
+      // Clear canvas and draw detections with expressions
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       const ctx = canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+      faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections); // Draw expressions on canvas
     }
   };
 
@@ -94,20 +108,14 @@ const Camera = () => {
 
   // Placeholder function for LBP calculation
   const calculateLBPScore = (grayImage) => {
-    // Example scoring method (needs implementation based on LBP logic)
-    // Higher scores mean more likely spoof, lower scores indicate real skin
-    let score = 0; // Calculate texture features using LBP
+    let score = 0; // Implement texture features using LBP
     return score;
   };
 
   // Save the current face encoding
-  const saveFaceEncoding = () => {
-    if (faceEncodings && textureScore < 0.6) { // Ensure the face is real by texture score
-      setSavedEncodings([...savedEncodings, ...faceEncodings]);
-      console.log("Saved encoding with texture score:", textureScore);
-    } else {
-      console.warn("Texture analysis failed: Likely a spoof.");
-    }
+  const saveFaceEncoding = (encoding) => {
+    setSavedEncodings([...savedEncodings, ...encoding]);
+    console.log("Saved encoding with texture analysis score:", textureScore);
   };
 
   return (
@@ -116,12 +124,6 @@ const Camera = () => {
         <Webcam className='w-full h-full rounded' ref={webcamRef} />
         <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
       </div>
-      <button onClick={detectFace} className='bg-slate-300 rounded'>
-        Detect Face
-      </button>
-      <button onClick={saveFaceEncoding} className='bg-green-300 rounded ml-2'>
-        Save Face Encoding
-      </button>
       
       {/* Display live face encodings */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
@@ -142,6 +144,12 @@ const Camera = () => {
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Texture Analysis Score:</h3>
         <p>{textureScore !== null ? textureScore : "No face detected"}</p>
+      </div>
+
+      {/* Display detected expression */}
+      <div className='bg-white text-gray-700 p-3 rounded mt-3'>
+        <h3 className="font-bold">Detected Expression:</h3>
+        <p>{expression || "No expression detected"}</p>
       </div>
     </div>
   );

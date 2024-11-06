@@ -3,12 +3,23 @@ import { Link } from "react-router-dom";
 import Timer from '../Components/Timer';
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 
 
 const Login = () => {
+    const [lusername, setlusername] = useState('');
+    const [luserpass, setluserpass] = useState('');
 
-   
+    const submit = () => {
+        if ([lusername,luserpass].some(i => i.length <= 0)){
+            toast.error("Fill the blanks!")
+
+        }
+        console.log(lusername, luserpass)
+
+    }
+
 
 
     return (
@@ -25,7 +36,7 @@ const Login = () => {
                                 <FaUser className='text-white text-xl' />
                             </div>
 
-                            <input className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
+                            <input onChange={(e) => { setlusername(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
 
                         </div>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid p-2 relative rounded'>
@@ -33,11 +44,11 @@ const Login = () => {
                                 <span className='text-xl text-slate-400'>Password</span>
                                 <FaKey className='text-white text-xl' />
                             </div>
-                            <input className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none' type="password" />
+                            <input onChange={(e) => { setluserpass(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none' type="password" />
 
                         </div>
                         <div id='btn' className='w-full flex justify-center m-2'>
-                            <button className='hover:px-9 duration-[0.5s] bg-gradient-to-r from-blue-300 to-pink-500 font-extrabold px-7 py-2 rounded'>Log in</button>
+                            <button onClick={submit} className='hover:px-9 duration-[0.5s] bg-gradient-to-r from-blue-300 to-pink-500 font-extrabold px-7 py-2 rounded'>Log in</button>
 
                         </div>
                         <p>Don't have an account?<Link className='underline text-blue-300' to="/Register" >Register</Link></p>
