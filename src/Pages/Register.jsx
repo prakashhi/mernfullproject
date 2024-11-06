@@ -28,7 +28,7 @@ const Register = () => {
         e.preventDefault();
 
         if ([fname, uemail, umobile, username, workLatitude, workLongitude, upass].some(i => i.length <= 0)) {
-            toast.error("Fill all the blanks!");
+            toast.error("Fill out all fields!");
             
         }
         if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {

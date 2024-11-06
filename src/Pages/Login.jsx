@@ -13,8 +13,12 @@ const Login = () => {
 
     const submit = () => {
         if ([lusername,luserpass].some(i => i.length <= 0)){
-            toast.error("Fill the blanks!")
+            toast.error("Fill out all fields!");
 
+        }
+        if(luserpass.length <= 6)
+        {
+            toast.error("Password must be at least 6 characters");
         }
         console.log(lusername, luserpass)
 
