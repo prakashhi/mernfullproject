@@ -64,28 +64,34 @@ const Camera = () => {
         setDetectionAccuracy(accuracy);
         setTextualAnalysis(`Face detected with ${accuracy}% confidence.`);
   
-        // Texture Analysis: Check for real face using eye movement
         const landmarks = detections[0].landmarks;
         const leftEye = landmarks.getLeftEye();
         const rightEye = landmarks.getRightEye();
   
-        // Compare eye positions for movement to simulate texture analysis
-        const leftEyeMovement = calculateMovement(lastEyePositions?.leftEye, leftEye);
-        const rightEyeMovement = calculateMovement(lastEyePositions?.rightEye, rightEye);
-  
-        if (leftEyeMovement || rightEyeMovement) {
-          setIsRealFace(true); // Significant eye movement indicates real face
-          setTextualAnalysis("Real face detected. Subtle texture and movement detected.");
+        // Ensure lastEyePositions is initialized
+        if (!lastEyePositions) {
+          setLastEyePositions({
+            leftEye,
+            rightEye
+          });
         } else {
-          setIsRealFace(false);
-          setTextualAnalysis("Photo detected. No significant texture or movement.");
-        }
+          const leftEyeMovement = calculateMovement(lastEyePositions.leftEye, leftEye);
+          const rightEyeMovement = calculateMovement(lastEyePositions.rightEye, rightEye);
   
-        // Store the current eye positions for future comparisons
-        setLastEyePositions({
-          leftEye,
-          rightEye
-        });
+          if (leftEyeMovement || rightEyeMovement) {
+            setIsRealFace(true);
+            setTextualAnalysis("Real face detected. Subtle texture and movement detected.");
+          } else {
+            setIsRealFace(false);
+            setTextualAnalysis("Photo detected. No significant texture or movement.");
+          }
+  
+          // Update last eye positions after analysis
+          setLastEyePositions({
+            leftEye,
+            rightEye
+          });
+        }
       } else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
@@ -96,9 +102,8 @@ const Camera = () => {
       const ctx = canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   
-      // Draw animated effect when face is detected
       if (faceDetected) {
-        ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)'; // Green outline for face detection
+        ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
         ctx.lineWidth = 4;
         faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
       }
@@ -106,6 +111,7 @@ const Camera = () => {
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
     }
   };
+  
   
 
   // Calculate movement by comparing current and last positions of landmarks
