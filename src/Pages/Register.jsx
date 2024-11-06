@@ -29,6 +29,7 @@ const Register = () => {
 
         if ([fname, uemail, umobile, username, workLatitude, workLongitude, upass].some(i => i.length <= 0)) {
             toast.error("Fill all the blanks!");
+            
         }
         if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
             toast.error("Enter Numbers!");
@@ -56,7 +57,7 @@ const Register = () => {
 
     return (
         <>
-            <ToastContainer />
+            
 
             <div className='bg-gradient-to-r from-violet-500 to-fuchsia-500 '>
 
