@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoCloseCircle } from 'react-icons/io5';
@@ -24,12 +24,12 @@ const Register = () => {
     const [upass, setupass] = useState('');
 
     const notify = () => toast("This is a toast notification !");
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
         if ([fname, uemail, umobile, username, workLatitude, workLongitude, upass].some(i => i.length <= 0)) {
             toast.error("Fill out all fields!");
-            
+
         }
         if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
             toast.error("Enter Numbers!");
@@ -44,7 +44,17 @@ const Register = () => {
 
 
         console.log(fname, uemail, umobile, username, workLatitude, workLongitude, upass)
-        // await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
+
+        try {
+            await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
+            toast.success("Registration is sucessfull");
+            <Navigate to="/" />
+
+        } catch (err) {
+            toast.error(err)
+        }
+
+
     }
 
     const ham = () => {
@@ -57,7 +67,7 @@ const Register = () => {
 
     return (
         <>
-            
+
 
             <div className='bg-gradient-to-r from-violet-500 to-fuchsia-500 '>
 

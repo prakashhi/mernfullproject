@@ -78,7 +78,11 @@ const Camera = () => {
         const mostLikelyExpression = getMostLikelyExpression(detectedExpressions);
 
         // Check if the detected expression matches the expected one
-        setExpressionMatched(mostLikelyExpression === expectedExpression);
+        if (mostLikelyExpression === expectedExpression) {
+          setExpressionMatched(true); // Set match as true to stop expression updates
+        } else {
+          setExpressionMatched(false);
+        }
       } else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
@@ -127,24 +131,9 @@ const Camera = () => {
         <Webcam className='w-full h-full rounded' ref={webcamRef} />
         <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
       </div>
-      <button onClick={saveFaceEncoding} className='bg-green-300 rounded ml-2'>
-        Capture Face & Save Encoding
-      </button>
 
-      {/* Display live face encodings */}
-      <div className='bg-white text-gray-700 p-3 rounded mt-3'>
-        <h3 className="font-bold">Live Face Encoding:</h3>
-        {faceEncodings ? (
-          faceEncodings.map((encoding, index) => (
-            <div key={index}>
-              <p>Face Encoding {index + 1}:</p>
-              <pre className="text-xs overflow-scroll h-24">{JSON.stringify(encoding, null, 2)}</pre>
-            </div>
-          ))
-        ) : (
-          <p>No face detected</p>
-        )}
-      </div>
+
+
 
       {/* Display expected expression */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
@@ -156,7 +145,9 @@ const Camera = () => {
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Expression Match Status:</h3>
         <p>{expressionMatched ? "Matched!" : "Not Matched"}</p>
+
       </div>
+
 
       {/* Display textual analysis */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
@@ -178,6 +169,8 @@ const Camera = () => {
           <p>No saved encodings</p>
         )}
       </div>
+      {expressionMatched ? <button onClick={saveFaceEncoding} className='bg-green-300 rounded mt-2 p-2'>
+        Capture Face & Save Encoding </button> : null}
     </div>
   );
 };
