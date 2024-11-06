@@ -4,24 +4,25 @@ import Timer from '../Components/Timer';
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 
-const Login = () => {
+const Login =  () => {
     const [lusername, setlusername] = useState('');
     const [luserpass, setluserpass] = useState('');
 
     const submit = () => {
-        if ([lusername,luserpass].some(i => i.length <= 0)){
+        if ([lusername, luserpass].some(i => i.length <= 0)) {
             toast.error("Fill out all fields!");
 
         }
-        if(luserpass.length <= 6)
-        {
+        if (luserpass.length <= 6) {
             toast.error("Password must be at least 6 characters");
         }
         console.log(lusername, luserpass)
 
+        // await axios.post('', { lusername, luserpass })
     }
 
 
