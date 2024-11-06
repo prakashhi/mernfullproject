@@ -49,87 +49,92 @@ const Camera = () => {
         width: video.videoWidth,
         height: video.videoHeight,
       };
-  
+
       faceapi.matchDimensions(canvasRef.current, displaySize);
-  
+
       const detections = await faceapi
         .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 512, scoreThreshold: 0.5 }))
         .withFaceLandmarks()
         .withFaceDescriptors();
-  
+
       if (detections.length > 0) {
         setFaceEncodings(detections.map(d => d.descriptor));
         setFaceDetected(true);
         const accuracy = (detections[0].detection.score * 100).toFixed(2);
         setDetectionAccuracy(accuracy);
-       
-  
+
+
         const landmarks = detections[0].landmarks;
         const leftEye = landmarks.getLeftEye();
         const rightEye = landmarks.getRightEye();
-  
+
         // Ensure lastEyePositions is initialized
         if (!lastEyePositions) {
           setLastEyePositions({
             leftEye,
             rightEye
           });
-        } else {
+        } else 
+        {
           const leftEyeMovement = calculateMovement(lastEyePositions.leftEye, leftEye);
           const rightEyeMovement = calculateMovement(lastEyePositions.rightEye, rightEye);
-  
+          window.alert(`${leftEyeMovement} and ${rightEyeMovement}\n lasteye:${lastEyePositions.leftEye} `);
+
           if (leftEyeMovement || rightEyeMovement) {
             setIsRealFace(true);
             setTextualAnalysis(`Real face detected. Subtle texture and movement detected.${detectionAccuracy}`);
-          } else {
+          } 
+          else {
             setIsRealFace(false);
             setTextualAnalysis("Photo detected. No significant texture or movement.");
           }
-  
+
           // Update last eye positions after analysis
           setLastEyePositions({
             leftEye,
             rightEye
           });
         }
-      } else {
+      } 
+      else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
         setTextualAnalysis("No face detected. Please adjust your position.");
+
       }
-  
+
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       const ctx = canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-  
+
       if (faceDetected) {
         ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
         ctx.lineWidth = 4;
         faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
       }
-  
+
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
     }
   };
-  
-  
 
- 
- // Calculate movement by comparing current and last positions of landmarks
-const calculateMovement = (lastPosition, currentPosition) => {
-  if (!lastPosition) return false;
 
-  // Calculate average distance between last and current positions of all eye points
-  const leftEyeMovement = lastPosition.map((point, index) => {
-    const distance = Math.sqrt(
-      Math.pow(currentPosition[index].x - point.x, 2) +
-      Math.pow(currentPosition[index].y - point.y, 2)
-    );
-    return distance > 2; // Check if movement is significant
-  });
 
-  return leftEyeMovement.includes(true); // Return true if any point has significant movement
-};
+
+  // Calculate movement by comparing current and last positions of landmarks
+  const calculateMovement = (lastPosition, currentPosition) => {
+    if (!lastPosition) return false;
+
+    // Calculate average distance between last and current positions of all eye points
+    const leftEyeMovement = lastPosition.map((point, index) => {
+      const distance = Math.sqrt(
+        Math.pow(currentPosition[index].x - point.x, 2) +
+        Math.pow(currentPosition[index].y - point.y, 2)
+      );
+      return distance > 2; // Check if movement is significant
+    });
+
+    return leftEyeMovement.includes(true); // Return true if any point has significant movement
+  };
 
 
   // Save the current face encoding to the database
@@ -157,7 +162,7 @@ const calculateMovement = (lastPosition, currentPosition) => {
       <button onClick={saveFaceEncoding} className='bg-green-300 rounded ml-2'>
         Capture Face & Save Encoding
       </button>
-      
+
       {/* Display live face encodings */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Live Face Encoding:</h3>
