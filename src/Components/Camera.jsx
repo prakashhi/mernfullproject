@@ -62,7 +62,7 @@ const Camera = () => {
         setFaceDetected(true);
         const accuracy = (detections[0].detection.score * 100).toFixed(2);
         setDetectionAccuracy(accuracy);
-        setTextualAnalysis(`Face detected with ${accuracy}% confidence.`);
+       
   
         const landmarks = detections[0].landmarks;
         const leftEye = landmarks.getLeftEye();
@@ -80,7 +80,7 @@ const Camera = () => {
   
           if (leftEyeMovement || rightEyeMovement) {
             setIsRealFace(true);
-            setTextualAnalysis("Real face detected. Subtle texture and movement detected.");
+            setTextualAnalysis(`Real face detected. Subtle texture and movement detected.${detectionAccuracy}`);
           } else {
             setIsRealFace(false);
             setTextualAnalysis("Photo detected. No significant texture or movement.");
@@ -114,17 +114,23 @@ const Camera = () => {
   
   
 
-  // Calculate movement by comparing current and last positions of landmarks
-  const calculateMovement = (lastPosition, currentPosition) => {
-    if (!lastPosition) return false;
-    
-    // Calculate distance between last and current positions (simple Euclidean distance)
+ 
+ // Calculate movement by comparing current and last positions of landmarks
+const calculateMovement = (lastPosition, currentPosition) => {
+  if (!lastPosition) return false;
+
+  // Calculate average distance between last and current positions of all eye points
+  const leftEyeMovement = lastPosition.map((point, index) => {
     const distance = Math.sqrt(
-      Math.pow(currentPosition[3].x - lastPosition[3].x, 2) +
-      Math.pow(currentPosition[3].y - lastPosition[3].y, 2)
+      Math.pow(currentPosition[index].x - point.x, 2) +
+      Math.pow(currentPosition[index].y - point.y, 2)
     );
-    return distance > 2; // If the movement is significant (you can adjust this threshold)
-  };
+    return distance > 2; // Check if movement is significant
+  });
+
+  return leftEyeMovement.includes(true); // Return true if any point has significant movement
+};
+
 
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
