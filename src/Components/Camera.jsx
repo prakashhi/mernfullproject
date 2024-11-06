@@ -83,16 +83,20 @@ const Camera = () => {
         const distHorizontal = faceapi.euclideanDistance(eye[0], eye[3]);
         return (distVertical1 + distVertical2) / (2.0 * distHorizontal);
       };
+    
+      const leftEye = landmarks.getLeftEye();
+      const rightEye = landmarks.getRightEye();
+    
+      // Ensure that the eyes are detected before calculating EAR
+      if (leftEye.length > 0 && rightEye.length > 0) {
+        const leftEAR = calculateEAR(leftEye);
+        const rightEAR = calculateEAR(rightEye);
+        const avgEAR = (leftEAR + rightEAR) / 2.0;
+        const blinkThreshold = 0.27; // Adjust threshold if necessary
   
-      const leftEAR = calculateEAR(landmarks.getLeftEye());
-      const rightEAR = calculateEAR(landmarks.getRightEye());
-      const avgEAR = (leftEAR + rightEAR) / 2.0;
-      const blinkThreshold = 0.25; // Adjust threshold if necessary
-  
-      if (avgEAR < blinkThreshold) {
-        setBlinkDetected(true);
+        setBlinkDetected(avgEAR < blinkThreshold);
       } else {
-        setBlinkDetected(false);
+        setBlinkDetected(false); // No eyes detected
       }
     };
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import Webcam from 'react-webcam';
-import * as faceapi from 'face-api.js';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { IoCloseCircle } from 'react-icons/io5';
 import { IoReorderThreeOutline } from "react-icons/io5"
 import axios from 'axios';
@@ -14,7 +15,7 @@ import Camera from '../Components/Camera';
 const Register = () => {
 
     const [fname, setfname] = useState('');
-    const [lname, setlname] = useState('');
+
     const [uemail, setuemail] = useState('');
     const [umobile, setumobile] = useState('');
     const [username, setusername] = useState('');
@@ -22,12 +23,29 @@ const Register = () => {
     const [workLongitude, setworkLongitude] = useState('');
     const [upass, setupass] = useState('');
 
-
-    const submit = async (e) => {
+    const notify = () => toast("This is a toast notification !");
+    const submit = (e) => {
         e.preventDefault();
-        console.log(fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass)
-        await axios.post('api/register_data', { fname, lname, uemail, umobile, username, workLatitude, workLongitude, upass })
+
+        if ([fname, uemail, umobile, username, workLatitude, workLongitude, upass].some(i => i.length <= 0)) {
+            toast.error("Fill all the blanks!");
+        }
+        if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
+            toast.error("Enter Numbers!");
+        }
+        if (!/\S+@\S+\.\S+/.test(uemail)) {
+            toast.error("Email address is invalid!");
+        }
+        if (upass.length <= 6) {
+            toast.error("Password must be at least 6 characters");
+        }
+
+
+
+        console.log(fname, uemail, umobile, username, workLatitude, workLongitude, upass)
+        // await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
     }
+
     const ham = () => {
         document.getElementById('hamb').style.left = "0"
     }
@@ -38,6 +56,8 @@ const Register = () => {
 
     return (
         <>
+            <ToastContainer />
+
             <div className='bg-gradient-to-r from-violet-500 to-fuchsia-500 '>
 
                 <div className='flex justify-center '>
@@ -48,19 +68,13 @@ const Register = () => {
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>First Name</span>
+                                <span className='text-xl text-slate-400'>Full Name</span>
                                 <FaUser className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setfname(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
                         </div>
 
-                        <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
-                            <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>Last Name</span>
-                                <FaUser className='text-white text-xl' />
-                            </div>
-                            <input onChange={(e) => { setlname(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                        </div>
+
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <span className='text-xl text-slate-400'>User Email</span>
