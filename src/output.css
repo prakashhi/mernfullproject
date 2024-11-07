@@ -726,6 +726,10 @@ video {
   border-radius: 0.5rem;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .border-\[0px\] {
   border-width: 0px;
 }
@@ -1062,6 +1066,18 @@ video {
 
   .max-\[450px\]\:h-\[80\%\] {
     height: 80%;
+  }
+
+  .max-\[450px\]\:rounded-full {
+    border-radius: 9999px;
+  }
+
+  .max-\[450px\]\:rounded-md {
+    border-radius: 0.375rem;
+  }
+
+  .max-\[450px\]\:rounded-3xl {
+    border-radius: 1.5rem;
   }
 }
 
