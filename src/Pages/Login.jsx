@@ -8,9 +8,37 @@ import axios from 'axios';
 
 
 
-const Login =  () => {
+const Login = () => {
     const [lusername, setlusername] = useState('');
     const [luserpass, setluserpass] = useState('');
+    const [location, setLocation] = useState({ latitude: null, longitude: null });
+
+    const getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setLocation({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
+                },
+                (error) => {
+                    toast.error(error.message);
+                },
+                {
+                    enableHighAccuracy: true, // Ensures high accuracy
+                    timeout: 10000, // Wait for up to 10 seconds
+                    maximumAge: 0, // Do not use a cached position
+                }
+            );
+        } else {
+            setError('Geolocation is not supported by this browser.');
+        }
+    };
+
+    useEffect(() => {
+        getLocation();
+    }, []);
 
     const submit = () => {
         if ([lusername, luserpass].some(i => i.length <= 0)) {
@@ -62,6 +90,17 @@ const Login =  () => {
 
                     </div>
                 </div>
+            </div>
+            <div>
+                <h2>User Location</h2>
+                {location.latitude && location.longitude ? (
+                    <p>
+                        Latitude: {location.latitude}, Longitude: {location.longitude}
+                    </p>
+                ) : (
+                    <p>Fetching location...</p>
+                )}
+                {error && <p>Error: {error}</p>}
             </div>
 
         </>
