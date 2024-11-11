@@ -34,9 +34,8 @@ const Register = () => {
         else {
             if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
                 toast.error("Enter Numbers!");
-                
-            }if(umobile.length < 10 || umobile.length > 10)
-            {
+
+            } if (umobile.length < 10 || umobile.length > 10) {
                 toast.error("Mobile number must be exactly 10 digits")
             }
             if (!/\S+@\S+\.\S+/.test(uemail)) {
@@ -50,21 +49,21 @@ const Register = () => {
 
                 try {
                     const res = await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
+                    
                     if (res.data == "code200") {
-                        toast.success("Registration is sucessfull");
                         navigate("/");
-                        
+                        toast.success("Registration is sucessfull");
+
                     }
                     if (res.data == "code01") {
                         navigate("/Register");
                         toast.error("Username is allready Exits!!");
                     }
                     else {
-                        navigate("/Register");
                         console.log(res.data);
                     }
-                    
-                } 
+
+                }
                 catch (err) {
                     console.log(err)
                 }

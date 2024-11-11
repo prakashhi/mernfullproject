@@ -52,12 +52,17 @@ const Login = () => {
             console.log("clicked", lusername, luserpass)
             try {
                 const res = await axios.post('/api/login', { lusername, luserpass });
+                sessionStorage.setItem('token', res.data.token);
                 navigate("/Dashboard");
                 toast.success("Login sucessfull");
             } catch (error) {
-                navigate("/");
-                toast.error("Invalid Username or Password");
-                console.error(error);
+                if (error.response && error.response.status === 401) {
+                    navigate("/");
+                    toast.error("Invalid Username or Password");
+                  }else
+                  {
+                    toast.error("Login failed");
+                  }
             }
         }
 
@@ -69,7 +74,7 @@ const Login = () => {
                 <Timer />
                 <div className='flex justify-center '>
 
-                    <div className='backdrop-blur-sm bg-white/30 inline-grid max-[800px]:p-3 p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s]'>
+                    <div className='backdrop-blur-sm bg-white/30 inline-grid max-[800px]:p-4 p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s]'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Login</span>
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid p-2 relative rounded mb-3'>

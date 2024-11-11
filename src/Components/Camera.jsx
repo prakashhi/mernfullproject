@@ -120,7 +120,7 @@ const Camera = () => {
 
   return (
     <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
-      <div className='relative w-full mb-3 max-[450px]:w-[80%]'>
+      <div className='relative w-full mb-3 max-[450px]:w-[90%]'>
         <Webcam className='w-full h-full rounded' ref={webcamRef} />
         <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
       </div>

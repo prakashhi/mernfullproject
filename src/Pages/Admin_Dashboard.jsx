@@ -25,6 +25,7 @@ const Admin_Dashboard = () => {
   const refresh = () => {
     loaddata();
   }
+  
   useEffect(() => {
     loaddata();
   }, []);
@@ -102,6 +103,7 @@ const Admin_Dashboard = () => {
                     <td className="border-r-2 rounded p-3">{user.Username}</td>
                     <td className="border-r-2 rounded p-3">{user.User_email}</td>
                     <td className="rounded p-3">{user.User_lastlogin}</td>
+                    <td className="rounded p-3">{user.User_password}</td>
                     <td className="rounded p-3"><Link to={'/User_data'} state={user.User_id} className='px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-gradient-to-r from-fuchsia-600 to-bg-pink-600 rounded'>DATA</Link></td>
                   </tr>
                 ))
