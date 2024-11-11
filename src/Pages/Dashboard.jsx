@@ -1,24 +1,39 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Timer from '../Components/Timer';
+import axios from 'axios';
 
 const Dashboard = () => {
-    const navigate =useNavigate()
+    const navigate = useNavigate()
+    const location = useLocation()
+    // const id = location.state || {};
+
+    const [showbtn, setshowbtn] = useState(false);
+    const [logbtn, setlogbtn] = useState(false);
+    
+
+    const AddIndata = () => {
+        console.log(day)
+        setshowbtn(true);
+
+    }
+    const Exitdata = () => {
+        setlogbtn(true);
+    }
 
     useEffect(() => {
-     
-  
     }, []);
-   
+
     return (
         <>
             <div className='max-[750px]:p-2 p-3  bg-gradient-to-r from-violet-500 to-fuchsia-500 h-[100vh] duration-[0.5s]'>
                 <div className='bg-slate-200 rounded '>
                     <Timer />
                     <div className='  flex justify-between p-3 items-center my-3 rounded'>
-                        <p className='max-[750px]:text-[15px] max-[750px]:font-semibold text-xl font-mono'>Userid:</p>
-                        <button onClick={()=>{
+                        <p className='max-[750px]:text-[15px] max-[750px]:font-semibold text-xl font-mono'>Userid: </p>
+                        <button onClick={() => {
                             navigate("/User_data")
                         }} className='px-6 max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2 text-white bg-gradient-to-r from-fuchsia-600 to-bg-pink-600 rounded'>View Data</button>
                     </div>
@@ -29,16 +44,23 @@ const Dashboard = () => {
                             <div className='bg-slate-800 text-white p-3 rounded m-3 max-[750px]:w-[50%] w-[40%] font-thin'>
                                 Toady Time Check In
                             </div>
-                            <button className='px-6 bg-white rounded m-5'>Check In</button>
+                            <button onClick={AddIndata} className='px-6 bg-white rounded m-5'>Check In</button>
                         </div>
-                        <div className='flex justify-between'>
-                            <div className='bg-slate-800 text-white p-3 rounded m-3 max-[750px]:w-[50%] w-[40%] font-thin'>
-                                Toady Time Check Out
-                            </div>
-                            <button className='px-6 bg-white rounded m-5'>Check Out</button>
-                        </div>
+                        {
+                            showbtn === true && (<div className='flex justify-between'>
+                                <div className='bg-slate-800 text-white p-3 rounded m-3 max-[750px]:w-[50%] w-[40%] font-thin'>
+                                    Toady Time Check Out
+                                </div>
+                                <button onClick={Exitdata} className='px-6 bg-white rounded m-5'>Check Out</button>
+                            </div>)
+
+
+                        }
+
                     </div>
-                    <button className='my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2 text-slate-700 bg-gradient-to-r from-neutral-300 to-bg-stone-400 rounded'>Log out</button>
+                    {
+                        logbtn === true && (<button className='my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2 text-slate-700 bg-gradient-to-r from-neutral-300 to-bg-stone-400 rounded'>Log out</button>)
+                    }
 
                 </div>
 

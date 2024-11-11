@@ -115,28 +115,19 @@ const Camera = () => {
   const saveFaceEncoding = async () => {
     if (faceEncodings) {
       setSavedEncodings([...savedEncodings, ...faceEncodings]);
-      try {
-        await axios.post('http://localhost:5000/save-face-encoding', { encoding: faceEncodings });
-        alert("Face encoding saved to the database.");
-      } catch (error) {
-        console.error("Error saving encoding:", error);
-        alert("Failed to save face encoding.");
-      }
-    } else {
-      alert("No face encoding available to save.");
     }
   };
 
   return (
     <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
-      <div className='relative w-full mb-3 max-[450px]:rounded-full'>
+      <div className='relative w-full mb-3 max-[450px]:w-[80%]'>
         <Webcam className='w-full h-full rounded' ref={webcamRef} />
         <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
       </div>
 
 
 
-
+<div className='flex gap-3'>
       {/* Display expected expression */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Expected Expression:</h3>
@@ -150,7 +141,7 @@ const Camera = () => {
 
       </div>
 
-
+</div>
       {/* Display textual analysis */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Detection Status:</h3>

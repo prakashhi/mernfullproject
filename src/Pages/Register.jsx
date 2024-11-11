@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoCloseCircle } from 'react-icons/io5';
@@ -13,6 +13,7 @@ import { FaMobile } from "react-icons/fa";
 import { useRef, useEffect, useState } from 'react';
 import Camera from '../Components/Camera';
 const Register = () => {
+    const navigate = useNavigate()
 
     const [fname, setfname] = useState('');
 
@@ -29,30 +30,49 @@ const Register = () => {
 
         if ([fname, uemail, umobile, username, workLatitude, workLongitude, upass].some(i => i.length <= 0)) {
             toast.error("Fill out all fields!");
-
         }
-        if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
-            toast.error("Enter Numbers!");
+        else {
+            if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
+                toast.error("Enter Numbers!");
+                
+            }if(umobile.length < 10 || umobile.length > 10)
+            {
+                toast.error("Mobile number must be exactly 10 digits")
+            }
+            if (!/\S+@\S+\.\S+/.test(uemail)) {
+                toast.error("Email address is invalid!");
+            }
+            if (upass.length <= 6) {
+                toast.error("Password must be at least 6 characters");
+            }
+            else {
+                console.log(fname, uemail, umobile, username, workLatitude, workLongitude, upass)
+
+                try {
+                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
+                    if (res.data == "code200") {
+                        toast.success("Registration is sucessfull");
+                        navigate("/");
+                        
+                    }
+                    if (res.data == "code01") {
+                        navigate("/Register");
+                        toast.error("Username is allready Exits!!");
+                    }
+                    else {
+                        navigate("/Register");
+                        console.log(res.data);
+                    }
+                    
+                } 
+                catch (err) {
+                    console.log(err)
+                }
+
+            }
         }
-        if (!/\S+@\S+\.\S+/.test(uemail)) {
-            toast.error("Email address is invalid!");
-        }
-        if (upass.length <= 6) {
-            toast.error("Password must be at least 6 characters");
-        }
 
 
-
-        console.log(fname, uemail, umobile, username, workLatitude, workLongitude, upass)
-
-        try {
-            await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
-            toast.success("Registration is sucessfull");
-            <Navigate to="/" />
-
-        } catch (err) {
-            toast.error(err)
-        }
 
 
     }

@@ -4,6 +4,9 @@ import Timer from '../Components/Timer';
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
+
+import { useNavigate } from 'react-router-dom'
+
 import axios from 'axios';
 
 
@@ -12,6 +15,7 @@ const Login = () => {
     const [lusername, setlusername] = useState('');
     const [luserpass, setluserpass] = useState('');
     const [location, setLocation] = useState({ latitude: null, longitude: null });
+    const navigate = useNavigate()
 
     const getLocation = () => {
         if (navigator.geolocation) {
@@ -40,20 +44,24 @@ const Login = () => {
         getLocation();
     }, []);
 
-    const submit = () => {
+    const submit = async () => {
         if ([lusername, luserpass].some(i => i.length <= 0)) {
-            toast.error("Fill out all fields!");
-
+            toast.error("Enter Username and Password");
         }
-        if (luserpass.length <= 6) {
-            toast.error("Password must be at least 6 characters");
+        else {
+            console.log("clicked", lusername, luserpass)
+            try {
+                const res = await axios.post('/api/login', { lusername, luserpass });
+                navigate("/Dashboard");
+                toast.success("Login sucessfull");
+            } catch (error) {
+                navigate("/");
+                toast.error("Invalid Username or Password");
+                console.error(error);
+            }
         }
-        console.log(lusername, luserpass)
 
-        // await axios.post('', { lusername, luserpass })
     }
-
-
 
     return (
         <>
@@ -63,6 +71,7 @@ const Login = () => {
 
                     <div className='backdrop-blur-sm bg-white/30 inline-grid max-[800px]:p-3 p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s]'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Login</span>
+
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
                                 <span className='text-xl text-slate-400'>Username</span>
@@ -90,17 +99,18 @@ const Login = () => {
 
                     </div>
                 </div>
-            </div>
-            <div>
                 <h2>User Location</h2>
                 {location.latitude && location.longitude ? (
                     <p>
-                        Latitude: {location.latitude}, Longitude: {location.longitude}
+
                     </p>
                 ) : (
                     <p>Fetching location...</p>
                 )}
-                {error && <p>Error: {error}</p>}
+            </div>
+            <div>
+
+                {/* {error && <p>Error: {error}</p>} */}
             </div>
 
         </>
