@@ -49,7 +49,7 @@ const Register = () => {
 
                 try {
                     const res = await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
-                    
+
                     if (res.data == "code200") {
                         navigate("/");
                         toast.success("Registration is sucessfull");
@@ -88,17 +88,17 @@ const Register = () => {
         <>
 
 
-            <div className='bg-gradient-to-r from-violet-500 to-fuchsia-500 '>
+            <div className='bg-blue-400 '>
 
                 <div className='flex justify-center '>
 
-                    <div className='max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
+                    <div className='shadow-2xl max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Register</span>
                         <h1>Persional Details</h1>
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>Full Name</span>
+                                <span className='text-xl text-white'>Full Name</span>
                                 <FaUser className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setfname(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
@@ -107,14 +107,14 @@ const Register = () => {
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>User Email</span>
+                                <span className='text-xl text-white'>User Email</span>
                                 <MdEmail className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setuemail(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="email" />
                         </div>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>User MobileNo</span>
+                                <span className='text-xl text-white'>User MobileNo</span>
                                 <FaMobile className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setumobile(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
@@ -122,8 +122,8 @@ const Register = () => {
 
 
                         <h1>Face Register</h1>
-                        <div className='text-3xl text-bold' onClick={ham}>
-                            <IoReorderThreeOutline />
+                        <div className='text-3xl text-boldcursor-pointer' onClick={ham}>
+                            <IoReorderThreeOutline className='' />
                         </div>
                         <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-gradient-to-r from-emerald-400 to-cyan-400 text-white p-5 absolute h-[100%] rounded  w-[100%] z-[1] transition-all  m-1'>
                             <div className='grid gap-5 '>
@@ -142,7 +142,7 @@ const Register = () => {
                         <h1>Profissonal Details</h1>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>Username</span>
+                                <span className='text-xl text-white'>Username</span>
                                 <FaUser className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setusername(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
@@ -164,7 +164,7 @@ const Register = () => {
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>Password</span>
+                                <span className='text-xl text-white'>Password</span>
                                 <FaKey className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setupass(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none' type="password" />
@@ -174,7 +174,7 @@ const Register = () => {
 
 
                         <div id='btn' className='w-full flex justify-center m-2'>
-                            <button className='bg-blue-300 px-7 py-2 rounded' onClick={submit}>Register</button>
+                            <button className='bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
 
                         </div>
 

@@ -56,13 +56,12 @@ const Login = () => {
                 navigate("/Dashboard");
                 toast.success("Login sucessfull");
             } catch (error) {
-                if (error.response && error.response.status === 401) {
+                if (error.response && error.response.status === 400) {
                     navigate("/");
                     toast.error("Invalid Username or Password");
-                  }else
-                  {
+                } else {
                     toast.error("Login failed");
-                  }
+                }
             }
         }
 
@@ -70,16 +69,16 @@ const Login = () => {
 
     return (
         <>
-            <div className='h-[100vh] bg-gradient-to-r from-violet-500 to-fuchsia-500'>
+            <div className='h-[100vh] bg-blue-400'>
                 <Timer />
                 <div className='flex justify-center '>
 
-                    <div className='backdrop-blur-sm bg-white/30 inline-grid max-[800px]:p-4 p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s]'>
+                    <div className='shadow-2xl backdrop-blur-sm bg-white/30 inline-grid max-[800px]:p-4 p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s]'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Login</span>
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid p-2 relative rounded mb-3'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>Username</span>
+                                <span className='text-xl text-white'>Username</span>
                                 <FaUser className='text-white text-xl' />
                             </div>
 
@@ -88,19 +87,17 @@ const Login = () => {
                         </div>
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid p-2 relative rounded'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-xl text-slate-400'>Password</span>
+                                <span className='text-xl text-white'>Password</span>
                                 <FaKey className='text-white text-xl' />
                             </div>
                             <input onChange={(e) => { setluserpass(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none' type="password" />
 
                         </div>
                         <div id='btn' className='w-full flex justify-center m-2'>
-                            <button onClick={submit} className='hover:px-9 duration-[0.5s] bg-gradient-to-r from-blue-300 to-pink-500 font-extrabold px-7 py-2 rounded'>Log in</button>
+                            <button onClick={submit} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2 '>Log in</button>
 
                         </div>
-                        <p>Don't have an account?<Link className='underline text-blue-300' to="/Register" >Register</Link></p>
-
-                        <p>Don't have an account?<a className='underline text-blue-300' href="/Dashboard">Dashboard</a></p>
+                        <p>Don't have an account?<Link className='underline text-red-300' to="/Register" >Register</Link></p>
 
                     </div>
                 </div>

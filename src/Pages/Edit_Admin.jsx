@@ -12,7 +12,7 @@ const Edit_Admin = () => {
     }
     return (
         <>
-            <div id='contain' className='h-[100vh] duration-[0.5s] bg-gradient-to-r from-violet-500 to-fuchsia-500 m-2 rounded'>
+            <div id='contain' className='h-[100vh] duration-[0.5s] bg-blue-400 shadow-2xl m-2 rounded'>
                 <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-gradient-to-r from-emerald-400 to-cyan-400 text-white p-5 absolute h-[120vh] rounded max-[550px]:w-[70vw] w-[40vw] z-[1] transition-all  m-1'>
                     <div className='grid gap-5 '>
                         <div onClick={close} className='text-2xl'>
