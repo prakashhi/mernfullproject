@@ -122,12 +122,12 @@ const Register = () => {
 
 
                         <h1>Face Register</h1>
-                        <div className='text-3xl text-boldcursor-pointer' onClick={ham}>
+                        <div className='text-3xl text-bold hover:cursor-pointer' onClick={ham}>
                             <IoReorderThreeOutline className='' />
                         </div>
-                        <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-gradient-to-r from-emerald-400 to-cyan-400 text-white p-5 absolute h-[100%] rounded  w-[100%] z-[1] transition-all  m-1'>
+                        <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-blue-400 text-white p-5 absolute h-[100%] rounded  w-[100%] z-[1] transition-all  m-1'>
                             <div className='grid gap-5 '>
-                                <div onClick={close} className='text-2xl'>
+                                <div onClick={close} className='text-2xl hover:cursor-pointer'>
                                     <IoCloseCircle />
                                 </div>
 
@@ -174,7 +174,7 @@ const Register = () => {
 
 
                         <div id='btn' className='w-full flex justify-center m-2'>
-                            <button className='bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
+                            <button className='duration-[0.5s] bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
 
                         </div>
 

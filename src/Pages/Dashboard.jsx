@@ -2,8 +2,8 @@ import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
-import { IoMdRefreshCircle } from "react-icons/io";
-import {HiUserAdd} from "react-icons/hi";
+import { IoRefreshOutline } from "react-icons/io5";
+import { HiUserAdd } from "react-icons/hi";
 import Timer from '../Components/Timer';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -12,11 +12,13 @@ import { toast } from 'react-toastify';
 const Dashboard = () => {
     const navigate = useNavigate()
 
-    const [showbtn, setshowbtn] = useState(false);
     const [loading, setLoading] = useState(true);
     const [logbtn, setlogbtn] = useState(false);
     const [userdata, setUserdata] = useState(null);
-    const entryexit = useRef(false);
+    const [userdb, setuserdb] = useState(false);
+    const [entryc, setentryc] = useState(false);
+    const [exitc, setexitc] = useState(false);
+
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -46,10 +48,9 @@ const Dashboard = () => {
                 setLoading(false); // Ensure loading is set to false regardless of the outcome
             }
         }
+      
+
     }, [navigate]);
-
-
-
 
     if (loading) {
         return <div>Loading...</div>;
@@ -61,13 +62,28 @@ const Dashboard = () => {
 
     const no = userdata.userId;
 
-  const checkbtn = async () => {
+   
+
+    const checkbtn = async () => {
         try {
-            const tr = await axios.post('/api/check', { no });
-            console.log(tr);
+            await axios.post('/api/check', { no });
+            setlogbtn(true);
+
         }
         catch (error) {
-            console.log(error);
+            if (error.response.status === 404) {
+                setuserdb(true);
+                
+            }
+            else if (error.response.status === 400) {
+                setentryc(true);
+
+            }
+            else if (error.response.status === 401) {
+                setexitc(true);
+                setentryc(false);
+            }
+           
         }
 
     }
@@ -79,7 +95,6 @@ const Dashboard = () => {
             toast.success("User Created in Database");
         }
         catch (error) {
-            // toast.error(err.Responce.message);
             if (error.response.status === 400) {
                 toast.info("UserData Exiting");
             } else {
@@ -89,16 +104,13 @@ const Dashboard = () => {
 
     }
 
-  
+
 
 
     const AddIndata = async () => {
-
-        setshowbtn(true);
         try {
             await axios.post('/api/Enter_data', { no });
             toast.success("Today's entry data has been successfully saved!");
-            // entryexit(true);
         }
         catch (error) {
             if (error.response) {
@@ -121,7 +133,6 @@ const Dashboard = () => {
         try {
             await axios.post('/api/Exit_data', { no });
             toast.success("Today's Exitdata has been successfully saved!");
-            entryexit(true);
         }
         catch (error) {
             if (error.response && error.response.status === 401) {
@@ -160,17 +171,20 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className=' shadow-2xl max-[750px]:p-2  p-5 py-10 bg-blue-400 rounded'>
+
+                        <div className='shadow-2xl max-[750px]:p-2  p-5 py-10 bg-blue-400 rounded h-[50vh]'>
                             <div className='flex justify-end p-[10px]'>
-                                <IoMdRefreshCircle onClick={checkbtn} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
+                                <IoRefreshOutline onClick={checkbtn} className='duration-[0.5s] text-2xl cursor-pointer hover:text-3xl' />
                             </div>
-                            <div className='p-2 rounded-lg backdrop-blur-sm bg-white/30 '>
-                                <div className='max-[450px]:grid flex '>
-                                    
-                                    <button onClick={newuserdata} className=' duration-[0.5s] p-6 font-bold shadow-3xl bg-purple-900 text-white rounded-full m-5 flex justify-center items-center gap-3 hover:text-2xl text-xl'><HiUserAdd className=' duration-[0.5s] text-2xl '/>Create Newuser</button>
-                                </div>
+                            <div className='p-2 rounded-lg backdrop-blur-sm bg-white/20  shadow-xl '>
                                 {
-                                    showbtn === false && (<div className='max-[750px]:grid flex justify-between my-9'>
+                                    userdb === true && (<div className='max-[450px]:grid flex '>
+                                        <button onClick={newuserdata} className=' duration-[0.5s] p-6 font-bold shadow-3xl bg-purple-900 text-white rounded-full m-5 flex justify-center items-center gap-3 hover:text-2xl text-xl'><HiUserAdd className=' duration-[0.5s] text-2xl ' />Create Newuser</button>
+                                    </div>)
+                                }
+
+                                {
+                                    entryc === true && (<div className='max-[750px]:grid flex justify-between my-9'>
                                         <div className='bg-blue-900 grid items-center text-xl font-bold text-white p-3 rounded m-3 max-[750px]:w-[60vw] max-[750px]:justify-center  w-[40%] '>
                                             Toady Time Check In
                                         </div>
@@ -180,12 +194,14 @@ const Dashboard = () => {
 
                                 }
 
-                                <div className='max-[750px]:grid flex justify-between'>
-                                    <div className='bg-blue-900 grid items-center text-xl font-bold text-white p-3 rounded m-3 max-[750px]:w-[60vw] max-[750px]:justify-center  w-[40%] '>
-                                        Toady Time Check Out
-                                    </div>
-                                    <button onClick={Exitdata} className='duration-[0.5s] shadow-2xl p-3 px-5 hover:text-xl bg-white rounded-full font-bold m-5'>Check Out</button>
-                                </div>
+                                {
+                                    exitc === true && (<div className='max-[750px]:grid flex justify-between'>
+                                        <div className='bg-blue-900 grid items-center text-xl font-bold text-white p-3 rounded m-3 max-[750px]:w-[60vw] max-[750px]:justify-center  w-[40%] '>
+                                            Toady Time Check Out
+                                        </div>
+                                        <button onClick={Exitdata} className='duration-[0.5s] shadow-2xl p-3 px-5 hover:text-xl bg-white rounded-full font-bold m-5'>Check Out</button>
+                                    </div>)
+                                }
 
                             </div>
                             {
@@ -199,7 +215,7 @@ const Dashboard = () => {
                     </div>
                 </>
             ) : (
-                <p>Loading...</p>
+                <p className=''>Loading...</p>
             )}
 
         </>

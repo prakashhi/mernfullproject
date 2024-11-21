@@ -40,7 +40,7 @@ const Admin_login = () => {
     }
     return (
         <>
-            <div className='h-[100vh] bg-blue-400 '>
+            <div className='h-[1000px] bg-blue-400 '>
                 <Timer />
                 <div className='flex justify-center '>
 

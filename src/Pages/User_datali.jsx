@@ -15,8 +15,12 @@ const User_datali = () => {
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
   const [listdata, setlistdata] = useState({});
+  const [month, setmonth] = useState('');
 
-
+const m = [
+    "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December"
+  ];
 
 
   useEffect(() => {
@@ -61,9 +65,9 @@ const User_datali = () => {
     return <div>Redirecting...</div>;
   }
 
-
+ const id = userdata.userId;
   const getdata = async () => {
-    const id = userdata.userId;
+   
     try {
       const res = await axios.post('/api/getdta', { id });
       setlistdata(res.data.workdta[0].work_entries);
@@ -72,6 +76,15 @@ const User_datali = () => {
       console.log(err);
 
     }
+  }
+  
+  const countday = async () =>{
+	  // try{
+		  // await axios.post('/api/getdta', { id });
+	  // }
+	  
+	  // console.log(month);
+	  
   }
 
   return (
@@ -84,18 +97,31 @@ const User_datali = () => {
           <span className='text-xl max-[700px]:hidden'>Back</span>
         </div>
       </div>
-      <div id='contain' className='h-[100vh] duration-[0.5s]  bg-blue-400 shadow-2xl m-2 rounded'>
+      <div id='contain' className=' duration-[0.5s]  bg-blue-400 shadow-2xl m-2 rounded'>
         <div className=' flex  justify-between m-2 p-2 gap-5 items-center max-[400px]:gap-3' >
           <div className='grid  bg-cyan-400 font-extrabold p-2 rounded'>
             <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id:{userdata.userId} </span>
             <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{userdata.username} </span>
           </div>
-
+		 
           <div>
             <IoMdRefreshCircle onClick={() => { getdata(); }} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
           </div>
         </div>
-        <div className='duration-[0.5s] m-2 p-2 overflow-auto  backdrop-blur-sm bg-white/20 rounded '>
+		<div className='p-3 gap-2 flex'>
+		<select onChange={(e)=>{setmonth(e.target.value)}} name="cars" id="cars" className='rounded p-2 bg-purple-900 text-white font-bold'>
+				 <option value="" disabled selected>
+          -- Select a Month --
+        </option>
+        {m.map((m, index) => (
+          <option key={index} value={m}>
+            {m}
+          </option>
+        ))}
+		</select>
+		<button onClick={countday} className='bg-white px-4 py-1 rounded'>Days</button>
+		</div>
+        <div className='duration-[0.5s] m-2 p-2 overflow-auto  backdrop-blur-sm bg-white rounded '>
           <table className=' max-[400px]:text-[15px] w-full text-center '>
             <thead>
               <tr className='border-b-2 sticky'>
@@ -134,7 +160,7 @@ const User_datali = () => {
         </div>
         <div className='m-2 p-2 flex gap-5 items-center'>
           <span>Month Of Working Days</span>
-          <span className='bg-white px-4 py-1 rounded'>Days</span>
+         
 
         </div>
 

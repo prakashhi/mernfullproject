@@ -89,8 +89,8 @@ const Admin_Dashboard = () => {
   return (
     <>
 
-      <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-gradient-to-r from-emerald-400 to-cyan-400 text-white p-5 absolute h-[120vh] rounded max-[550px]:w-[70vw] w-[40vw] z-[1] transition-all  m-1'>
-        <div className='grid gap-5 '>
+      <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-blue-400 text-white p-5 absolute h-[120vh] rounded max-[550px]:w-[70vw] w-[40vw] z-[1] transition-all  m-1'>
+        <div className='grid gap-5 hover:cursor-pointer'>
           <div onClick={close} className='text-2xl'>
             <IoCloseCircle />
           </div>
@@ -110,7 +110,7 @@ const Admin_Dashboard = () => {
         <Timer />
 
         <div id='nav' className='flex justify-between gap-4 p-3 items-center'>
-          <div className='text-3xl text-bold' onClick={ham}>
+          <div className='text-3xl text-bold hover:cursor-pointer' onClick={ham}>
             <IoReorderThreeOutline />
           </div>
           <div className='flex gap-4 items-center'>
@@ -134,15 +134,15 @@ const Admin_Dashboard = () => {
           </div>
 
         </div>
-        <div className='duration-[0.5s] h-[80vh] overflow-auto m-2 p-2  backdrop-blur-sm bg-white/20 rounded '>
+        <div className='duration-[0.5s] h-[80vh] overflow-auto m-2 p-2  shadow-xl bg-white rounded '>
           <table className=' max-[400px]:text-[15px] w-full text-center font-light'>
             <thead>
               <tr className='border-b-2 sticky'>
-                <td className=' rounded'>User Id</td>
-                <td className=' rounded '> Fullname</td>
-                <td className=' rounded '> Username</td>
-                <td className=' rounded '>Email</td>
-                <td className=' rounded '>User Lastlogin</td>
+                <td className=' rounded font-semibold'>User Id</td>
+                <td className=' rounded font-semibold'> Fullname</td>
+                <td className=' rounded font-semibold'> Username</td>
+                <td className=' rounded font-semibold'>Email</td>
+                <td className=' rounded font-semibold'>User Lastlogin</td>
               </tr>
             </thead>
             <tbody>
@@ -157,7 +157,7 @@ const Admin_Dashboard = () => {
                       <td className="border-r-2 rounded p-3">{user.User_email}</td>
                       <td className="rounded p-3">{user.User_lastlogin}</td>
                       {/* <td className="rounded p-3">{user.User_password}</td> */}
-                      <td className="rounded p-3"><Link to={'/User_data'} state={user.User_id} className='px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-gradient-to-r from-fuchsia-600 to-bg-pink-600 rounded'>DATA</Link></td>
+                      <td className="rounded p-3"><Link to={'/User_data'} state={user.User_id} className='shadow-md px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-purple-900 font-bold rounded-full'>DATA</Link></td>
                     </tr>
                   ))
                 ) : (
@@ -171,11 +171,7 @@ const Admin_Dashboard = () => {
           </table>
 
         </div>
-        <div className='m-2 p-2 flex gap-5 items-center'>
-          <span>Month Of Working Days</span>
-          <span className='bg-white px-4 py-1 rounded'>Days</span>
-
-        </div>
+       
 
       </div>
 
