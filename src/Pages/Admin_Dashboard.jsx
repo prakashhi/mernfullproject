@@ -101,6 +101,9 @@ const Admin_Dashboard = () => {
           <div className='backdrop-blur-sm bg-white/30 p-4 rounded'>
             <Link to={'/Admin_Edit'}> Edit User</Link>
           </div>
+          <div className='backdrop-blur-sm bg-white/30 p-4 rounded'>
+            <Link to={'/Admin_worklocationdata'}> Work Location Data</Link>
+          </div>
         </div>
 
 
@@ -115,7 +118,7 @@ const Admin_Dashboard = () => {
           </div>
           <div className='flex gap-4 items-center'>
             <span className='font-bold'>{admindata.username}</span>
-            <button onClick={logout} className='flex items-center font-semibold gap-2 my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded'>Log out<FiLogOut className='font-semibold' /></button>
+            <button onClick={logout} className='flex items-center font-semibold gap-2 my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded-lg'>Log out<FiLogOut className='font-semibold' /></button>
           </div>
         </div>
 
@@ -143,6 +146,10 @@ const Admin_Dashboard = () => {
                 <td className=' rounded font-semibold'> Username</td>
                 <td className=' rounded font-semibold'>Email</td>
                 <td className=' rounded font-semibold'>User Lastlogin</td>
+                <td className=' rounded font-semibold'>Workcode</td>
+                <td className=' rounded font-semibold'>Latitude</td>
+                <td className=' rounded font-semibold'>Longitude</td>
+
               </tr>
             </thead>
             <tbody>
@@ -155,9 +162,13 @@ const Admin_Dashboard = () => {
                       <td className="border-r-2 rounded p-3">{user.User_fullname}</td>
                       <td className="border-r-2 rounded p-3">{user.Username}</td>
                       <td className="border-r-2 rounded p-3">{user.User_email}</td>
-                      <td className="rounded p-3">{user.User_lastlogin}</td>
-                      {/* <td className="rounded p-3">{user.User_password}</td> */}
-                      <td className="rounded p-3"><Link to={'/User_data'} state={user.User_id} className='shadow-md px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-purple-900 font-bold rounded-full'>DATA</Link></td>
+                      <td className="border-r-2 rounded p-3">{user.User_lastlogin}</td>
+                      <td className="border-r-2 rounded p-3">{user.User_Workcode}</td>
+                      <td className="border-r-2 rounded p-3">{user.User_workLatitude}</td>
+                      <td className="rounded p-3">{user.User_workLongitude}</td>
+
+                      <td className="rounded p-3">
+                        <Link to='/Admin_datali' state={{ id: user.User_id, username: user.Username }} className='shadow-md px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-purple-900 font-bold rounded-full'>DATA</Link></td>
                     </tr>
                   ))
                 ) : (
@@ -171,7 +182,7 @@ const Admin_Dashboard = () => {
           </table>
 
         </div>
-       
+
 
       </div>
 

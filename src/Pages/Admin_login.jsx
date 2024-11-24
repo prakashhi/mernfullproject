@@ -21,7 +21,7 @@ const Admin_login = () => {
         }
         else {
             try {
-               const res =  await axios.post('/api/admin_login', { uuser, upass });
+                const res = await axios.post('/api/admin_login', { uuser, upass });
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/A_Dash");
                 toast.success("Login sucessfull");

@@ -8,7 +8,9 @@ import User_datali from './Pages/User_datali';
 import Admin_login from './Pages/Admin_login';
 import Admin_Dashboard from './Pages/Admin_Dashboard';
 import Edit_Admin from './Pages/Edit_Admin';
-
+import Admin_Datali from './Pages/Admin_Datali';
+import Admin_worklocation from './Pages/Admin_worklocation';
+import Login_cameras from './Pages/Login_camers';
 
 const App = () => {
 
@@ -24,6 +26,9 @@ const App = () => {
           <Route path="/Admin" element={<Admin_login />} />
           <Route path="/A_Dash" element={<Admin_Dashboard />} />
           <Route path="/Admin_Edit" element={<Edit_Admin />} />
+          <Route path="/Admin_datali" element={<Admin_Datali />} />
+          <Route path="/Admin_worklocationdata" element={<Admin_worklocation />} />
+          <Route path="/login_camera" element={<Login_cameras />} />
           {/* Add other routes here */}
         </Routes>
       </div>

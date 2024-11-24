@@ -18,21 +18,20 @@ const Register = () => {
     const [fname, setfname] = useState('');
 
     const [uemail, setuemail] = useState('');
-    const [umobile, setumobile] = useState('');
+    const [umobile, setumobile] = useState(null);
     const [username, setusername] = useState('');
-    const [workLatitude, setworkLatitude] = useState('');
-    const [workLongitude, setworkLongitude] = useState('');
+    const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
 
     const notify = () => toast("This is a toast notification !");
     const submit = async (e) => {
         e.preventDefault();
 
-        if ([fname, uemail, umobile, username, workLatitude, workLongitude, upass].some(i => i.length <= 0)) {
+        if ([fname, uemail, umobile, username, upass, workLoctioncode].some(i => i.length <= 0)) {
             toast.error("Fill out all fields!");
         }
         else {
-            if ([umobile, workLatitude, workLongitude].some(i => isNaN(i))) {
+            if ([umobile, workLoctioncode].some(i => isNaN(i))) {
                 toast.error("Enter Numbers!");
 
             } if (umobile.length < 10 || umobile.length > 10) {
@@ -45,10 +44,10 @@ const Register = () => {
                 toast.error("Password must be at least 6 characters");
             }
             else {
-                console.log(fname, uemail, umobile, username, workLatitude, workLongitude, upass)
+
 
                 try {
-                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, workLatitude, workLongitude, upass })
+                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode })
 
                     if (res.data == "code200") {
                         navigate("/");
@@ -88,7 +87,7 @@ const Register = () => {
         <>
 
 
-            <div className='bg-blue-400 '>
+            <div className='bg-blue-400 h-[1000px]'>
 
                 <div className='flex justify-center '>
 
@@ -148,19 +147,16 @@ const Register = () => {
                             <input onChange={(e) => { setusername(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
                         </div>
 
+                        <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded mb-3'>
+                            <div className='flex items-center justify-between'>
+                                <span className='text-xl text-white'>WorkLoactioncode</span>
+                                <FaLocationDot className='text-white text-xl' />
+                            </div>
+                            <input onChange={(e) => { setworkLoctioncode(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none' type="text" />
 
-                        <div className='bg-gradient-to-r from-slate-500 to-slate-800   p-2 relative rounded mb-3'>
-                            <div className='flex items-center justify-between'>
-                                <input onChange={(e) => { setworkLatitude(e.target.value) }} placeholder="User workLatitude" className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                                <FaLocationDot className='text-white text-xl' />
-                            </div>
                         </div>
-                        <div className='bg-gradient-to-r from-slate-500 to-slate-800   p-2 relative rounded mb-3'>
-                            <div className='flex items-center justify-between'>
-                                <input onChange={(e) => { setworkLongitude(e.target.value) }} placeholder="User workLongitude" className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none ' type="text" />
-                                <FaLocationDot className='text-white text-xl' />
-                            </div>
-                        </div>
+
+
 
                         <div className='bg-gradient-to-r from-slate-500 to-slate-800  inline-grid p-2 relative rounded'>
                             <div className='flex items-center justify-between'>

@@ -48,7 +48,7 @@ const Edit_Admin = () => {
                     </div>
 
                     <button className='backdrop-blur-sm bg-white/30 w-[35%] rounded px-4 py-2 max-[400px]:px-3 max-[400px]:py-1'>Save</button>
-               
+
                 </div>
             </div>
         </>

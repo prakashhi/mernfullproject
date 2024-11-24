@@ -14,9 +14,11 @@ import axios from 'axios';
 const Login = () => {
     const [lusername, setlusername] = useState('');
     const [luserpass, setluserpass] = useState('');
-    const [location, setLocation] = useState({ latitude: null, longitude: null });
+    const [location, setLocation] = useState(null);
+    const [error, setError] = useState(null);
     const navigate = useNavigate()
-
+	
+	
     const getLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -25,24 +27,27 @@ const Login = () => {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     });
+
                 },
                 (error) => {
-                    toast.error(error.message);
+                    setError(error.message);
+                    console.error("Geolocation Error:", error.message);
                 },
                 {
                     enableHighAccuracy: true, // Ensures high accuracy
-                    timeout: 10000, // Wait for up to 10 seconds
+                    timeout: 15000, // Increased timeout to 15 seconds
                     maximumAge: 0, // Do not use a cached position
                 }
             );
         } else {
-            setError('Geolocation is not supported by this browser.');
+            setError("Geolocation is not supported by this browser.");
         }
     };
 
     useEffect(() => {
         getLocation();
     }, []);
+
 
     const submit = async () => {
         if ([lusername, luserpass].some(i => i.length <= 0)) {
@@ -51,7 +56,7 @@ const Login = () => {
         else {
             console.log("clicked", lusername, luserpass)
             try {
-                const res = await axios.post('/api/login', { lusername, luserpass });
+                const res = await axios.post('/api/login', { lusername, luserpass , location});
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/Dashboard");
                 toast.success("Login sucessfull");
@@ -59,7 +64,12 @@ const Login = () => {
                 if (error.response && error.response.status === 400) {
                     navigate("/");
                     toast.error("Invalid Username or Password");
-                } else {
+                } 
+				else if (error.response && error.response.status === 401) {
+                    navigate("/");
+                    toast.error("Location is not match");
+                } 
+				else {
                     toast.error("Login failed");
                 }
             }
@@ -97,18 +107,22 @@ const Login = () => {
                             <button onClick={submit} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2 '>Log in</button>
 
                         </div>
-                        <p>Don't have an account?<Link className='underline text-red-300' to="/Register" >Register</Link></p>
+                        <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600' to="/Register" >Register</Link></p>
+                        <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600' to="/login_camera" >Register</Link></p>
 
+                        {location ? (
+                            <p>
+                                Latitude: {location.latitude}, Longitude: {location.longitude}
+                            </p>
+                        ) : (
+                            <p>Loading location...</p>
+                        )}
+                        {error && <p>Error: {error}</p>}
                     </div>
                 </div>
-                <h2>User Location</h2>
-                {location.latitude && location.longitude ? (
-                    <p>
+                <div>
 
-                    </p>
-                ) : (
-                    <p>Fetching location...</p>
-                )}
+                </div>
             </div>
             <div>
 

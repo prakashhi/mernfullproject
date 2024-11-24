@@ -48,7 +48,7 @@ const Dashboard = () => {
                 setLoading(false); // Ensure loading is set to false regardless of the outcome
             }
         }
-      
+
 
     }, [navigate]);
 
@@ -62,7 +62,7 @@ const Dashboard = () => {
 
     const no = userdata.userId;
 
-   
+
 
     const checkbtn = async () => {
         try {
@@ -73,7 +73,7 @@ const Dashboard = () => {
         catch (error) {
             if (error.response.status === 404) {
                 setuserdb(true);
-                
+
             }
             else if (error.response.status === 400) {
                 setentryc(true);
@@ -83,10 +83,12 @@ const Dashboard = () => {
                 setexitc(true);
                 setentryc(false);
             }
-           
+
         }
 
     }
+
+
 
 
     const newuserdata = async () => {
@@ -167,7 +169,7 @@ const Dashboard = () => {
                                 </div>
                                 <button onClick={() => {
                                     navigate("/User_data")
-                                }} className='duration-[0.5s] px-6 max-[750px]:text-[15px] hover:cursor-pointer text-xl hover:text-2xl font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</button>
+                                }} className='shadow-2xl  duration-[0.5s] px-6 max-[750px]:text-[15px] hover:cursor-pointer text-xl hover:text-2xl font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</button>
                             </div>
                         </div>
 

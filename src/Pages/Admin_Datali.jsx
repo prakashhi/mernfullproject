@@ -7,15 +7,28 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-const User_datali = () => {
 
-
+const Admin_Datali = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!st.id || !st.username) {
+      return navigate('/Admin');
+    }
+
+  })
+
+
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
   const [listdata, setlistdata] = useState({});
   const [month, setmonth] = useState('');
   const [daywork, setdaywork] = useState(0);
+
+  const location = useLocation();
+  const st = location.state || {}
+
+
+
 
 
 
@@ -24,50 +37,7 @@ const User_datali = () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
-
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/'); // Redirect to login if no token
-    } else {
-      try {
-        // Decode the token (using the base64 payload)
-        const payload = JSON.parse(atob(token.split('.')[1]));
-
-        // Check if the token is expired
-        const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
-
-        if (payload.exp && payload.exp < currentTime) {
-          toast.info('Sessionhas expired');
-          sessionStorage.removeItem('token'); // Clear the expired token
-          navigate('/'); // Redirect to login
-        } else {
-
-          setUserdata(payload); // Token is valid, set user data
-        }
-      } catch (error) {
-        console.error('Invalid token:', error);
-        sessionStorage.removeItem('token'); // Clear invalid token
-        navigate('/'); // Redirect if token is invalid
-      }
-      finally {
-        setLoading(false); // Ensure loading is set to false regardless of the outcome
-      }
-    }
-
-  }, [navigate]);
-
-
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!userdata) {
-    return <div>Redirecting...</div>;
-  }
-
-  const id = userdata.userId;
+  const id = st.id;
   const getdata = async () => {
 
     try {
@@ -116,12 +86,14 @@ const User_datali = () => {
 
   }
 
+
+
   return (
     <>
       <div className='bg-gradient-to-r m-1 rounded bg-blue-300 shadow-2xl'>
 
         <Timer />
-        <div onClick={() => { navigate('/Dashboard'); }} className='w-[10%] m-1 rounded mb-1 flex items-center gap-1 p-2 cursor-pointer'>
+        <div onClick={() => { navigate('/A_Dash'); }} className='w-[10%] m-1 rounded mb-1 flex items-center gap-1 p-2 cursor-pointer'>
           <IoMdArrowBack className='text-xl' />
           <span className='text-xl max-[700px]:hidden'>Back</span>
         </div>
@@ -129,8 +101,8 @@ const User_datali = () => {
       <div id='contain' className=' duration-[0.5s]  bg-blue-400 shadow-2xl m-2 rounded'>
         <div className=' flex  justify-between m-2 p-2 gap-5 items-center max-[400px]:gap-3' >
           <div className='grid  bg-cyan-400 font-extrabold p-2 rounded'>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id:{userdata.userId} </span>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{userdata.username} </span>
+            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id: {st.id}</span>
+            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{st.username}</span>
           </div>
 
           <div>
@@ -138,8 +110,8 @@ const User_datali = () => {
           </div>
         </div>
         <div className='p-3 gap-2 flex'>
-          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value="2">
-            <option value="2" disabled selected>
+          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value="1">
+            <option value="1" disabled >
               -- Select a Month --
             </option>
             {m.map((m, index) => (
@@ -192,11 +164,8 @@ const User_datali = () => {
         </div>
 
       </div>
-
     </>
   );
-};
+}
 
-
-
-export default User_datali;
+export default Admin_Datali;
