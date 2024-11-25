@@ -5,13 +5,43 @@ import { IoCloseCircle } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Admin_worklocation = () => {
+	  const navigate = useNavigate()
 
   const [latitude, setlatitude] = useState(null);
   const [longitude, selongitude] = useState(null);
   const [validrange, setvalidrange] = useState(null);
   const [WorkCode, setWorkCode] = useState(null);
+    const [admindata, setadmindata] = useState('');
+  
+   useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      navigate('/Admin'); // Redirect to login if no token
+    } else {
+      try {
+        // Decode the token (using the base64 payload)
+        const payload = JSON.parse(atob(token.split('.')[1]));
+
+        // Check if the token is expired
+        const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
+
+        if (payload.exp && payload.exp < currentTime) {
+          toast.info('Sessionhas expired');
+          sessionStorage.removeItem('token'); // Clear the expired token
+          navigate('/Admin'); // Redirect to login
+        } else {
+          setadmindata(payload); // Token is valid, set user data
+        }
+      } catch (error) {
+        console.error('Invalid token:', error);
+        sessionStorage.removeItem('token'); // Clear invalid token
+        navigate('/Admin'); // Redirect if token is invalid
+      }
+    }
+  }, [navigate]);
 
   const submit = async (e) => {
 

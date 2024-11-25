@@ -58,7 +58,7 @@ const Login = () => {
             try {
                 const res = await axios.post('/api/login', { lusername, luserpass , location});
                 sessionStorage.setItem('token', res.data.token);
-                navigate("/Dashboard");
+                navigate("/login_camera");
                 toast.success("Login sucessfull");
             } catch (error) {
                 if (error.response && error.response.status === 400) {
@@ -124,10 +124,7 @@ const Login = () => {
 
                 </div>
             </div>
-            <div>
-
-                {/* {error && <p>Error: {error}</p>} */}
-            </div>
+          
 
         </>
     );

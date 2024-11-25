@@ -138,8 +138,8 @@ const User_datali = () => {
           </div>
         </div>
         <div className='p-3 gap-2 flex'>
-          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value="2">
-            <option value="2" disabled selected>
+          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value="1">
+            <option value="1" disabled selected>
               -- Select a Month --
             </option>
             {m.map((m, index) => (

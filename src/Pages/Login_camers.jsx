@@ -2,11 +2,14 @@ import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
-const expressions = ["happy", "sad", "angry", "surprised", "neutral"];
+const expressions = ["happy", "sad", "angry", "surprised"];
 
 const Login_camers = () => {
+	const navigate = useNavigate()
+	
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
@@ -17,6 +20,12 @@ const Login_camers = () => {
   const [expectedExpression, setExpectedExpression] = useState("");
   const [expressionMatched, setExpressionMatched] = useState(false);
   const [textualAnalysis, setTextualAnalysis] = useState("");
+  const [userdata, setUserdata] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  
+  
+	
 
   // Load face-api.js models
   useEffect(() => {
@@ -49,6 +58,54 @@ const Login_camers = () => {
       return () => clearInterval(interval);
     }
   }, [modelsLoaded]);
+
+
+
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            navigate('/'); // Redirect to login if no token
+        } else {
+            try {
+                // Decode the token (using the base64 payload)
+                const payload = JSON.parse(atob(token.split('.')[1]));
+
+                // Check if the token is expired
+                const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
+
+                if (payload.exp && payload.exp < currentTime) {
+                    toast.info('Sessionhas expired');
+                    sessionStorage.removeItem('token'); // Clear the expired token
+                    navigate('/'); // Redirect to login
+                } else {
+                    setUserdata(payload); // Token is valid, set user data
+                }
+            } catch (error) {
+                console.error('Invalid token:', error);
+                sessionStorage.removeItem('token'); // Clear invalid token
+                navigate('/'); // Redirect if token is invalid
+            }
+            finally {
+                setLoading(false); // Ensure loading is set to false regardless of the outcome
+            }
+        }
+
+
+    }, [navigate]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!userdata) {
+        return <div>Redirecting...</div>;
+    }
+
+
+
+
+
 
   // Detect face and expressions from webcam feed
   const detectFace = async () => {
@@ -116,6 +173,16 @@ const Login_camers = () => {
   const saveFaceEncoding = async () => {
     if (faceEncodings) {
       setSavedEncodings([...savedEncodings, ...faceEncodings]);
+	  try{
+		  const kl =  await axios.post('/api/loginface',{savedEncodings});
+		  console.log(kl);
+	  }
+	  catch(error)
+	  {
+		  console.log(error)
+	  }
+	  
+	
     }
   };
 
@@ -125,7 +192,9 @@ const Login_camers = () => {
     <>
       <div className='flex justify-center  p-3 '>
         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
+		<h1 className='text-white'>prakashId:{userdata.userId}</h1>
           <div className='relative w-full mb-3 max-[450px]:w-[90%]'>
+		  
             <Webcam className='w-full h-full rounded' ref={webcamRef} />
             <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
           </div>
@@ -155,7 +224,7 @@ const Login_camers = () => {
 
           {/* Display saved face encodings */}
           <div className='bg-white text-gray-700 p-3 rounded mt-3'>
-            <h3 className="font-bold">Saved Face Encodings:</h3>
+            <h3 className="font-bold">Face Encodings:</h3>
             {savedEncodings.length > 0 ? (
               savedEncodings.map((encoding, index) => (
                 <div key={index}>
@@ -167,8 +236,8 @@ const Login_camers = () => {
               <p>No saved encodings</p>
             )}
           </div>
-          {expressionMatched ? <button onClick={saveFaceEncoding} className='bg-green-300 rounded mt-2 p-2'>
-            Capture Face & Save Encoding </button> : null}
+          {expressionMatched ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
+            Log in </button> : null}
         </div>
 
       </div>

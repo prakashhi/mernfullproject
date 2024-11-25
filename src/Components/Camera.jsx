@@ -3,7 +3,7 @@ import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
 
-const expressions = ["happy", "sad", "angry", "surprised", "neutral"];
+const expressions = ["happy", "sad", "angry", "surprised"];
 
 const Camera = () => {
   const webcamRef = useRef(null);

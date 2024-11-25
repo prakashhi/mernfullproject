@@ -76,6 +76,7 @@ const Dashboard = () => {
 
             }
             else if (error.response.status === 400) {
+				setuserdb(false);
                 setentryc(true);
 
             }
