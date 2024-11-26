@@ -33,52 +33,23 @@ const Camera = () => {
     };
 	
   // Load face-api.js models
-  // useEffect(() => {
-   
-    // loadModels();
-  // }, []);
-
-  // Set a new expected expression at the start
-  // useEffect(() => {
-    // setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
-  // }, []);
+  useEffect(() => {
+    loadModels();
+	setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
+  }, []);
 
   // Periodic face detection
-  // useEffect(() => {
-    // if (modelsLoaded) {
-      // const interval = setInterval(() => {
-        // detectFace();
-      // }, 500); // Run every 500ms
-
-      // return () => clearInterval(interval);
-    // }
-  // }, [modelsLoaded]);
-  
   useEffect(() => {
-    const initialize = async () => {
-        try {
-            // Load models
-            await loadModels();
-            setModelsLoaded(true);
+    if (modelsLoaded) {
+      const interval = setInterval(() => {
+        detectFace();
+      }, 500); // Run every 500ms
 
-            // Set a random expected expression
-            setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
-
-            // Start face detection periodically
-            const interval = setInterval(() => {
-                detectFace();
-            }, 500);
-
-            // Cleanup interval on component unmount
-            return () => clearInterval(interval);
-        } catch (error) {
-            console.error("Initialization error:", error);
-        }
-    };
-
-    initialize();
-}, []); // Only runs once, on component mount
-
+      return () => clearInterval(interval);
+    }
+  }, [modelsLoaded]);
+  
+  
 
   // Detect face and expressions from webcam feed
   const detectFace = async () => {
