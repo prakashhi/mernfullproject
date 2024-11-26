@@ -24,13 +24,7 @@ const Login_camers = () => {
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  
-  
-	
-
-  // Load face-api.js models
-  useEffect(() => {
-    const loadModels = async () => {
+   const loadModels = async () => {
       try {
         await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
@@ -41,12 +35,13 @@ const Login_camers = () => {
         console.error("Error loading models:", error);
       }
     };
-    loadModels();
-  }, []);
+  
+	
 
-  // Set a new expected expression at the start
+  // Load face-api.js models
   useEffect(() => {
     setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
+    loadModels();
   }, []);
 
   // Periodic face detection
@@ -94,6 +89,8 @@ const Login_camers = () => {
 
 
     }, [navigate]);
+	
+	
 
     if (loading) {
         return <div>Loading...</div>;
@@ -189,9 +186,8 @@ const no_user  = userdata.userId
     // }
 	console.log(savedEncodings,no_user)
 	  try{
-		  const kl =  await axios.post('/api/loginface',{ savedEncodings , no_user  });
+		  await axios.post('/api/loginface',{ savedEncodings , no_user  });
 		  navigate('/Dashboard');
-		  console.log(kl);
 	  }
 	  catch(error)
 	  {

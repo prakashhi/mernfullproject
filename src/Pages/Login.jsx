@@ -108,7 +108,7 @@ const Login = () => {
 
                         </div>
                         <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600' to="/Register" >Register</Link></p>
-                        <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600' to="/login_camera" >Register</Link></p>
+                      
 
                         {location ? (
                             <p>

@@ -19,21 +19,23 @@ const Register = () => {
 	const location = useLocation();
     const  savedEncodings  = location.state || {};
     const navigate = useNavigate()
+	
+	
     const [fname, setfname] = useState('');
-	
-	
-	
     const [uemail, setuemail] = useState('');
     const [umobile, setumobile] = useState(null);
     const [username, setusername] = useState('');
     const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
-    const notify = () => toast("This is a toast notification !");
+	const [encodeingface,setencodeingface] = useState([]);
+   
+	
 	
 	
     const submit = async (e) => {
 		
-        e.preventDefault();
+        setencodeingface(savedEncodings);
+		e.preventDefault();
 		
 
         if ([fname, uemail, umobile, username, upass, workLoctioncode].some(i => i.length <= 0)) {
@@ -56,7 +58,7 @@ const Register = () => {
 
 
                 try {
-                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode })
+                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode, setencodeingface })
 
                     if (res.data == "code200") {
                         navigate("/");
@@ -143,6 +145,19 @@ const Register = () => {
                             </div>
 
                         </div>
+						 <div className='bg-white text-gray-700 p-3 rounded mt-3'>
+						<h3 className="font-bold shadow-2xl">Face Encodings:</h3>
+							{savedEncodings.length > 0 ? (
+							  savedEncodings.map((encoding, index) => (
+								<div key={index}>
+								  <p>Saved Encoding {index + 1}:</p>
+								  <pre className="text-xs overflow-scroll h-24">{JSON.stringify(encoding, null, 2)}</pre>
+								</div>
+							  ))
+							) : (
+							  <p>No saved encodings</p>
+							)}
+							</div>
 
 
 
@@ -182,17 +197,7 @@ const Register = () => {
                             <button className='duration-[0.5s] bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
 
                         </div>
-						  <h3 className="font-bold">Saved Face Encodings:</h3>
-							{savedEncodings.length > 0 ? (
-							  savedEncodings.map((encoding, index) => (
-								<div key={index}>
-								  <p>Saved Encoding {index + 1}:</p>
-								  <pre className="text-xs overflow-scroll h-24">{JSON.stringify(encoding, null, 2)}</pre>
-								</div>
-							  ))
-							) : (
-							  <p>No saved encodings</p>
-							)}
+						  
       
 
 
