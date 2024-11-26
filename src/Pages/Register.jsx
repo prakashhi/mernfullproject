@@ -18,9 +18,7 @@ import { useLocation } from 'react-router-dom';
 const Register = () => {
 	const location = useLocation();
     const  savedEncodings  = location.state || {};
-	
     const navigate = useNavigate()
-	const [, setEncodings] = useState([]);
     const [fname, setfname] = useState('');
 	
 	
@@ -32,9 +30,6 @@ const Register = () => {
     const [upass, setupass] = useState('');
     const notify = () => toast("This is a toast notification !");
 	
-	
-	
-
 	
     const submit = async (e) => {
 		

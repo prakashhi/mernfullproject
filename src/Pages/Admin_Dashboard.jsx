@@ -62,6 +62,8 @@ const Admin_Dashboard = () => {
   useEffect(() => {
     loaddata();
   }, []);
+  
+  
 
   const ham = () => {
     document.getElementById('hamb').style.left = "0";

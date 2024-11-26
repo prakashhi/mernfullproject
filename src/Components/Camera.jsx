@@ -19,10 +19,8 @@ const Camera = () => {
   const [expectedExpression, setExpectedExpression] = useState("");
   const [expressionMatched, setExpressionMatched] = useState(false);
   const [textualAnalysis, setTextualAnalysis] = useState("");
-
-  // Load face-api.js models
-  useEffect(() => {
-    const loadModels = async () => {
+  
+  const loadModels = async () => {
       try {
         await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
@@ -33,24 +31,54 @@ const Camera = () => {
         console.error("Error loading models:", error);
       }
     };
-    loadModels();
-  }, []);
+	
+  // Load face-api.js models
+  // useEffect(() => {
+   
+    // loadModels();
+  // }, []);
 
   // Set a new expected expression at the start
-  useEffect(() => {
-    setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
-  }, []);
+  // useEffect(() => {
+    // setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
+  // }, []);
 
   // Periodic face detection
-  useEffect(() => {
-    if (modelsLoaded) {
-      const interval = setInterval(() => {
-        detectFace();
-      }, 500); // Run every 500ms
+  // useEffect(() => {
+    // if (modelsLoaded) {
+      // const interval = setInterval(() => {
+        // detectFace();
+      // }, 500); // Run every 500ms
 
-      return () => clearInterval(interval);
-    }
-  }, [modelsLoaded]);
+      // return () => clearInterval(interval);
+    // }
+  // }, [modelsLoaded]);
+  
+  useEffect(() => {
+    const initialize = async () => {
+        try {
+            // Load models
+            await loadModels();
+            setModelsLoaded(true);
+
+            // Set a random expected expression
+            setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
+
+            // Start face detection periodically
+            const interval = setInterval(() => {
+                detectFace();
+            }, 500);
+
+            // Cleanup interval on component unmount
+            return () => clearInterval(interval);
+        } catch (error) {
+            console.error("Initialization error:", error);
+        }
+    };
+
+    initialize();
+}, []); // Only runs once, on component mount
+
 
   // Detect face and expressions from webcam feed
   const detectFace = async () => {
@@ -129,7 +157,7 @@ const Camera = () => {
 
   return (
     <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
-      <div className='relative w-full mb-3 max-[450px]:w-[70%]'>
+      <div className='relative w-full mb-3 max-[450px]:w-[80%] '>
         <Webcam className='w-full h-full rounded' ref={webcamRef} />
         <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
       </div>
@@ -149,7 +177,8 @@ const Camera = () => {
 
       </div>
 
-</div>
+	</div>
+	
       {/* Display textual analysis */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Detection Status:</h3>
