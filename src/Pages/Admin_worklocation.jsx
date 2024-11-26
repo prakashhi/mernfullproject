@@ -8,15 +8,15 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Admin_worklocation = () => {
-	  const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [latitude, setlatitude] = useState(null);
   const [longitude, selongitude] = useState(null);
   const [validrange, setvalidrange] = useState(null);
   const [WorkCode, setWorkCode] = useState(null);
-    const [admindata, setadmindata] = useState('');
-  
-   useEffect(() => {
+  const [admindata, setadmindata] = useState('');
+
+  useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (!token) {
       navigate('/Admin'); // Redirect to login if no token
@@ -47,14 +47,29 @@ const Admin_worklocation = () => {
 
     e.preventDefault();
 
-    console.log(WorkCode, latitude, longitude, validrange);
-    try {
-      await axios.post('/api/setwotkloaction', { latitude, longitude, validrange, WorkCode });
-      toast.success("Data upadated");
+    if ([WorkCode, latitude, longitude, validrange].some(i => i.length <= 0)) {
+      toast.error("Fill out all fields!");
+      console.log(i);
     }
-    catch (error) {
-      toast.error(error);
+
+    else {
+      if ([WorkCode, latitude, longitude, validrange].some(i => isNaN(i))) {
+        toast.error("Enter Numbers!");
+      }
+      else {
+        console.log(WorkCode, latitude, longitude, validrange);
+        try {
+          await axios.post('/api/setwotkloaction', { latitude, longitude, validrange, WorkCode });
+          toast.success("Data upadated");
+        }
+        catch (error) {
+          toast.error(error);
+        }
+      }
+
     }
+
+
 
   }
 
@@ -135,11 +150,7 @@ const Admin_worklocation = () => {
               <button onClick={submit} className='duration-[0.5s] bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' >Register</button>
 
             </div>
-            <div >
-              <h1>Work laptttude:</h1>
-              <h1>Work laptttude:</h1>
-              <h1>Valid Range:</h1>
-            </div>
+
 
 
 

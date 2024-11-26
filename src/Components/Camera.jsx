@@ -2,10 +2,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const expressions = ["happy", "sad", "angry", "surprised"];
 
 const Camera = () => {
+	 const navigate = useNavigate();
+
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
@@ -111,10 +114,16 @@ const Camera = () => {
     return Object.keys(expressions).reduce((a, b) => (expressions[a] > expressions[b] ? a : b));
   };
 
+    
+	
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
     if (faceEncodings) {
       setSavedEncodings([...savedEncodings, ...faceEncodings]);
+	  
+	  const dataToPass = {savedEncodings};
+	  navigate('/Register',{ state: dataToPass });
+	  
     }
   };
 

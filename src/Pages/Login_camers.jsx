@@ -3,6 +3,7 @@ import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const expressions = ["happy", "sad", "angry", "surprised"];
@@ -101,10 +102,18 @@ const Login_camers = () => {
     if (!userdata) {
         return <div>Redirecting...</div>;
     }
+	
+	function areEncodingsMatching(dbEncoding, userEncoding, threshold = 0.6) {
+    const distance = Math.sqrt(
+        dbEncoding.reduce((sum, val, i) => sum + Math.pow(val - userEncoding[i], 2), 0)
+    );
+    return distance < threshold;
+}
 
 
 
 
+const no_user  = userdata.userId
 
 
   // Detect face and expressions from webcam feed
@@ -171,19 +180,34 @@ const Login_camers = () => {
 
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
-    if (faceEncodings) {
-      setSavedEncodings([...savedEncodings, ...faceEncodings]);
+    // if (faceEncodings) {
+		// setSavedEncodings([...savedEncodings, ...faceEncodings]);
+		
+		
+	  
+	
+    // }
+	console.log(savedEncodings,no_user)
 	  try{
-		  const kl =  await axios.post('/api/loginface',{savedEncodings});
+		  const kl =  await axios.post('/api/loginface',{ savedEncodings , no_user  });
+		  navigate('/Dashboard');
 		  console.log(kl);
 	  }
 	  catch(error)
 	  {
-		  console.log(error)
+		  if (error.response && error.response.status === 400) {
+                    toast.error("Invalid Face Delection");
+                } 
+				else if(error.response && error.response.status === 401) {
+                   
+                    toast.error("Face is not match");
+                } 
+				else {
+                    toast.error("Login failed");
+                }
+		  console.log(error);
+		  
 	  }
-	  
-	
-    }
   };
 
 
@@ -192,7 +216,7 @@ const Login_camers = () => {
     <>
       <div className='flex justify-center  p-3 '>
         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
-		<h1 className='text-white'>prakashId:{userdata.userId}</h1>
+		<h1 className=''>Id:{userdata.userId}</h1>
           <div className='relative w-full mb-3 max-[450px]:w-[90%]'>
 		  
             <Webcam className='w-full h-full rounded' ref={webcamRef} />
@@ -236,8 +260,10 @@ const Login_camers = () => {
               <p>No saved encodings</p>
             )}
           </div>
-          {expressionMatched ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
-            Log in </button> : null}
+          // {expressionMatched ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
+            // Log in </button> : null}
+			<button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
+            Log in </button>
         </div>
 
       </div>

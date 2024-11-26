@@ -31,6 +31,7 @@ const Login = () => {
                 },
                 (error) => {
                     setError(error.message);
+					toast.error("Unknown error acquiring position");
                     console.error("Geolocation Error:", error.message);
                 },
                 {
@@ -54,7 +55,6 @@ const Login = () => {
             toast.error("Enter Username and Password");
         }
         else {
-            console.log("clicked", lusername, luserpass)
             try {
                 const res = await axios.post('/api/login', { lusername, luserpass , location});
                 sessionStorage.setItem('token', res.data.token);
