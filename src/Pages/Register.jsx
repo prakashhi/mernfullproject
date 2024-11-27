@@ -66,8 +66,9 @@ const Register = () => {
 
 
                 try {
-                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode, setencodeingface })
+                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
 
+					console.log(res)
                     if (res.data == "code200") {
                         navigate("/");
                         toast.success("Registration is sucessfull");
@@ -83,6 +84,7 @@ const Register = () => {
 
                 }
                 catch (error) {
+					console.log(error);
                     toast.error(error);
                 }
 
