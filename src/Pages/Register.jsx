@@ -29,12 +29,18 @@ const Register = () => {
     const [upass, setupass] = useState('');
 	const [encodeingface,setencodeingface] = useState([]);
    
-	
+  
+   
+	if(savedEncodings.length > 0)
+	{
+			
+		  setencodeingface(savedEncodings);
+	}
 	
 	
     const submit = async (e) => {
 		
-        setencodeingface(savedEncodings);
+      
 		e.preventDefault();
 		
 
