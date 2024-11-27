@@ -78,12 +78,12 @@ const Register = () => {
                         toast.error("Username is allready Exits!!");
                     }
                     else {
-                        console.log(res.data);
+                        toast.error(res.data);
                     }
 
                 }
-                catch (err) {
-                    console.log(err)
+                catch (error) {
+                    toast.error(error);
                 }
 
             }
