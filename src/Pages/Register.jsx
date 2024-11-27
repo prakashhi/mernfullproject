@@ -16,8 +16,8 @@ import { useLocation } from 'react-router-dom';
 
 
 const Register = () => {
-	const location = useLocation();
-    const  savedEncodings  = location.state || {};
+	 const location = useLocation();
+    // const  savedEncodings  = location.state || {};
     const navigate = useNavigate()
 	
 	
@@ -27,15 +27,17 @@ const Register = () => {
     const [username, setusername] = useState('');
     const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
-	const [encodeingface,setencodeingface] = useState([]);
+	// const [encodeingface,setencodeingface] = useState([]);
+	
+  const savedEncodings = location.state?.savedEncodings || []; 
    
   
    
-	if(savedEncodings.length > 0)
-	{
+	// if(savedEncodings.length > 0)
+	// {
 			
-		  setencodeingface(savedEncodings);
-	}
+		  // setencodeingface(savedEncodings);
+	// }
 	
 	
     const submit = async (e) => {

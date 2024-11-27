@@ -117,14 +117,33 @@ const Camera = () => {
 	
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
-    if (faceEncodings) {
-      setSavedEncodings([...savedEncodings, ...faceEncodings]);
 	  
-	  const dataToPass = savedEncodings;
-	  navigate('/Register',{ state: dataToPass });
-	  
+    if (faceEncodings && faceEncodings.length > 0) {
+		
+		// setSavedEncodings([...savedEncodings, ...faceEncodings]);
+	  // const dataToPass = savedEncodings;
+		   const updatedEncodings = [...savedEncodings, ...faceEncodings];
+		  setSavedEncodings(updatedEncodings);
+		  
+		  // navigate('/Register', state: { savedEncodings: updatedEncodings } });
+		  
+		   setTimeout(() => {
+				navigate('/Register', { state: { savedEncodings: updatedEncodings } });
+			}, 0);
+		
+	}
+	
+	else {
+      console.error('No face encodings available to save.');
     }
+      
+  
+	  
+		
+	
   };
+
+
 
   return (
     <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
