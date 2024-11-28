@@ -4,6 +4,8 @@ import * as faceapi from 'face-api.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import apiClent from '../services/api'
+
 
 
 const expressions = ["happy", "sad", "angry", "surprised"];
@@ -186,7 +188,7 @@ const no_user  = userdata.userId
     // }
 	console.log(savedEncodings,no_user)
 	  try{
-		  await axios.post('/api/loginface',{ savedEncodings , no_user  });
+		  await apiClent.post('/loginface',{ savedEncodings , no_user  });
 		  navigate('/Dashboard');
 	  }
 	  catch(error)

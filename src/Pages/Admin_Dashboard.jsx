@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Timer from '../Components/Timer';
@@ -8,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { IoCloseCircle } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { IoMdRefreshCircle } from "react-icons/io";
+import apiClent from '../services/api'
 
 const Admin_Dashboard = () => {
   const navigate = useNavigate()
@@ -46,7 +46,7 @@ const Admin_Dashboard = () => {
 
   const loaddata = async () => {
     try {
-      const responce = await axios.get('api/loaddata');
+      const responce = await apiClent.get('/loaddata');
       setalldata(responce.data);
     }
     catch (err) {
@@ -62,8 +62,8 @@ const Admin_Dashboard = () => {
   useEffect(() => {
     loaddata();
   }, []);
-  
-  
+
+
 
   const ham = () => {
     document.getElementById('hamb').style.left = "0";
@@ -74,7 +74,7 @@ const Admin_Dashboard = () => {
 
   const searchdata = async () => {
     try {
-      const responce = await axios.post('api/adminsearch', { adminsearch });
+      const responce = await apiClent.post('/adminsearch', { adminsearch });
       setalldata(responce.data);
     }
     catch (err) {

@@ -5,10 +5,9 @@ import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import apiClent from '../services/api'
-
 import { useNavigate } from 'react-router-dom'
 
-import axios from 'axios';
+
 
 
 
@@ -18,8 +17,8 @@ const Login = () => {
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate()
-	
-	
+
+
     const getLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -32,7 +31,7 @@ const Login = () => {
                 },
                 (error) => {
                     setError(error.message);
-					toast.error("Unknown error acquiring position");
+                    toast.error("Unknown error acquiring position");
                     console.error("Geolocation Error:", error.message);
                 },
                 {
@@ -57,7 +56,7 @@ const Login = () => {
         }
         else {
             try {
-                const res = await apiClent.post('/login', { lusername, luserpass , location});
+                const res = await apiClent.post('/login', { lusername, luserpass, location });
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/login_camera");
                 toast.success("Login sucessfull");
@@ -65,12 +64,12 @@ const Login = () => {
                 if (error.response && error.response.status === 400) {
                     navigate("/");
                     toast.error("Invalid Username or Password");
-                } 
-				else if (error.response && error.response.status === 401) {
+                }
+                else if (error.response && error.response.status === 401) {
                     navigate("/");
                     toast.error("Location is not match");
-                } 
-				else {
+                }
+                else {
                     toast.error("Login failed");
                 }
             }
@@ -109,7 +108,7 @@ const Login = () => {
 
                         </div>
                         <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600' to="/Register" >Register</Link></p>
-                      
+
 
                         {location ? (
                             <p>
@@ -125,7 +124,7 @@ const Login = () => {
 
                 </div>
             </div>
-          
+
 
         </>
     );

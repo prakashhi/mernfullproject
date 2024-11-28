@@ -3,10 +3,8 @@ import Timer from '../Components/Timer';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { IoMdArrowBack, IoMdRefreshCircle } from "react-icons/io";
-import axios from 'axios';
 import { useEffect } from 'react';
-import { toast } from 'react-toastify';
-
+import apiClent from '../services/api'
 
 const Admin_Datali = () => {
   const navigate = useNavigate();
@@ -41,7 +39,7 @@ const Admin_Datali = () => {
   const getdata = async () => {
 
     try {
-      const res = await axios.post('/api/getdta', { id });
+      const res = await apiClent.post('/getdta', { id });
       setlistdata(res.data.workdta[0].work_entries);
     }
     catch (err) {
@@ -54,7 +52,7 @@ const Admin_Datali = () => {
     try {
       setlistdata({});
 
-      const kl = await axios.post('/api/daycount', { id, month });
+      const kl = await apiClent.post('/daycount', { id, month });
       setlistdata(kl.data.workdta[0].work_entries);
 
       const alldata = kl.data.workdta[0].work_entries

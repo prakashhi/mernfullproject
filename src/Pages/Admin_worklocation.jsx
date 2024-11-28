@@ -3,9 +3,9 @@ import { FaLocationDot } from "react-icons/fa6"
 import { IoReorderThreeOutline } from "react-icons/io5"
 import { IoCloseCircle } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import apiClent from '../services/api'
 
 const Admin_worklocation = () => {
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ const Admin_worklocation = () => {
       else {
         console.log(WorkCode, latitude, longitude, validrange);
         try {
-          await axios.post('/api/setwotkloaction', { latitude, longitude, validrange, WorkCode });
+          await apiClent.post('/setwotkloaction', { latitude, longitude, validrange, WorkCode });
           toast.success("Data upadated");
         }
         catch (error) {

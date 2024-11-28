@@ -5,8 +5,8 @@ import { FiLogOut } from 'react-icons/fi';
 import { IoRefreshOutline } from "react-icons/io5";
 import { HiUserAdd } from "react-icons/hi";
 import Timer from '../Components/Timer';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import apiClent from '../services/api'
 
 
 const Dashboard = () => {
@@ -66,7 +66,7 @@ const Dashboard = () => {
 
     const checkbtn = async () => {
         try {
-            await axios.post('/api/check', { no });
+            await apiClent.post('/check', { no });
             setlogbtn(true);
 
         }
@@ -76,7 +76,7 @@ const Dashboard = () => {
 
             }
             else if (error.response.status === 400) {
-				setuserdb(false);
+                setuserdb(false);
                 setentryc(true);
 
             }
@@ -94,7 +94,7 @@ const Dashboard = () => {
 
     const newuserdata = async () => {
         try {
-            await axios.post('/api/newuserdata', { no });
+            await apiClent.post('/newuserdata', { no });
             toast.success("User Created in Database");
         }
         catch (error) {
@@ -112,7 +112,7 @@ const Dashboard = () => {
 
     const AddIndata = async () => {
         try {
-            await axios.post('/api/Enter_data', { no });
+            await apiClent.post('/Enter_data', { no });
             toast.success("Today's entry data has been successfully saved!");
         }
         catch (error) {
@@ -134,7 +134,7 @@ const Dashboard = () => {
     const Exitdata = async () => {
         setlogbtn(true);
         try {
-            await axios.post('/api/Exit_data', { no });
+            await apiClent.post('/Exit_data', { no });
             toast.success("Today's Exitdata has been successfully saved!");
         }
         catch (error) {

@@ -1,53 +1,50 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoCloseCircle } from 'react-icons/io5';
 import { IoReorderThreeOutline } from "react-icons/io5"
-import axios from 'axios';
 import { FaLocationDot } from "react-icons/fa6"
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaMobile } from "react-icons/fa";
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
 import Camera from '../Components/Camera';
 import { useLocation } from 'react-router-dom';
+import apiClent from '../services/api'
 
 
 
 const Register = () => {
-	 const location = useLocation();
+    const location = useLocation();
     // const  savedEncodings  = location.state || {};
     const navigate = useNavigate()
-	
-	
+
+
     const [fname, setfname] = useState('');
     const [uemail, setuemail] = useState('');
     const [umobile, setumobile] = useState(null);
     const [username, setusername] = useState('');
     const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
-	// const [encodeingface,setencodeingface] = useState([]);
-	
-  const savedEncodings = location.state?.savedEncodings || []; 
-   
-  console.log(import.meta.env.VITE_API_BASE_URL);
-  
+    // const [encodeingface,setencodeingface] = useState([]);
 
-   
-	// if(savedEncodings.length > 0)
-	// {
-			
-		  // setencodeingface(savedEncodings);
-	// }
-	
-	
+    const savedEncodings = location.state?.savedEncodings || [];
+
+
+    // if(savedEncodings.length > 0)
+    // {
+
+    // setencodeingface(savedEncodings);
+    // }
+
+
     const submit = async (e) => {
-		
-      
-		e.preventDefault();
-		
+
+
+        e.preventDefault();
+
 
         if ([fname, uemail, umobile, username, upass, workLoctioncode].some(i => i.length <= 0)) {
             toast.error("Fill out all fields!");
@@ -69,9 +66,9 @@ const Register = () => {
 
 
                 try {
-                    const res = await apiClient.post('/api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
+                    const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode })
 
-					console.log(res)
+                    console.log(res)
                     if (res.data == "code200") {
                         navigate("/");
                         toast.success("Registration is sucessfull");
@@ -87,7 +84,7 @@ const Register = () => {
 
                 }
                 catch (error) {
-					console.log(error);
+                    console.log(error);
                     toast.error(error);
                 }
 
@@ -114,7 +111,7 @@ const Register = () => {
             <div className='bg-blue-400 h-[1000px]'>
 
                 <div className='flex justify-center '>
-				
+
                     <div className='shadow-2xl max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Register</span>
                         <h1>Persional Details</h1>
@@ -158,19 +155,19 @@ const Register = () => {
                             </div>
 
                         </div>
-						 <div className='bg-white text-gray-700 p-3 rounded mt-3'>
-						<h3 className="font-bold shadow-2xl">Face Encodings:</h3>
-							{savedEncodings.length > 0 ? (
-							  savedEncodings.map((encoding, index) => (
-								<div key={index}>
-								  <p>Saved Encoding {index + 1}:</p>
-								  <pre className="text-xs overflow-scroll h-24">{JSON.stringify(encoding, null, 2)}</pre>
-								</div>
-							  ))
-							) : (
-							  <p>No saved encodings</p>
-							)}
-							</div>
+                        <div className='bg-white text-gray-700 p-3 rounded mt-3'>
+                            <h3 className="font-bold shadow-2xl">Face Encodings:</h3>
+                            {savedEncodings.length > 0 ? (
+                                savedEncodings.map((encoding, index) => (
+                                    <div key={index}>
+                                        <p>Saved Encoding {index + 1}:</p>
+                                        <pre className="text-xs overflow-scroll h-24">{JSON.stringify(encoding, null, 2)}</pre>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No saved encodings</p>
+                            )}
+                        </div>
 
 
 
@@ -210,12 +207,12 @@ const Register = () => {
                             <button className='duration-[0.5s] bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
 
                         </div>
-						  
-      
+
+
 
 
                     </div>
-					
+
                 </div>
             </div>
         </>

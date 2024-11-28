@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
 import Timer from '../Components/Timer';
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import apiClent from '../services/api'
 
 
 const Admin_login = () => {
@@ -21,7 +20,7 @@ const Admin_login = () => {
         }
         else {
             try {
-                const res = await axios.post('/api/admin_login', { uuser, upass });
+                const res = await apiClent.post('/admin_login', { uuser, upass });
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/A_Dash");
                 toast.success("Login sucessfull");
