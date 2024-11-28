@@ -8,6 +8,7 @@ import apiClent from '../services/api'
 
 const Admin_Datali = () => {
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (!st.id || !st.username) {
       return navigate('/Admin');
@@ -108,8 +109,8 @@ const Admin_Datali = () => {
           </div>
         </div>
         <div className='p-3 gap-2 flex'>
-          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value="1">
-            <option value="1" disabled >
+          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value={month}>
+            <option value="" disabled >
               -- Select a Month --
             </option>
             {m.map((m, index) => (

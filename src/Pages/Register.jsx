@@ -68,7 +68,7 @@ const Register = () => {
                 try {
                     const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode })
 
-                    console.log(res)
+                
                     if (res.data == "code200") {
                         navigate("/");
                         toast.success("Registration is sucessfull");
