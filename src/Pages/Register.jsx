@@ -13,7 +13,7 @@ import { FaMobile } from "react-icons/fa";
 import { useRef, useEffect, useState } from 'react';
 import Camera from '../Components/Camera';
 import { useLocation } from 'react-router-dom';
-import apiClient from '../../api';
+// import apiClient from '../../api';
 
 
 const Register = () => {
@@ -32,7 +32,9 @@ const Register = () => {
 	
   const savedEncodings = location.state?.savedEncodings || []; 
    
+  console.log(import.meta.env.VITE_API_BASE_URL);
   
+  const base = import.meta.env.VITE_API_BASE_URL
    
 	// if(savedEncodings.length > 0)
 	// {
@@ -67,7 +69,7 @@ const Register = () => {
 
 
                 try {
-                    const res = await apiClient.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
+                    const res = await axios.post(`${base}/register_data`, { fname, uemail, umobile, username, upass, workLoctioncode})
 
 					console.log(res)
                     if (res.data == "code200") {
