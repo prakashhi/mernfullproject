@@ -4,6 +4,7 @@ import Timer from '../Components/Timer';
 import { FaUser } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import apiClent from '../services/api'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -56,7 +57,7 @@ const Login = () => {
         }
         else {
             try {
-                const res = await axios.post('/api/login', { lusername, luserpass , location});
+                const res = await apiClent.post('/login', { lusername, luserpass , location});
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/login_camera");
                 toast.success("Login sucessfull");
