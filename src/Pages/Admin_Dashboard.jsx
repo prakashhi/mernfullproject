@@ -127,15 +127,15 @@ const Admin_Dashboard = () => {
       </div>
 
       <div id='contain' className='h-[100vh] duration-[0.5s] bg-blue-400 shadow-2xl m-2 rounded'>
-        <div className=' flex m-1 p-2 justify-between  items-center max-[400px]:gap-6' >
+        <div className=' flex m-1 p-2 justify-between  items-center max-[400px]:gap-2' >
 
-          <div className='gap-5 flex'>
+          <div className='gap-3 flex'>
 
             <input type={"text"} onChange={(e) => { setadminsearch(e.target.value) }} className='p-1 rounded' placeholder=' Search...Username' />
             <button onClick={searchdata} className='backdrop-blur-sm bg-white/30 rounded px-4 py-1 max-[400px]:px-3 max-[400px]:py-1'>Search</button>
           </div>
           <div>
-            <IoMdRefreshCircle onClick={refresh} className='text-3xl cursor-pointer' />
+            <IoMdRefreshCircle onClick={refresh} className='text-2xl cursor-pointer' />
           </div>
 
         </div>
