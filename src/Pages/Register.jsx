@@ -16,9 +16,6 @@ import { useLocation } from 'react-router-dom';
 import apiClient from '../../api';
 
 
-
-
-
 const Register = () => {
 	 const location = useLocation();
     // const  savedEncodings  = location.state || {};
@@ -70,7 +67,7 @@ const Register = () => {
 
 
                 try {
-                    const res = await axios.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
+                    const res = await apiClient.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
 
 					console.log(res)
                     if (res.data == "code200") {
