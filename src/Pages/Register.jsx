@@ -13,6 +13,10 @@ import { FaMobile } from "react-icons/fa";
 import { useRef, useEffect, useState } from 'react';
 import Camera from '../Components/Camera';
 import { useLocation } from 'react-router-dom';
+import apiClient from '../../api';
+
+
+
 
 
 const Register = () => {
@@ -66,7 +70,7 @@ const Register = () => {
 
 
                 try {
-                    const res = await axios.post('api/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
+                    const res = await axios.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode})
 
 					console.log(res)
                     if (res.data == "code200") {
