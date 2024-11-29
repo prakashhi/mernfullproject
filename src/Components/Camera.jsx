@@ -120,14 +120,14 @@ const Camera = () => {
 	  
     if (faceEncodings && faceEncodings.length > 0) {
 		
-			// setSavedEncodings([...savedEncodings, ...faceEncodings]);
-			// const dataToPass = savedEncodings;
-			const updatedEncodings = [...savedEncodings, ...faceEncodings];
-			setSavedEncodings(updatedEncodings);
+			setSavedEncodings([...savedEncodings, ...faceEncodings]);
+			const dataToPass = savedEncodings;
+			// const updatedEncodings = [...savedEncodings, ...faceEncodings];
+			// setSavedEncodings(updatedEncodings);
 		  
-		  // navigate('/Register', state: { savedEncodings: updatedEncodings } });
+		  navigate('/Register', state: { savedEncodings: updatedEncodings } });
 		  
-				navigate('/Register', { state: { savedEncodings: updatedEncodings } });
+				// navigate('/Register', { state: { savedEncodings: updatedEncodings } });
 			
 		
 	}

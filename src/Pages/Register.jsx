@@ -18,7 +18,7 @@ import apiClent from '../services/api'
 
 const Register = () => {
     const location = useLocation();
-    // const  savedEncodings  = location.state || {};
+    const  savedEncodings  = location.state || {};
     const navigate = useNavigate()
 
 
@@ -30,7 +30,7 @@ const Register = () => {
     const [upass, setupass] = useState('');
      const [encodeingface,setencodeingface] = useState([]);
 
-    const savedEncodings = location.state?.savedEncodings || [];
+    // const savedEncodings = location.state?.savedEncodings || [];
 
 
 
