@@ -6,6 +6,7 @@ import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import apiClent from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 
 
@@ -16,17 +17,36 @@ const Login = () => {
     const [luserpass, setluserpass] = useState('');
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
+	const [address,setaddress] = useState('');
     const navigate = useNavigate()
 
 
-    const getLocation = () => {
+    const getLocation = async () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (position) => {
+               async (position) => {
                     setLocation({
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     });
+					 try {
+                    const response = await axios.get("https://nominatim.openstreetmap.org/reverse", {
+                        params: {
+                            lat: position.coords.latitude,
+                            lon: position.coords.longitude,
+                            format: "json",
+                        },
+                    });
+
+					setaddress(response.data.display_name);
+					
+                   
+                } catch (error) {
+                    console.error("Error fetching location:", error.message);
+                    toast.error("Error fetching location details");
+                }
+            
+			
 
                 },
                 (error) => {
@@ -36,7 +56,7 @@ const Login = () => {
                 },
                 {
                     enableHighAccuracy: true, // Ensures high accuracy
-                    timeout: 15000, // Increased timeout to 15 seconds
+                    timeout: 20000, // Increased timeout to 15 seconds
                     maximumAge: 0, // Do not use a cached position
                 }
             );
@@ -110,15 +130,21 @@ const Login = () => {
                         </div>
                         <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600' to="/Register" >Register</Link></p>
 
-
+					
                         {location ? (
                             <p>
                                 Latitude: {location.latitude}, Longitude: {location.longitude}
+							
+								
                             </p>
+							
+							
                         ) : (
                             <p>Loading location...</p>
                         )}
                         {error && <p>Error: {error}</p>}
+						
+				 <span className='cursor-pointer duration-[0.5s] hover:opacity-100 opacity-0'>Location data:{address}</span>
                     </div>
                 </div>
                 <div>

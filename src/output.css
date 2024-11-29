@@ -1022,6 +1022,10 @@ video {
   text-decoration-line: underline;
 }
 
+.opacity-0 {
+  opacity: 0;
+}
+
 .shadow-2xl {
   --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
@@ -1105,6 +1109,10 @@ video {
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
+.hover\:opacity-100:hover {
+  opacity: 1;
+}
+
 @media (max-width: 800px) {
   .max-\[800px\]\:w-\[40\%\] {
     width: 40%;
@@ -1182,16 +1190,12 @@ video {
 }
 
 @media (max-width: 400px) {
-  .max-\[400px\]\:gap-3 {
-    gap: 0.75rem;
-  }
-
-  .max-\[400px\]\:gap-6 {
-    gap: 1.5rem;
-  }
-
   .max-\[400px\]\:gap-2 {
     gap: 0.5rem;
+  }
+
+  .max-\[400px\]\:gap-3 {
+    gap: 0.75rem;
   }
 
   .max-\[400px\]\:px-3 {
