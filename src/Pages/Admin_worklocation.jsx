@@ -49,7 +49,7 @@ const Admin_worklocation = () => {
 
     if ([WorkCode, latitude, longitude, validrange].some(i => i.length <= 0)) {
       toast.error("Fill out all fields!");
-      console.log(i);
+    
     }
 
     else {

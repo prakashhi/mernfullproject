@@ -67,6 +67,7 @@ const Login = () => {
                 }
                 else if (error.response && error.response.status === 401) {
                     navigate("/");
+					console.log(error);
                     toast.error("Location is not match");
                 }
                 else {
