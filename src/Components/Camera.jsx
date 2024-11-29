@@ -118,28 +118,18 @@ const Camera = () => {
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
 	  
+	  
     if (faceEncodings && faceEncodings.length > 0) {
-		
-			setSavedEncodings([...savedEncodings, ...faceEncodings]);
-			const dataToPass = savedEncodings;
-			// const updatedEncodings = [...savedEncodings, ...faceEncodings];
-			// setSavedEncodings(updatedEncodings);
-		  
-		  navigate('/Register', state: { savedEncodings: updatedEncodings } });
-		  
-				// navigate('/Register', { state: { savedEncodings: updatedEncodings } });
-			
-		
-	}
-	
-	else {
-      console.error('No face encodings available to save.');
+        const updatedEncodings = [...savedEncodings, ...faceEncodings];
+        setSavedEncodings(updatedEncodings); // Set the updated encodings in state
+        
+        navigate('/Register', { state: { savedEncodings: updatedEncodings } }); // Navigate with state
+    } else {
+        console.error('No face encodings available to save.');
     }
       
   
 	  
-		
-	
   };
 
 
