@@ -134,8 +134,6 @@ const Login = () => {
                         {location ? (
                             <p>
                                 Latitude: {location.latitude}, Longitude: {location.longitude}
-							
-								
                             </p>
 							
 							

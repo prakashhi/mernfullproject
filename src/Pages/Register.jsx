@@ -28,16 +28,16 @@ const Register = () => {
     const [username, setusername] = useState('');
     const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
-    // const [encodeingface,setencodeingface] = useState([]);
+     const [encodeingface,setencodeingface] = useState([]);
 
     const savedEncodings = location.state?.savedEncodings || [];
 
 
-    // if(savedEncodings.length > 0)
-    // {
 
-    // setencodeingface(savedEncodings);
-    // }
+    if(savedEncodings.length > 0)
+    {
+		setencodeingface(savedEncodings);
+    }
 
 
     const submit = async (e) => {
@@ -66,7 +66,7 @@ const Register = () => {
 
 
                 try {
-                    const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode })
+                    const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode,encodeingface })
 
                 
                     if (res.data == "code200") {

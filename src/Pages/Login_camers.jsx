@@ -258,10 +258,8 @@ const no_user  = userdata.userId
               <p>No saved encodings</p>
             )}
           </div>
-          // {expressionMatched ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
-            // Log in </button> : null}
-			<button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
-            Log in </button>
+          {expressionMatched ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
+            Log in </button> : null}
         </div>
 
       </div>
