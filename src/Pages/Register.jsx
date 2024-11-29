@@ -18,9 +18,11 @@ import apiClent from '../services/api'
 
 const Register = () => {
     const location = useLocation();
-
-    const { savedEncodings } = location.state || {};
-    const navigate = useNavigate()
+	const navigate = useNavigate();
+	
+   
+	const { savedEncodings = [] } = location.state || {};
+    
 
 
     const [fname, setfname] = useState('');
@@ -31,21 +33,16 @@ const Register = () => {
     const [upass, setupass] = useState('');
      const [encodeingface,setencodeingface] = useState([]);
 
-    // const savedEncodings = location.state?.savedEncodings || [];
 
+	
+		
 
-
-    if(savedEncodings.length > 0)
-    {
-		setencodeingface(savedEncodings);
-    }
+		
+    
 
 
     const submit = async (e) => {
-
-
         e.preventDefault();
-
 
         if ([fname, uemail, umobile, username, upass, workLoctioncode].some(i => i.length <= 0)) {
             toast.error("Fill out all fields!");
@@ -67,7 +64,7 @@ const Register = () => {
 
 
                 try {
-                    const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode,encodeingface })
+                    const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode,savedEncodings })
 
                 
                     if (res.data == "code200") {
