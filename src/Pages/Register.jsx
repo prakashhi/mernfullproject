@@ -32,12 +32,11 @@ const Register = () => {
     const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
      const [encodeingface,setencodeingface] = useState([]);
+	  const [showCamera, setShowCamera] = useState(false);
 
 
 	
-		
-
-		
+	
     
 
 
@@ -94,12 +93,17 @@ const Register = () => {
 
     }
 
-    const ham = () => {
-        document.getElementById('hamb').style.left = "0"
-    }
-    const close = () => {
-        document.getElementById('hamb').style.left = "-1000px"
-    }
+    // const ham = () => {
+        // document.getElementById('hamb').style.left = "0"
+    // }
+    // const close = () => {
+        // document.getElementById('hamb').style.left = "-1000px"
+    // }
+	
+	
+	 const toggleCamera = () => {
+        setShowCamera((prev) => !prev); // Toggle visibility
+    };
 
 
     return (
@@ -140,19 +144,26 @@ const Register = () => {
 
 
                         <h1>Face Register</h1>
-                        <div className='text-3xl text-bold hover:cursor-pointer' onClick={ham}>
+                        <div className='duration-[0.5s] text-3xl text-bold hover:cursor-pointer' onClick={toggleCamera} >
                             <IoReorderThreeOutline className='' />
                         </div>
-                        <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-blue-400 text-white p-5 absolute h-[100%] rounded  w-[100%] z-[1] transition-all  m-1'>
+						
+						{
+							showCamera &&( 
+							<div id='hamb'className='duration-[0.5s] bg-blue-400 text-white p-5 absolute h-[100%] rounded  w-[100%] z-[1] transition-all  m-1'>
                             <div className='grid gap-5 '>
-                                <div onClick={close} className='text-2xl hover:cursor-pointer'>
+                                <div onClick={toggleCamera} className='duration-[0.5s] text-2xl hover:cursor-pointer'>
                                     <IoCloseCircle />
                                 </div>
 
                                 <Camera />
                             </div>
 
-                        </div>
+							</div>
+						 )}
+						
+
+						
                         <div className='bg-white text-gray-700 p-3 rounded mt-3'>
                             <h3 className="font-bold shadow-2xl">Face Encodings:</h3>
                             {savedEncodings.length > 0 ? (
