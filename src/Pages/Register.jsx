@@ -20,27 +20,20 @@ const Register = () => {
     const location = useLocation();
 	const navigate = useNavigate();
 	
-   
 	const { savedEncodings = [] } = location.state || {};
     
-
-
     const [fname, setfname] = useState('');
     const [uemail, setuemail] = useState('');
     const [umobile, setumobile] = useState(null);
     const [username, setusername] = useState('');
     const [workLoctioncode, setworkLoctioncode] = useState(null);
     const [upass, setupass] = useState('');
-     const [encodeingface,setencodeingface] = useState([]);
-	  const [showCamera, setShowCamera] = useState(false);
-
-
-	
-	
-    
+    const [encodeingface,setencodeingface] = useState([]);
+	const [showCamera, setShowCamera] = useState(false);
 
 
     const submit = async (e) => {
+		//Submit Functionality
         e.preventDefault();
 
         if ([fname, uemail, umobile, username, upass, workLoctioncode].some(i => i.length <= 0)) {
@@ -60,7 +53,6 @@ const Register = () => {
                 toast.error("Password must be at least 6 characters");
             }
             else {
-
 
                 try {
                     const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode,savedEncodings })
@@ -88,21 +80,11 @@ const Register = () => {
             }
         }
 
-
-
-
     }
 
-    // const ham = () => {
-        // document.getElementById('hamb').style.left = "0"
-    // }
-    // const close = () => {
-        // document.getElementById('hamb').style.left = "-1000px"
-    // }
-	
-	
+
 	 const toggleCamera = () => {
-        setShowCamera((prev) => !prev); // Toggle visibility
+        setShowCamera((prev) => !prev); 
     };
 
 
