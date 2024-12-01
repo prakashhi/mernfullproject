@@ -179,14 +179,11 @@ const no_user  = userdata.userId
 
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
-    // if (faceEncodings) {
-		// setSavedEncodings([...savedEncodings, ...faceEncodings]);
-		
-		
 	  
-	
-    // }
-	console.log(savedEncodings,no_user)
+    if (faceEncodings) {
+		setSavedEncodings([...savedEncodings, ...faceEncodings]);
+		
+		console.log(savedEncodings,no_user)
 	  try{
 		  await apiClent.post('/loginface',{ savedEncodings , no_user  });
 		  navigate('/Dashboard');
@@ -206,6 +203,8 @@ const no_user  = userdata.userId
 		  console.log(error);
 		  
 	  }
+     }
+	
   };
 
 

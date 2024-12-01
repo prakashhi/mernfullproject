@@ -123,7 +123,7 @@ const Camera = () => {
         const updatedEncodings = [...savedEncodings, ...faceEncodings];
         setSavedEncodings(updatedEncodings); // Set the updated encodings in state
         
-        navigate('/Register', { state: { savedEncodings: updatedEncodings } }); // Navigate with state
+        navigate('/Register', { state: { savedEncodings: updatedEncodings } }); 
     } else {
         console.error('No face encodings available to save.');
     }
