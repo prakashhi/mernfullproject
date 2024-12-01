@@ -19,13 +19,12 @@ const Admin_worklocation = () => {
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      navigate('/Admin'); // Redirect to login if no token
+      navigate('/Admin'); 
     } else {
       try {
-        // Decode the token (using the base64 payload)
+       
         const payload = JSON.parse(atob(token.split('.')[1]));
 
-        // Check if the token is expired
         const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
         if (payload.exp && payload.exp < currentTime) {
@@ -105,14 +104,20 @@ const Admin_worklocation = () => {
       </div>
       <div className='bg-blue-400 h-[1000px]'>
         <div className='flex justify-center '>
-          <div className='text-3xl text-bold hover:cursor-pointer' onClick={ham}>
-            <IoReorderThreeOutline />
-
-          </div>
+        
 
           <div className='shadow-2xl max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[100%] max-[800px]:w-[95%] duration-[0.5s] my-4 m-[20px]'>
+		  
+		  <div className=''> 
+		  <div className='text-3xl text-bold hover:cursor-pointer ' onClick={ham}>
+               <IoReorderThreeOutline />
 
-            <h1 className='flex justify-center text-2xl text-blue-100 mb-3'>Work Location data</h1>
+          </div>
+		  
+		  <h1 className='flex justify-center text-2xl text-blue-100 mb-3'>Work Location data</h1>
+		  </div>
+
+             
 
             <div className='bg-gradient-to-r from-slate-500 to-slate-800   p-2 relative rounded mb-3'>
               <div className='flex items-center justify-between'>
