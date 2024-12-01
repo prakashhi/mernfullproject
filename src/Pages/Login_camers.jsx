@@ -243,20 +243,6 @@ const no_user  = userdata.userId
             <p>{textualAnalysis}</p>
           </div>
 
-          {/* Display saved face encodings */}
-          <div className='bg-white text-gray-700 p-3 rounded mt-3'>
-            <h3 className="font-bold">Face Encodings:</h3>
-            {savedEncodings.length > 0 ? (
-              savedEncodings.map((encoding, index) => (
-                <div key={index}>
-                  <p>Saved Encoding {index + 1}:</p>
-                  <pre className="text-xs overflow-scroll h-24">{JSON.stringify(encoding, null, 2)}</pre>
-                </div>
-              ))
-            ) : (
-              <p>No saved encodings</p>
-            )}
-          </div>
           {expressionMatched ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
             Log in </button> : null}
         </div>
