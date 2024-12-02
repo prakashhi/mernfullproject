@@ -11,8 +11,8 @@ import apiClent from '../services/api'
 const expressions = ["happy", "sad", "angry", "surprised"];
 
 const Login_camers = () => {
-	const navigate = useNavigate()
-	
+  const navigate = useNavigate()
+
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
@@ -25,20 +25,20 @@ const Login_camers = () => {
   const [textualAnalysis, setTextualAnalysis] = useState("");
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-   const loadModels = async () => {
-      try {
-        await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
-        await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
-        await faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
-        await faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'); // Load expression model
-        setModelsLoaded(true);
-      } catch (error) {
-        console.error("Error loading models:", error);
-      }
-    };
-  
-	
+
+  const loadModels = async () => {
+    try {
+      await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+      await faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'); // Load expression model
+      setModelsLoaded(true);
+    } catch (error) {
+      console.error("Error loading models:", error);
+    }
+  };
+
+
 
   // Load face-api.js models
   useEffect(() => {
@@ -60,59 +60,59 @@ const Login_camers = () => {
 
 
 
-    useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            navigate('/'); // Redirect to login if no token
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      navigate('/'); // Redirect to login if no token
+    } else {
+      try {
+        // Decode the token (using the base64 payload)
+        const payload = JSON.parse(atob(token.split('.')[1]));
+
+        // Check if the token is expired
+        const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
+
+        if (payload.exp && payload.exp < currentTime) {
+          toast.info('Sessionhas expired');
+          sessionStorage.removeItem('token'); // Clear the expired token
+          navigate('/'); // Redirect to login
         } else {
-            try {
-                // Decode the token (using the base64 payload)
-                const payload = JSON.parse(atob(token.split('.')[1]));
-
-                // Check if the token is expired
-                const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
-
-                if (payload.exp && payload.exp < currentTime) {
-                    toast.info('Sessionhas expired');
-                    sessionStorage.removeItem('token'); // Clear the expired token
-                    navigate('/'); // Redirect to login
-                } else {
-                    setUserdata(payload); // Token is valid, set user data
-                }
-            } catch (error) {
-                console.error('Invalid token:', error);
-                sessionStorage.removeItem('token'); // Clear invalid token
-                navigate('/'); // Redirect if token is invalid
-            }
-            finally {
-                setLoading(false); // Ensure loading is set to false regardless of the outcome
-            }
+          setUserdata(payload); // Token is valid, set user data
         }
-
-
-    }, [navigate]);
-	
-	
-
-    if (loading) {
-        return <div>Loading...</div>;
+      } catch (error) {
+        console.error('Invalid token:', error);
+        sessionStorage.removeItem('token'); // Clear invalid token
+        navigate('/'); // Redirect if token is invalid
+      }
+      finally {
+        setLoading(false); // Ensure loading is set to false regardless of the outcome
+      }
     }
 
-    if (!userdata) {
-        return <div>Redirecting...</div>;
-    }
-	
-	function areEncodingsMatching(dbEncoding, userEncoding, threshold = 0.6) {
+
+  }, [navigate]);
+
+
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!userdata) {
+    return <div>Redirecting...</div>;
+  }
+
+  function areEncodingsMatching(dbEncoding, userEncoding, threshold = 0.6) {
     const distance = Math.sqrt(
-        dbEncoding.reduce((sum, val, i) => sum + Math.pow(val - userEncoding[i], 2), 0)
+      dbEncoding.reduce((sum, val, i) => sum + Math.pow(val - userEncoding[i], 2), 0)
     );
     return distance < threshold;
-}
+  }
 
 
 
 
-const no_user  = userdata.userId
+  const no_user = userdata.userId
 
 
   // Detect face and expressions from webcam feed
@@ -179,32 +179,31 @@ const no_user  = userdata.userId
 
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
-	  
+
     if (faceEncodings) {
-		setSavedEncodings([...savedEncodings, ...faceEncodings]);
-		
-		console.log(savedEncodings,no_user)
-	  try{
-		  await apiClent.post('/loginface',{ savedEncodings , no_user  });
-		  navigate('/Dashboard');
-	  }
-	  catch(error)
-	  {
-		  if (error.response && error.response.status === 400) {
-                    toast.error("Invalid Face Delection");
-                } 
-				else if(error.response && error.response.status === 401) {
-                   
-                    toast.error("Face is not match");
-                } 
-				else {
-                    toast.error("Login failed");
-                }
-		  console.log(error);
-		  
-	  }
-     }
-	
+      setSavedEncodings([...savedEncodings, ...faceEncodings]);
+
+      console.log(savedEncodings, no_user)
+      try {
+        await apiClent.post('/loginface', { savedEncodings, no_user });
+        navigate('/Dashboard');
+      }
+      catch (error) {
+        if (error.response && error.response.status === 400) {
+          toast.error("Invalid Face Delection");
+        }
+        else if (error.response && error.response.status === 401) {
+
+          toast.error("Face is not match");
+        }
+        else {
+          toast.error("Login failed");
+        }
+        console.log(error);
+
+      }
+    }
+
   };
 
 
@@ -213,9 +212,9 @@ const no_user  = userdata.userId
     <>
       <div className='flex justify-center  p-3 '>
         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
-		<h1 className=''>Id:{userdata.userId}</h1>
+          <h1 className=''>Id:{userdata.userId}</h1>
           <div className='relative w-full mb-3 max-[450px]:w-[90%]'>
-		  
+
             <Webcam className='w-full h-full rounded' ref={webcamRef} />
             <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
           </div>
