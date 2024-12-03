@@ -8,7 +8,7 @@ import apiClent from '../services/api'
 
 const Admin_Datali = () => {
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (!st.id || !st.username) {
       return navigate('/Admin');
