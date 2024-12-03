@@ -78,7 +78,7 @@ const Login = () => {
             try {
                 const res = await apiClent.post('/login', { lusername, luserpass, location });
 				
-				console.log(res);
+				console.log(res.data.a);
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/login_camera");
                 toast.success("Login sucessfull");
