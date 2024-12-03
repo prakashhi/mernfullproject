@@ -147,7 +147,8 @@ const Login_camers = () => {
         // Check if the detected expression matches the expected one
         if (mostLikelyExpression === expectedExpression) {
           if (!expressionMatched) { // Only set to true if it hasn’t already been set
-            setExpressionMatched(true); // Set match as true to stop expression updates
+           setload(false);
+		   setExpressionMatched(true); // Set match as true to stop expression updates
           }
         }
 
@@ -180,6 +181,7 @@ const Login_camers = () => {
 
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
+	  
     setload(true);
 
     if (faceEncodings) {
