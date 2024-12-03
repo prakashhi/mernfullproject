@@ -181,9 +181,9 @@ const Login_camers = () => {
   const saveFaceEncoding = async () => {
 
     if (faceEncodings) {
-      setSavedEncodings([...savedEncodings, ...faceEncodings]);
+     await setSavedEncodings([...savedEncodings, ...faceEncodings]);
 
-      console.log(savedEncodings, no_user)
+  
       try {
         await apiClent.post('/loginface', { savedEncodings, no_user });
         navigate('/Dashboard');
