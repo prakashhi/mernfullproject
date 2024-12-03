@@ -212,8 +212,8 @@ const Login_camers = () => {
     <>
       <div className='flex justify-center  p-3 '>
         <div className='bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3'>
-          <h1 className='bg-white text-gray-700 p-1 rounded mt-3'>Id:{userdata.userId}</h1>
-          <div className='relative w-full mb-3 max-[450px]:w-[90%]'>
+          <h1 className='bg-white text-gray-700 text-center p-1 rounded mt-1'>Id:{userdata.userId}</h1>
+          <div className='relative w-full my-2 max-[450px]:w-[90%]'>
 
             <Webcam className='w-full h-full rounded' ref={webcamRef} />
             <canvas className='absolute top-0 left-0 w-full h-full' ref={canvasRef} />
