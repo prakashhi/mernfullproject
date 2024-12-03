@@ -79,7 +79,7 @@ const Login = () => {
                 const res = await apiClent.post('/login', { lusername, luserpass, location });
 				const fhd = res.data.a
 				
-				console.log(fhd.User_Faceencodeing);
+				console.log(fhd.User_Faceencodeing[0]);
 				
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/login_camera");
