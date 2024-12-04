@@ -185,23 +185,24 @@ const Login_camers = () => {
     setload(true);
 
     if (faceEncodings) {
-      await setSavedEncodings([...savedEncodings, ...faceEncodings]);
-
+      const updateencode =  [...savedEncodings, ...faceEncodings];
 
       try {
-        await apiClent.post('/loginface', { savedEncodings, no_user });
+        await apiClent.post('/loginface', { updateencode, no_user });
         navigate('/Dashboard');
       }
       catch (error) {
         setload(false);
         if (error.response && error.response.status === 400) {
+			  setload(false);
           toast.error("Invalid Face Delection");
         }
         else if (error.response && error.response.status === 401) {
-
+			setload(false);
           toast.error("Face is not match");
         }
         else {
+			  setload(false);
           toast.error("Login failed");
         }
         console.log(error);
