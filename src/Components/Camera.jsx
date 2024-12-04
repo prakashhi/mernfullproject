@@ -17,8 +17,9 @@ const Camera = () => {
   const [faceDetected, setFaceDetected] = useState(false);
   const [detectionAccuracy, setDetectionAccuracy] = useState(0);
   const [expectedExpression, setExpectedExpression] = useState("");
-  const [expressionMatched, setExpressionMatched] = useState(false);
+
   const [textualAnalysis, setTextualAnalysis] = useState("");
+  const expressionMatched = useRef(false);
   
   const loadModels = async () => {
       try {
@@ -81,16 +82,17 @@ const Camera = () => {
 
         // Check if the detected expression matches the expected one
         if (mostLikelyExpression === expectedExpression) {
-          if (!expressionMatched) { // Only set to true if it hasn’t already been set
-            setExpressionMatched(true); // Set match as true to stop expression updates
-          }
+          if (!expressionMatched.current) {
+					setload(false);
+					expressionMatched.current = true;
+				}
         }
 
 
       } else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
-        setExpressionMatched(false);
+        expressionMatched.current = false;
         setTextualAnalysis("No face detected. Please adjust your position.");
       }
 
@@ -152,7 +154,7 @@ const Camera = () => {
       {/* Display match status */}
       <div className='bg-white text-gray-700 p-3 rounded mt-3'>
         <h3 className="font-bold">Expression Match Status:</h3>
-        <p>{expressionMatched ? "Matched!" : "Not Matched"}</p>
+        <p>{expressionMatched.current ? "Matched!" : "Not Matched"}</p>
 
       </div>
 
@@ -178,7 +180,7 @@ const Camera = () => {
           <p>No saved encodings</p>
         )}
       </div>
-      {expressionMatched ? <button onClick={saveFaceEncoding} className='bg-green-300 rounded mt-2 p-2'>
+      {expressionMatched.current ? <button onClick={saveFaceEncoding} className='bg-green-300 rounded mt-2 p-2'>
         Capture Face & Save Encoding </button> : null}
     </div>
   );

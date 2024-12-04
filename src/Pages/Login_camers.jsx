@@ -22,7 +22,6 @@ const Login_camers = () => {
   const [faceDetected, setFaceDetected] = useState(false);
   const [detectionAccuracy, setDetectionAccuracy] = useState(0);
   const [expectedExpression, setExpectedExpression] = useState("");
-  // const [expressionMatched, setExpressionMatched] = useState(false);
   const expressionMatched = useRef(false);
   
   const [textualAnalysis, setTextualAnalysis] = useState("");
@@ -151,23 +150,13 @@ const Login_camers = () => {
 			   if (!expressionMatched.current) {
 					setload(false);
 					expressionMatched.current = true;
-					setIsExpressionMatched(true); // Update state for UI
 				}
-			
-			//setload(false);
-		   // expressionMatched.current = true;
-			
-         // if (!expressionMatched) { // Only set to true if it hasn’t already been set
-				
-		   // setExpressionMatched(true); // Set match as true to stop expression updates
-          //}
         }
 
 
       } else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
-        // setExpressionMatched(false);
 		 expressionMatched.current = false;
         setTextualAnalysis("No face detected. Please adjust your position.");
       }
