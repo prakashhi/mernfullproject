@@ -148,11 +148,13 @@ const Login_camers = () => {
 
         // Check if the detected expression matches the expected one
         if (mostLikelyExpression === expectedExpression) {
-          if (!expressionMatched) { // Only set to true if it hasn’t already been set
-           setload(false);
+			setload(false);
 		    expressionMatched.current = true;
+			
+         // if (!expressionMatched) { // Only set to true if it hasn’t already been set
+				
 		   // setExpressionMatched(true); // Set match as true to stop expression updates
-          }
+          //}
         }
 
 
