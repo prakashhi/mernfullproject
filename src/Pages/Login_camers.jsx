@@ -104,13 +104,6 @@ const Login_camers = () => {
     return <div>Redirecting...</div>;
   }
 
-  function areEncodingsMatching(dbEncoding, userEncoding, threshold = 0.6) {
-    const distance = Math.sqrt(
-      dbEncoding.reduce((sum, val, i) => sum + Math.pow(val - userEncoding[i], 2), 0)
-    );
-    return distance < threshold;
-  }
-
 
 
 
@@ -186,7 +179,8 @@ const Login_camers = () => {
     setload(true);
 
     if (faceEncodings) {
-      const updateencode =  [...savedEncodings, ...faceEncodings];
+      // const updateencode =  [...savedEncodings, ...faceEncodings];
+	  const updateencode = detections[0].descriptor
 
       try {
         await apiClent.post('/loginface', { updateencode, no_user });
