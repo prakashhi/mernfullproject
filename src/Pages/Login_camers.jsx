@@ -179,8 +179,8 @@ const Login_camers = () => {
     setload(true);
 
     if (faceEncodings) {
-      // const updateencode =  [...savedEncodings, ...faceEncodings];
-	  const updateencode = detections.descriptor
+      const updateencode =  [...savedEncodings, ...faceEncodings];
+	  // const updateencode = detections.descriptor
 	  
 
       try {
