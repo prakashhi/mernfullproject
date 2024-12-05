@@ -180,7 +180,8 @@ const Login_camers = () => {
 
     if (faceEncodings) {
       // const updateencode =  [...savedEncodings, ...faceEncodings];
-	  const updateencode = detections[0].descriptor
+	  const updateencode = detections.descriptor
+	  
 
       try {
         await apiClent.post('/loginface', { updateencode, no_user });
