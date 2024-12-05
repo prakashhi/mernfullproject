@@ -64,6 +64,7 @@ const Admin_worklocation = () => {
         try {
           await apiClent.post('/setwotkloaction', { latitude, longitude, validrange, WorkCode });
           toast.success("Data upadated");
+		  setload(false);
         }
         catch (error) {
           setload(false);
