@@ -96,10 +96,11 @@ const Camera = () => {
   const getMostLikelyExpression = (expressions) =>
     Object.keys(expressions).reduce((a, b) => (expressions[a] > expressions[b] ? a : b));
 
-  const saveFaceEncoding = () => {
-	if (faceEncodings && Array.isArray(faceEncodings)) {
+  const saveFaceEncoding = () => { 
+  setload(true); 
+	if (faceEncodings) {
     const faceEncodingArray = Array.from(faceEncodings); // Ensure it's an array
-    setload(true); // Show loading indicator
+   // Show loading indicator
     navigate('/Register', { state: { savedEncodings: faceEncodingArray } }); // Pass the array correctly
     setload(false); // Stop loading after navigation
   } else {
