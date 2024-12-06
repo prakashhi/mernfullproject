@@ -154,21 +154,29 @@ const Register = () => {
 
 
 
-                        <div className='bg-white text-gray-700 p-3 rounded mt-3'>
-                            <h3 className="font-bold shadow-2xl">Face Encodings:</h3>
-                            {savedEncodings && savedEncodings.length > 0 ? (
-                                savedEncodings.map((encoding, index) => (
-                                    <div key={index} className="mb-2">
-                                        <p>Saved Encoding {index + 1}:</p>
-                                        <pre className="text-xs overflow-scroll h-24 bg-gray-100 p-2 rounded">
-                                            {JSON.stringify(encoding, null, 2)}
-                                        </pre>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>No saved encodings</p>
-                            )}
-                        </div>
+                 <div className='bg-white text-gray-700 p-3 rounded mt-3'>
+  <h3 className="font-bold shadow-2xl">Face Encodings:</h3>
+  {savedEncodings && savedEncodings.length > 0 ? (
+    savedEncodings.map((encoding, index) => (
+      <div key={index} className="mb-4">
+        <p className="font-semibold">Saved Encoding {index + 1}:</p>
+        <div className="grid grid-cols-4 gap-2 bg-gray-100 p-2 rounded overflow-auto">
+          {encoding.map((value, i) => (
+            <div
+              key={i}
+              className="text-xs text-gray-800 p-1 bg-white border border-gray-300 rounded shadow-sm"
+            >
+              <span className="font-bold">[{i}]</span>: {value.toFixed(4)}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))
+  ) : (
+    <p>No saved encodings</p>
+  )}
+</div>
+
 
 
 
