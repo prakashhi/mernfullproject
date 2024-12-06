@@ -4,7 +4,7 @@ import * as faceapi from 'face-api.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const expressions = ["happy", "sad", "angry", "surprised"];
+const expressions = ["happy", "angry", "surprised"];
 
 const Camera = () => {
 	 const navigate = useNavigate();
@@ -70,7 +70,12 @@ const Camera = () => {
         .withFaceExpressions(); // Include expression detection
 
       if (detections.length > 0) {
-        setFaceEncodings(detections.map(d => d.descriptor));
+		   const bestMatch = detections[0];
+		  setFaceEncodings(bestMatch.descriptor);
+		  
+		  
+        // setFaceEncodings(detections.map(d => d.descriptor));
+		
         setFaceDetected(true);
         const accuracy = (detections[0].detection.score * 100).toFixed(2);
         setDetectionAccuracy(accuracy);

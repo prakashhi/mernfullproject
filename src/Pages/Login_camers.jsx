@@ -8,7 +8,7 @@ import apiClent from '../services/api'
 
 
 
-const expressions = ["happy", "sad", "angry", "surprised"];
+const expressions = ["happy", "angry", "surprised"];
 
 const Login_camers = () => {
   const navigate = useNavigate()
