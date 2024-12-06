@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 const expressions = ["happy", "angry", "surprised"];
 
 const Camera = () => {
@@ -99,9 +99,9 @@ const Camera = () => {
   const saveFaceEncoding = () => { 
   setload(true); 
 	if (faceEncodings) {
-    const faceEncodingArray = Array.from(faceEncodings); // Ensure it's an array
-   // Show loading indicator
-    navigate('/Register', { state: { savedEncodings: faceEncodingArray } }); // Pass the array correctly
+    const faceEncodingArray = Array.from(faceEncodings); 
+    navigate('/Register', { state: { savedEncodings: faceEncodingArray } }); 
+	toast.info("Face data added");// Pass the array correctly
     setload(false); // Stop loading after navigation
   } else {
 	 setload(false);

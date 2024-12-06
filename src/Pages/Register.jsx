@@ -161,7 +161,7 @@ const Register = () => {
       <h3 className="font-bold shadow-2xl">Received Face Encodings:</h3>
       {savedEncodings.length > 0 ? (
         savedEncodings.map((value, index) => (
-          <div key={index} className="text-xs p-1 bg-gray-100 rounded shadow-md">
+          <div key={index} className="text-xs p-1 bg-gray-100 rounded shadow-md overflow-auto">
             <span className="font-bold">[{index}]</span>: {value.toFixed(4)}
           </div>
         ))
