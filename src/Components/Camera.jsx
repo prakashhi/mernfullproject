@@ -122,10 +122,13 @@ const Camera = () => {
 	  
 	  
     if (faceEncodings && faceEncodings.length > 0) {
-        const updatedEncodings = [...savedEncodings, ...faceEncodings];
-        setSavedEncodings(updatedEncodings); // Set the updated encodings in state
+		
+		const updateencode = Array.from(faceEncodings)
+		
+        // const updatedEncodings = [...savedEncodings, ...faceEncodings];
+        // setSavedEncodings(updatedEncodings); // Set the updated encodings in state
         
-        navigate('/Register', { state: { savedEncodings: updatedEncodings } }); 
+        navigate('/Register', { state: { savedEncodings: updateencode } }); 
     } else {
         console.error('No face encodings available to save.');
     }
