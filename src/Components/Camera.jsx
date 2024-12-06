@@ -97,14 +97,15 @@ const Camera = () => {
     Object.keys(expressions).reduce((a, b) => (expressions[a] > expressions[b] ? a : b));
 
   const saveFaceEncoding = () => {
-	  setload(true);
-    if (faceEncodings) {
-      navigate('/Register', { state: { savedEncodings: Array.from(faceEncodings) } });
-	  setload(false);
-    } else {
-		setload(false);
-      console.error('No face encodings available to save.');
-    }
+	if (faceEncodings && Array.isArray(faceEncodings)) {
+    const faceEncodingArray = Array.from(faceEncodings); // Ensure it's an array
+    setload(true); // Show loading indicator
+    navigate('/Register', { state: { savedEncodings: faceEncodingArray } }); // Pass the array correctly
+    setload(false); // Stop loading after navigation
+  } else {
+	 setload(false);
+    console.error('No valid face encodings available to save.');
+  }
   };
 
   return (
