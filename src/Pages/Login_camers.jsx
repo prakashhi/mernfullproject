@@ -187,7 +187,7 @@ const Login_camers = () => {
 		
 		
       // const updateencode =  [...savedEncodings, ...faceEncodings];
-	   const updateencode = faceEncodings
+	   const updateencode = Array.from(faceEncodings)
 	  
 
       try {
