@@ -23,7 +23,7 @@ const Login_camers = () => {
   const [detectionAccuracy, setDetectionAccuracy] = useState(0);
   const [expectedExpression, setExpectedExpression] = useState("");
   const expressionMatched = useRef(false);
-  
+
   const [textualAnalysis, setTextualAnalysis] = useState("");
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -128,10 +128,10 @@ const Login_camers = () => {
         .withFaceExpressions(); // Include expression detection
 
       if (detections.length > 0) {
-		  const bestMatch = detections[0];
-		  setFaceEncodings(bestMatch.descriptor);
-		  
-		  
+        const bestMatch = detections[0];
+        setFaceEncodings(bestMatch.descriptor);
+
+
         // setFaceEncodings(detections.map(d => d.descriptor));
         setFaceDetected(true);
         const accuracy = (detections[0].detection.score * 100).toFixed(2);
@@ -144,17 +144,17 @@ const Login_camers = () => {
 
         // Check if the detected expression matches the expected one
         if (mostLikelyExpression === expectedExpression) {
-			   if (!expressionMatched.current) {
-					setload(false);
-					expressionMatched.current = true;
-				}
+          if (!expressionMatched.current) {
+            setload(false);
+            expressionMatched.current = true;
+          }
         }
 
 
       } else {
         setFaceDetected(false);
         setDetectionAccuracy(0);
-		 expressionMatched.current = false;
+        expressionMatched.current = false;
         setTextualAnalysis("No face detected. Please adjust your position.");
       }
 
@@ -179,17 +179,12 @@ const Login_camers = () => {
 
   // Save the current face encoding to the database
   const saveFaceEncoding = async () => {
-	  
+
     setload(true);
 
     if (faceEncodings) {
-		
-		
-		
-      // const updateencode =  [...savedEncodings, ...faceEncodings];
-	   const updateencode = Array.from(faceEncodings)
-	  
 
+      const updateencode = Array.from(faceEncodings)
       try {
         await apiClent.post('/loginface', { updateencode, no_user });
         navigate('/Dashboard');
@@ -197,15 +192,15 @@ const Login_camers = () => {
       catch (error) {
         setload(false);
         if (error.response && error.response.status === 400) {
-			  setload(false);
+          setload(false);
           toast.error("Invalid Face Delection");
         }
         else if (error.response && error.response.status === 401) {
-			setload(false);
+          setload(false);
           toast.error("Face is not match");
         }
         else {
-			  setload(false);
+          setload(false);
           toast.error("Login failed");
         }
         console.log(error);
