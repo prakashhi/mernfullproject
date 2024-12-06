@@ -128,7 +128,11 @@ const Login_camers = () => {
         .withFaceExpressions(); // Include expression detection
 
       if (detections.length > 0) {
-        setFaceEncodings(detections.map(d => d.descriptor));
+		  const bestMatch = detections[0];
+		  setFaceEncodings(bestMatch.descriptor);
+		  
+		  
+        // setFaceEncodings(detections.map(d => d.descriptor));
         setFaceDetected(true);
         const accuracy = (detections[0].detection.score * 100).toFixed(2);
         setDetectionAccuracy(accuracy);
@@ -179,8 +183,11 @@ const Login_camers = () => {
     setload(true);
 
     if (faceEncodings) {
-      const updateencode =  [...savedEncodings, ...faceEncodings];
-	  // const updateencode = detections.descriptor
+		
+		
+		
+      // const updateencode =  [...savedEncodings, ...faceEncodings];
+	   const updateencode = faceEncodings
 	  
 
       try {
