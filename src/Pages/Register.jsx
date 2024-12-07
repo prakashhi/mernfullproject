@@ -157,7 +157,7 @@ const Register = () => {
 
 
 
-                        <div className="bg-white text-gray-700 p-3 rounded mt-3 overflow-auto">
+                        <div className="bg-white text-gray-700 p-3 rounded mt-3 overflow-auto h-[10vh]">
                             <h3 className="font-bold shadow-2xl">Received Face Encodings:</h3>
                             {savedEncodings.length > 0 ? (
                                 savedEncodings.map((value, index) => (
@@ -167,6 +167,7 @@ const Register = () => {
                                 ))
                             ) : (
                                 <p>No face encodings received.</p>
+								
                             )}
                         </div>
 
