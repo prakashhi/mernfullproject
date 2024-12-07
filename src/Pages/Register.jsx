@@ -66,6 +66,7 @@ const Register = () => {
             else {
 
                 try {
+					
                     const res = await apiClent.post('/register_data', { fname, uemail, umobile, username, upass, workLoctioncode, savedEncodings });
 
 

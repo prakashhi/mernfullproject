@@ -683,6 +683,10 @@ video {
   height: 100vh;
 }
 
+.h-\[10vh\] {
+  height: 10vh;
+}
+
 .h-\[120vh\] {
   height: 120vh;
 }
@@ -697,14 +701,6 @@ video {
 
 .h-full {
   height: 100%;
-}
-
-.h-3 {
-  height: 0.75rem;
-}
-
-.h-\[10vh\] {
-  height: 10vh;
 }
 
 .w-4 {
@@ -791,10 +787,6 @@ video {
 
 .overflow-auto {
   overflow: auto;
-}
-
-.overflow-scroll {
-  overflow: scroll;
 }
 
 .rounded {
