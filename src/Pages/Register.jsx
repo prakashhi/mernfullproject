@@ -22,10 +22,10 @@ const Register = () => {
 
     const [load, setload] = useState(false);
 
-   
-	  const { savedEncodings = [] } = location.state || {};
 
-	
+    const { savedEncodings = [] } = location.state || {};
+
+
 
     const [fname, setfname] = useState('');
     const [uemail, setuemail] = useState('');
@@ -157,18 +157,18 @@ const Register = () => {
 
 
 
-							    <div className="bg-white text-gray-700 p-3 rounded mt-3">
-      <h3 className="font-bold shadow-2xl">Received Face Encodings:</h3>
-      {savedEncodings.length > 0 ? (
-        savedEncodings.map((value, index) => (
-          <div key={index} className="text-xs p-1 bg-gray-100 rounded shadow-md overflow-auto">
-            <span className="font-bold">[{index}]</span>: {value.toFixed(4)}
-          </div>
-        ))
-      ) : (
-        <p>No face encodings received.</p>
-      )}
-    </div>
+                        <div className="bg-white text-gray-700 p-3 rounded mt-3 overflow-auto">
+                            <h3 className="font-bold shadow-2xl">Received Face Encodings:</h3>
+                            {savedEncodings.length > 0 ? (
+                                savedEncodings.map((value, index) => (
+                                    <div key={index} className="text-xs p-1 bg-gray-100 rounded shadow-md ">
+                                        <span className="font-bold">[{index}]</span>: {value.toFixed(4)}
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No face encodings received.</p>
+                            )}
+                        </div>
 
 
 
