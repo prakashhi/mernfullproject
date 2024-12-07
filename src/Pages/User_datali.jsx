@@ -65,6 +65,9 @@ const User_datali = () => {
   if (!userdata) {
     return <div>Redirecting...</div>;
   }
+  
+  
+  
 
   const id = userdata.userId;
   const getdata = async () => {
