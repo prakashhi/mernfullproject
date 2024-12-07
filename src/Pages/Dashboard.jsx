@@ -73,16 +73,20 @@ const Dashboard = () => {
         catch (error) {
             if (error.response.status === 404) {
                 setuserdb(true);
+				setentryc(false);
+				setexitc(false);
 
             }
             else if (error.response.status === 400) {
                 setuserdb(false);
                 setentryc(true);
+				setexitc(false);
 
             }
             else if (error.response.status === 401) {
                 setexitc(true);
                 setentryc(false);
+				setuserdb(false);
             }
 
         }
