@@ -141,16 +141,15 @@ const Login = () => {
                         <div id='btn' className='w-full flex justify-center m-2 text-center'>
 
                             {
-                                load == true ? (<span className='px-9 py-2 bg-slate-500 rounded-md'>
-                                    <l-dot-spinner
-                                        size="15"
-                                        speed="0.9"
-                                        color="white"
-                                    ></l-dot-spinner></span>) : <button disabled={isSubmitting} onClick={submit} className='hover:px-9  duration-[0.5s] px-10 py-2 text-white bg-fuchsia-600 rounded-md'>
+                                load == true ? (<span className='px-9 py-2  rounded-md bg-indigo-500'>
+							Processing...</span>) : <button disabled={isSubmitting} onClick={submit} className='hover:px-9  duration-[0.5s] px-10 py-2 text-white bg-fuchsia-600 rounded-md'>
                                     Log in
                                 </button>
 
                             }
+							
+							
+                            
 
 
 

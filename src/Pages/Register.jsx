@@ -211,12 +211,8 @@ const Register = () => {
                         <div id='btn' className='w-full flex justify-center m-2'>
                             {
 
-                                load == true ? (<span className='px-9 py-2 bg-slate-500 rounded-md'>
-                                    <l-dot-spinner
-                                        size="15"
-                                        speed="0.9"
-                                        color="white"
-                                    ></l-dot-spinner></span>) : <button className='duration-[0.5s] bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
+                                load == true ? (<span className='px-9 py-2  rounded-md bg-indigo-500'>
+							Processing...</span>) : <button className='duration-[0.5s] bg-fuchsia-600 hover:px-20 rounded px-[50px] py-2 text-white font-bold' onClick={submit}>Register</button>
 
                             }
 
