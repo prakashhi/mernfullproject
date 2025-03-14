@@ -249,11 +249,8 @@ const Login_camers = () => {
 
           {expressionMatched.current ? <button onClick={saveFaceEncoding} className='hover:px-9 hover:py-3 duration-[0.5s] text-white bg-fuchsia-600 rounded-full font-extrabold px-7 py-2'>
             {
-              load == true ? (<l-dot-spinner
-                size="15"
-                speed="0.9"
-                color="white"
-            ></l-dot-spinner>) : <p>Face Login</p>
+              load == true ? (<span className='px-9 py-2  rounded-md bg-indigo-500'>
+							Processing...</span>) : <p>Face Login</p>
 
             }
 
