@@ -8,14 +8,14 @@ import apiClent from '../services/api'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { useForm } from "react-hook-form";
-import {dotSpinner} from 'ldrs'
+import { dotSpinner } from 'ldrs'
 import 'ldrs/dotSpinner'
 
 
 
 const Login = () => {
-	
-const {formState:{errors , isSubmitting } } = useForm();
+
+    const { formState: { errors, isSubmitting } } = useForm();
 
     const [lusername, setlusername] = useState('');
     const [luserpass, setluserpass] = useState('');
@@ -25,8 +25,8 @@ const {formState:{errors , isSubmitting } } = useForm();
     const [load, setload] = useState(false);
     const navigate = useNavigate();
 
-	
-	
+
+
     const getLocation = async () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -139,18 +139,20 @@ const {formState:{errors , isSubmitting } } = useForm();
 
                         </div>
                         <div id='btn' className='w-full flex justify-center m-2 text-center'>
-                            <button disabled={isSubmitting} onClick={submit} className='hover:px-9  duration-[0.5s] px-10 py-2 text-white bg-fuchsia-600 rounded-full'>
 
-                                {
-                                    load == true ? (<l-dot-spinner
-  size="15"
-  speed="0.9"
-  color="white" 
-></l-dot-spinner>) : <p className='text-bold'>Log in</p>
+                            {
+                                load == true ? (<span className='px-9 py-2 bg-slate-500 rounded-md'>
+                                    <l-dot-spinner
+                                        size="15"
+                                        speed="0.9"
+                                        color="white"
+                                    ></l-dot-spinner></span>) : <button disabled={isSubmitting} onClick={submit} className='hover:px-9  duration-[0.5s] px-10 py-2 text-white bg-fuchsia-600 rounded-md'>
+                                    Log in
+                                </button>
 
-                                }
+                            }
 
-                            </button>
+
 
                         </div>
                         <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600 ' to="/Register">Register</Link></p>
