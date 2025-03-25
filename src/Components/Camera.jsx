@@ -29,7 +29,9 @@ const Camera = () => {
         faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
         faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
       ]);
+	  console.log("lodaing...");
       setModelsLoaded(true);
+	  
     } catch (error) {
       console.error("Error loading models:", error);
     }
@@ -40,19 +42,37 @@ const Camera = () => {
     setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
   }, []);
 
+  // useEffect(() => {
+    // if (modelsLoaded) {
+      // const detect = async () => {
+        // if (!detectingRef.current) {
+          // detectingRef.current = true;
+          // await detectFace();
+          // detectingRef.current = false;
+        // }
+      // };
+      // const interval = setInterval(detect, 500);
+      // return () => clearInterval(interval);
+    // }
+  // }, [modelsLoaded]);
+  
   useEffect(() => {
-    if (modelsLoaded) {
-      const detect = async () => {
-        if (!detectingRef.current) {
-          detectingRef.current = true;
-          await detectFace();
-          detectingRef.current = false;
-        }
-      };
-      const interval = setInterval(detect, 500);
-      return () => clearInterval(interval);
-    }
-  }, [modelsLoaded]);
+  if (modelsLoaded) {
+    let timeoutId;
+    const detectWithDebounce = async () => {
+      if (!detectingRef.current) {
+        detectingRef.current = true;
+        await detectFace();
+        detectingRef.current = false;
+      }
+      timeoutId = setTimeout(detectWithDebounce, 1000); // Increase to 1000ms
+    };
+    detectWithDebounce();
+    return () => clearTimeout(timeoutId);
+  }
+  
+  
+}, [modelsLoaded]);
 
   const detectFace = async () => {
     if (webcamRef.current && webcamRef.current.video.readyState === 4) {
@@ -112,7 +132,7 @@ const Camera = () => {
   return (
     <div className="bg-gradient-to-r from-slate-500 to-slate-800 inline-grid justify-center p-2 relative rounded mb-3">
       <div className="relative w-full mb-3 max-[450px]:w-[80%]">
-        <Webcam className="w-full h-full rounded" ref={webcamRef} />
+        <Webcam className="w-full h-full rounded" ref={webcamRef} videoConstraints={{ width: 640, height: 480 }} />
         <canvas className="absolute top-0 left-0 w-full h-full" ref={canvasRef} />
       </div>
       <div className="flex gap-3">

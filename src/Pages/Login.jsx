@@ -138,6 +138,7 @@ const Login = () => {
                             <input onChange={(e) => { setluserpass(e.target.value) }} className='text-white rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none' type="password" />
 
                         </div>
+                    
                         <div id='btn' className='w-full flex justify-center m-2 text-center'>
 
                             {
@@ -154,6 +155,7 @@ const Login = () => {
 
 
                         </div>
+                        
                         <p>Don't have an account?<Link className='underline text-green-300 hover:text-blue-600 ' to="/Register">Register</Link></p>
 
 

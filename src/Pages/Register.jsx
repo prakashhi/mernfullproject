@@ -37,7 +37,6 @@ const Register = () => {
     const [encodeingface, setencodeingface] = useState([]);
     const [showCamera, setShowCamera] = useState(false);
 
-
     const submit = async (e) => {
         setload(true);
         //Submit Functionality
