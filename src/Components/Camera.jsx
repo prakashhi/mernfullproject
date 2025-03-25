@@ -42,37 +42,21 @@ const Camera = () => {
     setExpectedExpression(expressions[Math.floor(Math.random() * expressions.length)]);
   }, []);
 
-  // useEffect(() => {
-    // if (modelsLoaded) {
-      // const detect = async () => {
-        // if (!detectingRef.current) {
-          // detectingRef.current = true;
-          // await detectFace();
-          // detectingRef.current = false;
-        // }
-      // };
-      // const interval = setInterval(detect, 500);
-      // return () => clearInterval(interval);
-    // }
-  // }, [modelsLoaded]);
-  
   useEffect(() => {
-  if (modelsLoaded) {
-    let timeoutId;
-    const detectWithDebounce = async () => {
-      if (!detectingRef.current) {
-        detectingRef.current = true;
-        await detectFace();
-        detectingRef.current = false;
-      }
-      timeoutId = setTimeout(detectWithDebounce, 1000); // Increase to 1000ms
-    };
-    detectWithDebounce();
-    return () => clearTimeout(timeoutId);
-  }
+    if (modelsLoaded) {
+      const detect = async () => {
+        if (!detectingRef.current) {
+          detectingRef.current = true;
+          await detectFace();
+          detectingRef.current = false;
+        }
+      };
+      const interval = setInterval(detect, 500);
+      return () => clearInterval(interval);
+    }
+  }, [modelsLoaded]);
   
-  
-}, [modelsLoaded]);
+
 
   const detectFace = async () => {
     if (webcamRef.current && webcamRef.current.video.readyState === 4) {
