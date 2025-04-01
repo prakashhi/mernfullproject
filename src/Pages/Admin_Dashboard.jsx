@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import { FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Timer from '../Components/Timer';
@@ -8,6 +8,7 @@ import { IoCloseCircle } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { IoMdRefreshCircle } from "react-icons/io";
 import apiClent from '../services/api'
+
 
 const Admin_Dashboard = () => {
   const navigate = useNavigate()
@@ -44,24 +45,20 @@ const Admin_Dashboard = () => {
     }
   }, [navigate]);
 
-  const loaddata = async () => {
+  const loaddata = useCallback(async () => {
     try {
-      const responce = await apiClent.get('/loaddata');
-      setalldata(responce.data);
+      const response = await apiClent.get('/loaddata');
+      setalldata(response.data);
     }
     catch (err) {
-      toast.error(err)
+      toast.error(err);
     }
 
-  }
-
-  const refresh = () => {
-    loaddata();
-  }
+  },[]);
 
   useEffect(() => {
     loaddata();
-  }, []);
+  },[loaddata]);
 
 
 
@@ -110,7 +107,7 @@ const Admin_Dashboard = () => {
 
 
       </div>
-      <div id='header' className='  m-1 rounded bg-blue-200 shadow-2xl  backdrop-blur-sm '>
+      <div id='header' className='  m-1 rounded bg-blue-200 shadow-2xl  backdrop-blur-sm'>
 
         <Timer />
 
@@ -120,7 +117,7 @@ const Admin_Dashboard = () => {
           </div>
           <div className='flex gap-4 items-center'>
             <span className='font-bold'>{admindata.username}</span>
-            <button onClick={logout} className='flex items-center font-semibold gap-2 my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded-lg'>Log out<FiLogOut className='font-semibold' /></button>
+            <button onClick={logout} className='flex items-center font-semibold gap-2 max-[750px]:my-0  my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded-lg'>Log out<FiLogOut className='font-semibold' /></button>
           </div>
         </div>
 
@@ -135,7 +132,7 @@ const Admin_Dashboard = () => {
             <button onClick={searchdata} className='backdrop-blur-sm bg-white/30 rounded px-4 py-1 max-[400px]:px-3 max-[400px]:py-1'>Search</button>
           </div>
           <div>
-            <IoMdRefreshCircle onClick={refresh} className='text-2xl cursor-pointer' />
+            <IoMdRefreshCircle onClick={loaddata} className='text-2xl cursor-pointer hover:text-3xl duration-[0.5s]' />
           </div>
 
         </div>

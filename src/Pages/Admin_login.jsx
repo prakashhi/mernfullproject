@@ -28,6 +28,7 @@ const Admin_login = () => {
                 sessionStorage.setItem('token', res.data.token);
                 navigate("/A_Dash");
                 toast.success("Login sucessfull");
+                setload(false);
 
             } catch (error) {
                 setload(false);
