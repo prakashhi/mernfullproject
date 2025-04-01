@@ -117,7 +117,7 @@ const Admin_Dashboard = () => {
           </div>
           <div className='flex gap-4 items-center'>
             <span className='font-bold'>{admindata.username}</span>
-            <button onClick={logout} className='flex items-center font-semibold gap-2 max-[750px]:my-0  my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded-lg'>Log out<FiLogOut className='font-semibold' /></button>
+            <button onClick={logout} className='flex items-center  gap-2 max-[750px]:my-0 px-4 max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded-lg'><span className='text-[14px]'>Log out</span><FiLogOut className='hover:text-2xl duration-[0.5s]' /></button>
           </div>
         </div>
 
@@ -139,15 +139,17 @@ const Admin_Dashboard = () => {
         <div className='duration-[0.5s] h-[80vh] overflow-auto m-2 p-2  shadow-xl bg-white rounded '>
           <table className=' max-[400px]:text-[15px] w-full text-center font-light'>
             <thead>
-              <tr className='border-b-2 sticky'>
-                <td className=' rounded font-semibold'>User Id</td>
-                <td className=' rounded font-semibold'> Fullname</td>
-                <td className=' rounded font-semibold'> Username</td>
-                <td className=' rounded font-semibold'>Email</td>
-                <td className=' rounded font-semibold'>User Lastlogin</td>
-                <td className=' rounded font-semibold'>Workcode</td>
-                <td className=' rounded font-semibold'>Latitude</td>
-                <td className=' rounded font-semibold'>Longitude</td>
+              <tr className='border-b-2 sticky top-0 bg-white backdrop-blur-2xl rounded-lg'>
+                <td className='  font-semibold'>User Id</td>
+                <td className='  font-semibold'> Fullname</td>
+                <td className='  font-semibold'> Username</td>
+                <td className='  font-semibold'>Email</td>
+                <td className='  font-semibold'>User Lastlogin</td>
+                <td className='  font-semibold'>Workcode</td>
+                <td className='  font-semibold'>Latitude</td>
+                <td className='  font-semibold'>Longitude</td>
+                <td className='  font-semibold'></td>
+
 
               </tr>
             </thead>

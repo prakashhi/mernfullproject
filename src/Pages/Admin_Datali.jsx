@@ -93,15 +93,15 @@ const Admin_Datali = () => {
 
         <Timer />
         <div onClick={() => { navigate('/A_Dash'); }} className='w-[10%] m-1 rounded mb-1 flex items-center gap-1 p-2 cursor-pointer'>
-          <IoMdArrowBack className='text-xl' />
+          <IoMdArrowBack className='text-xl hover:bg-cyan-500 duration-[0.4s] rounded-full hover:text-2xl' />
           <span className='text-xl max-[700px]:hidden'>Back</span>
         </div>
       </div>
       <div id='contain' className=' duration-[0.5s]  bg-blue-400 shadow-2xl m-2 rounded'>
         <div className=' flex  justify-between m-2 p-2 gap-5 items-center max-[400px]:gap-3' >
           <div className='grid  bg-cyan-400 font-extrabold p-2 rounded'>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id: {st.id}</span>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{st.username}</span>
+            <span className='max-[750px]:text-[13px] text-xl font-extralight'>Id: {st.id}</span>
+            <span className='max-[750px]:text-[13px] text-xl font-extralight'>Username:{st.username}</span>
           </div>
 
           <div>
