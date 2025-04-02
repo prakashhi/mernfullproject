@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useCallback } from 'react';
 import Timer from '../Components/Timer';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -27,17 +27,14 @@ const Admin_Datali = () => {
   const st = location.state || {}
 
 
-
-
-
-
   const m = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
 
   const id = st.id;
-  const getdata = async () => {
+
+  const getdata = useCallback(async () => {
 
     try {
       const res = await apiClent.post('/getdta', { id });
@@ -47,13 +44,14 @@ const Admin_Datali = () => {
       console.log(err);
 
     }
-  }
+  },[]);
 
   const countday = async () => {
     try {
-      setlistdata({});
+          setlistdata({});
 
       const kl = await apiClent.post('/daycount', { id, month });
+
       setlistdata(kl.data.workdta[0].work_entries);
 
       const alldata = kl.data.workdta[0].work_entries
@@ -105,7 +103,7 @@ const Admin_Datali = () => {
           </div>
 
           <div>
-            <IoMdRefreshCircle onClick={() => { getdata(); }} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
+            <IoMdRefreshCircle onClick={getdata} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
           </div>
         </div>
         <div className='p-3 gap-2 flex'>
@@ -124,7 +122,7 @@ const Admin_Datali = () => {
         <div className='duration-[0.5s] m-2 p-2 overflow-auto  backdrop-blur-sm bg-white rounded '>
           <table className=' max-[400px]:text-[15px] w-full text-center '>
             <thead>
-              <tr className='border-b-2 sticky'>
+              <tr className='border-b-2 sticky top-0 bg-white backdrop-blur-2xl'>
                 <td className=' rounded font-semibold'>Workday</td>
                 <td className=' rounded font-semibold'>Date of Workday</td>
                 <td className=' rounded font-semibold'>EntryTime</td>
