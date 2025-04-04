@@ -5,7 +5,7 @@ import { FaKey } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
 import apiClent from '../services/api'
-import 'ldrs/dotSpinner'
+
 
 
 const Admin_login = () => {

@@ -38,6 +38,8 @@ const Admin_Datali = () => {
 
     try {
       const res = await apiClent.post('/getdta', { id });
+
+      console.log(res)
       setlistdata(res.data.workdta[0].work_entries);
     }
     catch (err) {

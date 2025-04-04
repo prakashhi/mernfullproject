@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback} from 'react';
 import { Link } from "react-router-dom";
 import Timer from '../Components/Timer';
 import { FaUser } from "react-icons/fa";
@@ -8,8 +8,7 @@ import apiClent from '../services/api'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { useForm } from "react-hook-form";
-import { dotSpinner } from 'ldrs'
-import 'ldrs/dotSpinner'
+
 
 
 
@@ -27,7 +26,7 @@ const Login = () => {
 
 
 
-    const getLocation = async () => {
+    const getLocation = useCallback(async () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -53,7 +52,6 @@ const Login = () => {
                     }
 
 
-
                 },
                 (error) => {
                     setError(error.message);
@@ -69,11 +67,15 @@ const Login = () => {
         } else {
             setError("Geolocation is not supported by this browser.");
         }
-    };
+    },[]);
 
-    useEffect(() => {
-        getLocation();
-    }, []);
+    
+
+    useCallback(useEffect(() => {
+      getLocation();
+    }, []),[]);
+
+
 
 
     const submit = async () => {
@@ -153,10 +155,6 @@ const Login = () => {
 
                             }
 							
-							
-                            
-
-
 
                         </div>
 						
