@@ -89,6 +89,8 @@ const Admin_Dashboard = () => {
     navigate('/Admin');
     toast.info("Log Out!");
   }
+
+
   return (
     <>
 
@@ -160,6 +162,7 @@ const Admin_Dashboard = () => {
 
             <tbody>
               {
+
                 
 
                 alldata && alldata.length > 0 && (
@@ -169,10 +172,11 @@ const Admin_Dashboard = () => {
                       <td className="border-r-2 rounded p-3">{user.User_fullname}</td>
                       <td className="border-r-2 rounded p-3">{user.Username}</td>
                       <td className="border-r-2 rounded p-3">{user.User_email}</td>
-                      <td className="border-r-2 rounded p-3">{user.User_lastlogin}</td>
+                      <td className="border-r-2 rounded p-3">{user.User_lastlogin.split(' ').splice(0,5).join(' ')}</td>
                       <td className="border-r-2 rounded p-3">{user.User_Workcode}</td>
                       <td className="border-r-2 rounded p-3">{user.User_workLatitude}</td>
                       <td className="rounded p-3">{user.User_workLongitude}</td>
+
 
                       <td className="rounded p-3">
                         <Link to='/Admin_datali' state={{ id: user.User_id, username: user.Username }} className='shadow-md px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-purple-900 font-bold rounded-full'>DATA</Link></td>

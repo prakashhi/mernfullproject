@@ -1246,13 +1246,13 @@ video {
   line-height: 2.5rem;
 }
 
+.hover\:text-\[15px\]:hover {
+  font-size: 15px;
+}
+
 .hover\:text-xl:hover {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.hover\:text-\[15px\]:hover {
-  font-size: 15px;
 }
 
 .hover\:text-blue-600:hover {
@@ -1308,6 +1308,10 @@ video {
     padding: 0.5rem;
   }
 
+  .max-\[750px\]\:text-\[11px\] {
+    font-size: 11px;
+  }
+
   .max-\[750px\]\:text-\[12px\] {
     font-size: 12px;
   }
@@ -1318,10 +1322,6 @@ video {
 
   .max-\[750px\]\:text-\[15px\] {
     font-size: 15px;
-  }
-
-  .max-\[750px\]\:text-\[11px\] {
-    font-size: 11px;
   }
 }
 
@@ -1334,12 +1334,6 @@ video {
 @media (max-width: 550px) {
   .max-\[550px\]\:w-\[70vw\] {
     width: 70vw;
-  }
-}
-
-@media (max-width: 500px) {
-  .max-\[500px\]\:grid {
-    display: grid;
   }
 }
 
