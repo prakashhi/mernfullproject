@@ -124,7 +124,7 @@ const User_datali = () => {
 
         <Timer />
         <div onClick={() => { navigate('/Dashboard'); }} className='w-[10%] m-1 rounded mb-1 flex items-center gap-1 p-2 cursor-pointer'>
-          <IoMdArrowBack className='text-xl' />
+           <IoMdArrowBack className='text-xl hover:bg-cyan-500 duration-[0.4s] rounded-full hover:text-2xl' />
           <span className='text-xl max-[700px]:hidden'>Back</span>
         </div>
       </div>

@@ -118,7 +118,7 @@ const Login = () => {
             <div className='h-[1000px] bg-blue-400'>
                 <Timer />
 
-                <div className='flex justify-center '>
+                <div className='flex justify-center mt-[10%]'>
 
                     <div className='shadow-2xl backdrop-blur-sm bg-white/30 inline-grid max-[800px]:p-4 p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s]'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Login</span>

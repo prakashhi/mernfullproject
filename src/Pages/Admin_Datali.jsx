@@ -162,9 +162,8 @@ const Admin_Datali = () => {
                   ))
                 )
               }
-
-                {
-                  listdata.length < = 0 && (<tr>
+              {
+                  listdata.length < 0 && (<tr>
                     <td colSpan="3" className="text-center">
                       No Data Available
                     </td>
