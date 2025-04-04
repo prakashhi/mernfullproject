@@ -167,14 +167,14 @@ const Dashboard = () => {
                     <div className='max-[750px]:p-2 p-3 h-[100%] duration-[0.5s]'>
                         <div className='bg-blue-200 shadow-2xl  rounded '>
                             <Timer />
-                            <div className='max-[500px]:grid flex justify-between p-3 items-center my-3 rounded'>
+                            <div className='max-[380px]:grid flex justify-between p-3 items-center my-3 rounded'>
                                 <div className='grid'>
-                                    <p className='max-[750px]:text-[15px] text-xl font-extralight'>Id:{userdata.userId} </p>
-                                    <p className='max-[750px]:text-[15px]  text-xl font-extralight'>Username:{userdata.username}</p>
+                                    <p className='max-[750px]:text-[11px] text-xl font-extralight'>Id:{userdata.userId} </p>
+                                    <p className='max-[750px]:text-[11px]  text-xl font-extralight'>Username:{userdata.username}</p>
                                 </div>
                                 <button onClick={() => {
                                     navigate("/User_data")
-                                }} className='shadow-2xl  duration-[0.5s] px-6 max-[750px]:text-[15px] hover:cursor-pointer text-xl hover:text-2xl font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</button>
+                                }} className='shadow-2xl  duration-[0.5s] px-6 max-[750px]:text-[11px] hover:cursor-pointer text-[14px] hover:text-[15px] font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</button>
                             </div>
                         </div>
 

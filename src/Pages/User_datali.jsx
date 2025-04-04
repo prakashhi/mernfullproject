@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import Timer from '../Components/Timer';
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowBack, IoMdRefreshCircle } from "react-icons/io";
-import { useEffect } from 'react';
+import { useEffect ,useCallback } from 'react';
 import { toast } from 'react-toastify';
 import apiClent from '../services/api'
 
@@ -15,6 +15,8 @@ const User_datali = () => {
   const [listdata, setlistdata] = useState({});
   const [month, setmonth] = useState('');
   const [daywork, setdaywork] = useState(0);
+  const [isSerach,setisSerach] = useState(false);
+  const [isLoading,setisLoading] = useState(false);
 
 
 
@@ -70,19 +72,26 @@ const User_datali = () => {
   
 
   const id = userdata.userId;
+
   const getdata = async () => {
+    setisLoading(true);
 
     try {
       const res = await apiClent.post('/getdta', { id });
       setlistdata(res.data.workdta[0].work_entries);
+       setisLoading(false);
     }
     catch (err) {
       console.log(err);
+      setisLoading(false);
 
     }
   }
 
-  const countday = async () => {
+
+  const countday =  async () => {
+    setisSerach(true);
+
     try {
       setlistdata({});
 
@@ -105,16 +114,16 @@ const User_datali = () => {
 
         // Update the day work count state
         setdaywork(countfullday);
+        setisSerach(false);
       }
-
 
     }
     catch (error) {
       console.log(error);
       setdaywork(0);
+      setisSerach(false);
 
     }
-
 
   }
 
@@ -141,7 +150,7 @@ const User_datali = () => {
         </div>
         <div className='p-3 gap-2 flex'>
           <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value={month}>
-            <option value="" disabled selected>
+            <option value="" disabled>
               -- Select a Month --
             </option>
             {m.map((m, index) => (
@@ -150,7 +159,12 @@ const User_datali = () => {
               </option>
             ))}
           </select>
-          <button onClick={countday} className='bg-white px-4 py-1 rounded'>Show Month</button>
+
+          {
+
+             isSerach ? (<div className='bg-white px-4 opacity-50 py-1 rounded'>Loading...</div>) :(<button onClick={countday} className='bg-white px-4 py-1 rounded'>Show Month</button>)
+          }
+          
         </div>
         <div className='duration-[0.5s] m-2 p-2 overflow-auto  backdrop-blur-sm bg-white rounded '>
           <table className=' max-[400px]:text-[15px] w-full text-center '>
@@ -185,6 +199,18 @@ const User_datali = () => {
                 )}
             </tbody>
           </table>
+
+
+          {
+            isLoading && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
+        <div className="text-lg font-semibold text-gray-700">Loading data...</div>
+        <div className="flex space-x-2">
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+        </div>
+      </div>)
+          }
 
         </div>
         <div className='m-2 p-2 flex gap-5 items-center'>

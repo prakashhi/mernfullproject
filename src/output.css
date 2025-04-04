@@ -664,6 +664,10 @@ video {
   margin-top: 10%;
 }
 
+.mt-\[10px\] {
+  margin-top: 10px;
+}
+
 .inline {
   display: inline;
 }
@@ -1247,6 +1251,10 @@ video {
   line-height: 1.75rem;
 }
 
+.hover\:text-\[15px\]:hover {
+  font-size: 15px;
+}
+
 .hover\:text-blue-600:hover {
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity));
@@ -1311,6 +1319,10 @@ video {
   .max-\[750px\]\:text-\[15px\] {
     font-size: 15px;
   }
+
+  .max-\[750px\]\:text-\[11px\] {
+    font-size: 11px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -1362,5 +1374,11 @@ video {
 
   .max-\[400px\]\:text-\[15px\] {
     font-size: 15px;
+  }
+}
+
+@media (max-width: 380px) {
+  .max-\[380px\]\:grid {
+    display: grid;
   }
 }

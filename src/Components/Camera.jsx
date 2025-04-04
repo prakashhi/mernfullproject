@@ -7,12 +7,6 @@ import { toast } from 'react-toastify';
 // Constants
 const EXPRESSIONS = ["happy", "angry", "surprised"];
 const DETECTION_INTERVAL = 1000; // 1 second interval for smooth performance
-const VIDEO_CONSTRAINTS = {
-  width: 640,
-  height: 480,
-  facingMode: "user",
-  frameRate: { ideal: 15, max: 30 },
-};
 
 const Camera = () => {
   const navigate = useNavigate();
@@ -153,23 +147,22 @@ const Camera = () => {
         <Webcam
           className="w-full h-full rounded"
           ref={webcamRef}
-          videoConstraints={VIDEO_CONSTRAINTS}
           audio={false}
           onUserMediaError={() => setTextualAnalysis("Camera access denied")}
         />
         <canvas className="absolute top-0 left-0 w-full h-full pointer-events-none" ref={canvasRef} />
       </div>
       <div className="flex gap-3 justify-center flex-wrap">
-        <div className="bg-white text-gray-700 p-3 rounded mt-3 min-w-[150px]">
+        <div className="bg-white w-full text-gray-700 p-3 rounded mt-3 min-w-[150px]">
           <h3 className="font-bold">Expected Expression:</h3>
           <p>{expectedExpression.charAt(0).toUpperCase() + expectedExpression.slice(1)}</p>
         </div>
-        <div className="bg-white text-gray-700 p-3 rounded mt-3 min-w-[150px]">
+        <div className="bg-white w-full text-gray-700 p-3 rounded mt-3 min-w-[150px]">
           <h3 className="font-bold">Expression Match Status:</h3>
           <p>{expressionMatched.current ? "Matched!" : "Not Matched"}</p>
         </div>
       </div>
-      <div className="bg-white text-gray-700 p-3 rounded mt-3 max-w-[640px] mx-auto">
+      <div className="bg-white w-full text-gray-700 p-3 rounded mt-3 max-w-[640px] mx-auto">
         <h3 className="font-bold">Detection Status:</h3>
         <p>{textualAnalysis}</p>
       </div>
