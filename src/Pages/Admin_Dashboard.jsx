@@ -16,6 +16,7 @@ const Admin_Dashboard = () => {
   const [alldata, setalldata] = useState([]);
   const [admindata, setadmindata] = useState('');
   const [adminsearch, setadminsearch] = useState('');
+  const [isLoading,setisLoading] = useState(true);
 
 
   useEffect(() => {
@@ -46,11 +47,14 @@ const Admin_Dashboard = () => {
   }, [navigate]);
 
   const loaddata = useCallback(async () => {
+    setisLoading(true);
     try {
       const response = await apiClent.get('/loaddata');
       setalldata(response.data);
+      setisLoading(false);
     }
     catch (err) {
+      setisLoading(false);
       toast.error(err);
     }
 
@@ -153,10 +157,12 @@ const Admin_Dashboard = () => {
 
               </tr>
             </thead>
+
             <tbody>
               {
+                
 
-                alldata && alldata.length > 0 ? (
+                alldata && alldata.length > 0 && (
                   alldata.map((user) => (
                     <tr key={user._id} className="">
                       <td className="border-r-2 rounded p-3">{user.User_id}</td>
@@ -172,15 +178,31 @@ const Admin_Dashboard = () => {
                         <Link to='/Admin_datali' state={{ id: user.User_id, username: user.Username }} className='shadow-md px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-purple-900 font-bold rounded-full'>DATA</Link></td>
                     </tr>
                   ))
-                ) : (
+                )}
+                {
+                  alldata.length <= 0 && (
                   <tr>
                     <td colSpan="3" className="text-center">
                       No Data Available
                     </td>
                   </tr>
-                )}
+                )
+                }
             </tbody>
-          </table>
+
+
+          </table>  
+          {
+            isLoading && alldata == false && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
+        <div className="text-lg font-semibold text-gray-700">Loading data...</div>
+        <div className="flex space-x-2">
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+        </div>
+      </div>)
+          }
+      
 
         </div>
 

@@ -22,6 +22,8 @@ const Admin_Datali = () => {
   const [listdata, setlistdata] = useState({});
   const [month, setmonth] = useState('');
   const [daywork, setdaywork] = useState(0);
+  const [isSerach,setisSerach] = useState(false);
+  const [isLoading,setisLoading] = useState(false);
 
   const location = useLocation();
   const st = location.state || {}
@@ -35,21 +37,26 @@ const Admin_Datali = () => {
   const id = st.id;
 
   const getdata = useCallback(async () => {
+     setisLoading(true);
 
     try {
       const res = await apiClent.post('/getdta', { id });
 
-      console.log(res)
       setlistdata(res.data.workdta[0].work_entries);
+       setisLoading(false);
     }
     catch (err) {
       console.log(err);
+       setisLoading(false);
 
     }
   },[]);
 
   const countday = async () => {
+     setisSerach(true);
     try {
+
+         
           setlistdata({});
 
       const kl = await apiClent.post('/daycount', { id, month });
@@ -59,9 +66,10 @@ const Admin_Datali = () => {
       const alldata = kl.data.workdta[0].work_entries
 
       if (alldata.length === 0) {
-        // If no data, set the day work count to 0
         setdaywork(0);
       } else {
+
+
         // Calculate full day counts if data exists
         let countfullday = 0;
         alldata.forEach((entry) => {
@@ -72,11 +80,13 @@ const Admin_Datali = () => {
 
         // Update the day work count state
         setdaywork(countfullday);
+        setisSerach(false);
       }
 
 
     }
     catch (error) {
+      setisSerach(false);
       console.log(error);
       setdaywork(0);
 
@@ -89,6 +99,7 @@ const Admin_Datali = () => {
 
   return (
     <>
+
       <div className='bg-gradient-to-r m-1 rounded bg-blue-300 shadow-2xl'>
 
         <Timer />
@@ -119,7 +130,11 @@ const Admin_Datali = () => {
               </option>
             ))}
           </select>
-          <button onClick={countday} className='bg-white px-4 py-1 rounded'>Show Month</button>
+
+          {
+            isSerach ? (<div className='bg-white px-4 opacity-50 py-1 rounded'>Loading...</div>) :(<button onClick={countday} className='bg-white px-4 py-1 rounded'>Show Month</button>)
+          }
+          
         </div>
         <div className='duration-[0.5s] m-2 p-2 overflow-auto  backdrop-blur-sm bg-white rounded '>
           <table className=' max-[400px]:text-[15px] w-full text-center '>
@@ -134,7 +149,7 @@ const Admin_Datali = () => {
             </thead>
             <tbody>
               {
-                listdata && listdata.length > 0 ? (
+                listdata && listdata.length > 0 && (
                   listdata.map((user) => (
 
                     <tr key={user._id} className="">
@@ -145,15 +160,28 @@ const Admin_Datali = () => {
                       <td className=" rounded p-3">{user.FullDay}</td>
                     </tr>
                   ))
-                ) : (
-                  <tr>
+                )
+              }
+
+                {
+                  listdata.length < = 0 && (<tr>
                     <td colSpan="3" className="text-center">
                       No Data Available
                     </td>
-                  </tr>
-                )}
+                  </tr>)
+                }
             </tbody>
           </table>
+          {
+            isLoading && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
+        <div className="text-lg font-semibold text-gray-700">Loading data...</div>
+        <div className="flex space-x-2">
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+        </div>
+      </div>)
+          }
 
         </div>
         <div className='m-2 p-2 flex gap-5 items-center'>
