@@ -58,6 +58,7 @@ const Admin_Dashboard = () => {
       toast.error(err);
     }
 
+
   },[]);
 
   useEffect(() => {
@@ -150,7 +151,7 @@ const Admin_Dashboard = () => {
                 <td className='  font-semibold'> Fullname</td>
                 <td className='  font-semibold'> Username</td>
                 <td className='  font-semibold'>Email</td>
-                <td className='  font-semibold'>User Lastlogin</td>
+                <td className='  font-semibold'>Lastlogin</td>
                 <td className='  font-semibold'>Workcode</td>
                 <td className='  font-semibold'>Latitude</td>
                 <td className='  font-semibold'>Longitude</td>
@@ -184,7 +185,7 @@ const Admin_Dashboard = () => {
                   ))
                 )}
                 {
-                  alldata.length <= 0 && (
+                  alldata.length <= 0 && isLoading == false  && (
                   <tr>
                     <td colSpan="3" className="text-center">
                       No Data Available

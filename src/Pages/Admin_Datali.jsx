@@ -37,12 +37,13 @@ const Admin_Datali = () => {
   const id = st.id;
 
   const getdata = useCallback(async () => {
+
      setisLoading(true);
 
     try {
       const res = await apiClent.post('/getdta', { id });
 
-      setlistdata(res.data.workdta[0].work_entries);
+        setlistdata(res.data.workdta[0].work_entries);
        setisLoading(false);
     }
     catch (err) {
@@ -50,18 +51,24 @@ const Admin_Datali = () => {
        setisLoading(false);
 
     }
+  },[id]);
+
+
+  useEffect(()=>{
+      getdata();
   },[]);
 
   const countday = async () => {
-     setisSerach(true);
-    try {
 
+    try {
          
-          setlistdata({});
+          setlistdata([]);
 
       const kl = await apiClent.post('/daycount', { id, month });
 
-      setlistdata(kl.data.workdta[0].work_entries);
+      const data = kl.data.workdta[0].work_entries || [];
+
+      setlistdata(data);
 
       const alldata = kl.data.workdta[0].work_entries
 
@@ -163,23 +170,25 @@ const Admin_Datali = () => {
                 )
               }
               {
-                  listdata.length < 0 && (<tr>
+                  listdata.length <= 0 && isLoading == false  && (<tr>
                     <td colSpan="3" className="text-center">
                       No Data Available
                     </td>
                   </tr>)
-                }
+              }
+
+             
             </tbody>
           </table>
           {
-            isLoading && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
-        <div className="text-lg font-semibold text-gray-700">Loading data...</div>
-        <div className="flex space-x-2">
-          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
-        </div>
-      </div>)
+                isLoading && listdata == false && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
+            <div className="text-lg font-semibold text-gray-700">Loading data...</div>
+            <div className="flex space-x-2">
+              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
+              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
+              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+            </div>
+          </div>)
           }
 
         </div>

@@ -196,7 +196,8 @@ const User_datali = () => {
                       No Data Available
                     </td>
                   </tr>
-                )}
+                )
+              }
             </tbody>
           </table>
 
