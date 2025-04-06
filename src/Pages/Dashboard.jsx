@@ -1,7 +1,8 @@
 import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef,useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { IoRefreshOutline } from "react-icons/io5";
 import { HiUserAdd } from "react-icons/hi";
 import Timer from '../Components/Timer';
@@ -60,9 +61,9 @@ const Dashboard = () => {
         return <div>Redirecting...</div>;
     }
 
+  
+
     const no = userdata.userId;
-
-
 
     const checkbtn = async () => {
         try {
@@ -92,6 +93,10 @@ const Dashboard = () => {
         }
 
     }
+
+
+
+
 
 
 
@@ -172,9 +177,7 @@ const Dashboard = () => {
                                     <p className='max-[750px]:text-[11px] text-xl font-extralight'>Id:{userdata.userId} </p>
                                     <p className='max-[750px]:text-[11px]  text-xl font-extralight'>Username:{userdata.username}</p>
                                 </div>
-                                <button onClick={() => {
-                                    navigate("/User_data")
-                                }} className='shadow-2xl  duration-[0.5s] px-6 max-[750px]:text-[11px] hover:cursor-pointer text-[14px] hover:text-[15px] font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</button>
+                                <Link to='/User_data' state={{ id: userdata.userId,username:userdata.username }} className='shadow-2xl  duration-[0.5s] px-6 max-[750px]:text-[11px] hover:cursor-pointer text-[14px] hover:text-[15px] font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</Link>
                             </div>
                         </div>
 

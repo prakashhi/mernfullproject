@@ -94,16 +94,12 @@ const Admin_worklocation = () => {
           <div onClick={close} className='text-2xl'>
             <IoCloseCircle />
           </div>
+            <Link  className='backdrop-blur-sm bg-white/30  p-4 rounded' to={'/A_Dash'}> Show User</Link>
+      
+            <Link className='backdrop-blur-sm bg-white/30 p-4 rounded' to={'/Admin_Edit'}> Edit User</Link>
 
-          <div className='backdrop-blur-sm bg-white/30  p-4 rounded'>
-            <Link to={'/A_Dash'}> Show User</Link>
-          </div>
-          <div className='backdrop-blur-sm bg-white/30 p-4 rounded'>
-            <Link to={'/Admin_Edit'}> Edit User</Link>
-          </div>
-          <div className='backdrop-blur-sm bg-white/30 p-4 rounded'>
-            <Link to={'/Admin_worklocationdata'}> Worl Location Data</Link>
-          </div>
+        
+         
         </div>
 
 

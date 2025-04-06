@@ -204,7 +204,7 @@ const Login_camers = () => {
           setload(false);
           toast.error("Login failed");
         }
-        console.log(error);
+     
 
       }
     }

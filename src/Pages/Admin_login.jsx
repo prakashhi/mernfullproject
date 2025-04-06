@@ -26,8 +26,10 @@ const Admin_login = () => {
             try {
                 const res = await apiClent.post('/admin_login', { uuser, upass });
                 sessionStorage.setItem('token', res.data.token);
-                navigate("/A_Dash");
+               
                 toast.success("Login sucessfull");
+
+                 navigate("/A_Dash");
                 setload(false);
 
             } catch (error) {

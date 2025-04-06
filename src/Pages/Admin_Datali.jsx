@@ -44,13 +44,17 @@ const Admin_Datali = () => {
       const res = await apiClent.post('/getdta', { id });
 
         setlistdata(res.data.workdta[0].work_entries);
-       setisLoading(false);
     }
     catch (err) {
       console.log(err);
-       setisLoading(false);
-
+     
     }
+    finally
+    {
+        setisLoading(false);
+    }
+
+
   },[id]);
 
 
@@ -58,45 +62,56 @@ const Admin_Datali = () => {
       getdata();
   },[]);
 
+
   const countday = async () => {
+
+    setisSerach(true);
+     setisLoading(true);
 
     try {
          
-          setlistdata([]);
+      setlistdata({});
 
-      const kl = await apiClent.post('/daycount', { id, month });
+      const kl = await apiClent.post('/daycount', { id, month }); 
 
-      const data = kl.data.workdta[0].work_entries || [];
+      if(kl.data.workdta.length <= 0 )
+      {
 
-      setlistdata(data);
-
-      const alldata = kl.data.workdta[0].work_entries
-
-      if (alldata.length === 0) {
-        setdaywork(0);
-      } else {
-
-
-        // Calculate full day counts if data exists
-        let countfullday = 0;
-        alldata.forEach((entry) => {
-          if (entry.FullDay === 'P') {
-            countfullday++;
-          }
-        });
-
-        // Update the day work count state
-        setdaywork(countfullday);
-        setisSerach(false);
+         setdaywork(0);
+        
       }
+      else
+        {
+        const data = kl.data.workdta[0].work_entries;
 
+        setlistdata(data);
+
+        const alldata = kl.data.workdta[0].work_entries
+
+          // Calculate full day counts if data exists
+          let countfullday = 0;
+          alldata.forEach((entry) => {
+            if (entry.FullDay === 'P') {
+              countfullday++;
+            }
+          });
+
+          // Update the day work count state
+          setdaywork(countfullday);
+
+      }
 
     }
     catch (error) {
-      setisSerach(false);
+      
       console.log(error);
       setdaywork(0);
 
+    }
+    finally
+    {
+      setisSerach(false);
+      setisLoading(false);
     }
 
 
@@ -156,7 +171,7 @@ const Admin_Datali = () => {
             </thead>
             <tbody>
               {
-                listdata && listdata.length > 0 && (
+                listdata && listdata.length > 0 ? (
                   listdata.map((user) => (
 
                     <tr key={user._id} className="">
@@ -167,21 +182,19 @@ const Admin_Datali = () => {
                       <td className=" rounded p-3">{user.FullDay}</td>
                     </tr>
                   ))
-                )
-              }
-              {
-                  listdata.length <= 0 && isLoading == false  && (<tr>
+                  ):(
+                  <tr>
                     <td colSpan="3" className="text-center">
                       No Data Available
                     </td>
                   </tr>)
+                
               }
-
-             
+              
             </tbody>
           </table>
           {
-                isLoading && listdata == false && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
+                isLoading && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
             <div className="text-lg font-semibold text-gray-700">Loading data...</div>
             <div className="flex space-x-2">
               <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>

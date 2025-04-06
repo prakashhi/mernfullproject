@@ -27,6 +27,7 @@ const Login = () => {
 
 
     const getLocation = useCallback(async () => {
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -41,6 +42,9 @@ const Login = () => {
                                 lon: position.coords.longitude,
                                 format: "json",
                             },
+                            headers: {
+                                 "User-Agent": "YourAppName/1.0 (you@example.com)"
+                             }
                         });
 
                         setaddress(response.data.display_name);
@@ -60,27 +64,27 @@ const Login = () => {
                 },
                 {
                     enableHighAccuracy: true, // Ensures high accuracy
-                    timeout: 20000, // Increased timeout to 15 seconds
+                    timeout: 15000, // Increased timeout to 15 seconds
                     maximumAge: 0, // Do not use a cached position
                 }
             );
         } else {
             setError("Geolocation is not supported by this browser.");
         }
-    },[]);
+
+    },[setLocation]);
 
     
 
-    useCallback(useEffect(() => {
+    useEffect(() => {
       getLocation();
-    }, []),[]);
+    }, [])
 
 
 
 
     const submit = async () => {
         setload(true);
-
 
         if ([lusername, luserpass].some(i => i.length <= 0)) {
             setload(false);
@@ -90,12 +94,14 @@ const Login = () => {
             try {
                 const res = await apiClent.post('/login', { lusername, luserpass, location });
 
-                sessionStorage.setItem('token', res.data.token);
-                navigate("/login_camera");
+                sessionStorage.setItem('token', res.data.token);  
                 toast.success("Login sucessfull");
-            } catch (error) {
-                setload(false);
+                navigate("/login_camera");
 
+            } 
+            catch (error) 
+            {
+               
                 if (error.response && error.response.status === 400) {
                     navigate("/");
                     toast.error("Invalid Username or Password");
@@ -108,6 +114,10 @@ const Login = () => {
                 else {
                     toast.error("Login failed");
                 }
+            }
+            finally
+            {
+                 setload(false);
             }
         }
 

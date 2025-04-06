@@ -1,5 +1,6 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import Timer from '../Components/Timer';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowBack, IoMdRefreshCircle } from "react-icons/io";
 import { useEffect ,useCallback } from 'react';
@@ -8,8 +9,10 @@ import apiClent from '../services/api'
 
 const User_datali = () => {
 
-
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const st = location.state || {}
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
   const [listdata, setlistdata] = useState({});
@@ -20,10 +23,30 @@ const User_datali = () => {
 
 
 
+ useEffect(() => {
+    if (!st.id) {
+      return navigate('/');
+    }
+
+  }) 
+
+ if (!st) {
+    return <div>Redirecting...</div>;
+  }
+
+
   const m = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+
+
+
+
+
+ 
+
+
 
 
   useEffect(() => {
@@ -60,21 +83,12 @@ const User_datali = () => {
 
 
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const id = st.id;
 
-  if (!userdata) {
-    return <div>Redirecting...</div>;
-  }
-  
-  
-  
 
-  const id = userdata.userId;
+  const getdata = useCallback(async () => { 
 
-  const getdata = async () => {
-    setisLoading(true);
+        setisLoading(true);
 
     try {
       const res = await apiClent.post('/getdta', { id });
@@ -86,24 +100,34 @@ const User_datali = () => {
       setisLoading(false);
 
     }
-  }
 
 
-  const countday =  async () => {
+  },[])
+
+  useEffect(()=>{
+    getdata();
+  },[])
+
+
+  const countday =  useCallback(async () => {
     setisSerach(true);
+     setisLoading(true);
 
     try {
       setlistdata({});
 
       const kl = await apiClent.post('/daycount', { id, month });
-      setlistdata(kl.data.workdta[0].work_entries);
+
+      if(kl.data.workdta.length <= 0 )
+      {
+         setdaywork(0);
+      }
+      else
+      {
+        setlistdata(kl.data.workdta[0].work_entries);
 
       const alldata = kl.data.workdta[0].work_entries
 
-      if (alldata.length === 0) {
-        // If no data, set the day work count to 0
-        setdaywork(0);
-      } else {
         // Calculate full day counts if data exists
         let countfullday = 0;
         alldata.forEach((entry) => {
@@ -111,25 +135,32 @@ const User_datali = () => {
             countfullday++;
           }
         });
-
         // Update the day work count state
         setdaywork(countfullday);
-        setisSerach(false);
+    
       }
-
+         
+      
+     
+    
     }
     catch (error) {
       console.log(error);
       setdaywork(0);
-      setisSerach(false);
+      
 
     }
+    finally
+    {
+      setisSerach(false);
+       setisLoading(false);
+    }
 
-  }
+  },[month]);
 
   return (
     <>
-      <div className='bg-gradient-to-r m-1 rounded bg-blue-300 shadow-2xl'>
+    <div className='bg-gradient-to-r m-1 rounded bg-blue-300 shadow-2xl'>
 
         <Timer />
         <div onClick={() => { navigate('/Dashboard'); }} className='w-[10%] m-1 rounded mb-1 flex items-center gap-1 p-2 cursor-pointer'>
@@ -140,16 +171,16 @@ const User_datali = () => {
       <div id='contain' className=' duration-[0.5s]  bg-blue-400 shadow-2xl m-2 rounded'>
         <div className=' flex  justify-between m-2 p-2 gap-5 items-center max-[400px]:gap-3' >
           <div className='grid  bg-cyan-400 font-extrabold p-2 rounded'>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id:{userdata.userId} </span>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{userdata.username} </span>
+            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id:{id} </span>
+            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{st.username} </span>
           </div>
 
           <div>
-            <IoMdRefreshCircle onClick={() => { getdata(); }} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
+            <IoMdRefreshCircle onClick={getdata} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
           </div>
         </div>
         <div className='p-3 gap-2 flex'>
-          <select onChange={(e) => { setmonth(e.target.value) }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value={month}>
+          <select onChange={(e) => { setmonth(e.target.value); }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value={month}>
             <option value="" disabled>
               -- Select a Month --
             </option>

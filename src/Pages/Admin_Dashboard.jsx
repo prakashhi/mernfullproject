@@ -11,7 +11,7 @@ import apiClent from '../services/api'
 
 
 const Admin_Dashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [alldata, setalldata] = useState([]);
   const [admindata, setadmindata] = useState('');
@@ -48,14 +48,18 @@ const Admin_Dashboard = () => {
 
   const loaddata = useCallback(async () => {
     setisLoading(true);
+
     try {
       const response = await apiClent.get('/loaddata');
       setalldata(response.data);
-      setisLoading(false);
     }
     catch (err) {
-      setisLoading(false);
+      
       toast.error(err);
+    }
+    finally
+    {
+      setisLoading(false);
     }
 
 
@@ -100,16 +104,11 @@ const Admin_Dashboard = () => {
           <div onClick={close} className='text-2xl'>
             <IoCloseCircle />
           </div>
+      
+            <Link className='backdrop-blur-sm bg-white/30 p-4 rounded' to={'/Admin_Edit'}> Edit User</Link>
 
-          <div className='backdrop-blur-sm bg-white/30  p-4 rounded'>
-            <Link to={'/A_Dash'}> Show User</Link>
-          </div>
-          <div className='backdrop-blur-sm bg-white/30 p-4 rounded'>
-            <Link to={'/Admin_Edit'}> Edit User</Link>
-          </div>
-          <div className='backdrop-blur-sm bg-white/30 p-4 rounded'>
-            <Link to={'/Admin_worklocationdata'}> Work Location Data</Link>
-          </div>
+            <Link className='backdrop-blur-sm bg-white/30 p-4 rounded' to={'/Admin_worklocationdata'}> Work Location Data</Link>
+         
         </div>
 
 
