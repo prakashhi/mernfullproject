@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState ,useCallback} from 'react';
 import Webcam from 'react-webcam';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
@@ -29,17 +29,23 @@ const Login_camers = () => {
   const [userdata, setUserdata] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const loadModels = async () => {
+  const loadModels = useCallback(async () => {
+
     try {
-      await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
-      await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
-      await faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
-      await faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'); // Load expression model
+      await Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
+      faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
+      faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
+      faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models')
+      ])
+         
       setModelsLoaded(true);
     } catch (error) {
       console.error("Error loading models:", error);
     }
-  };
+
+
+  },[]);
 
 
 

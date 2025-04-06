@@ -27,12 +27,12 @@ const Camera = () => {
   // Load face-api.js models
   const loadModels = useCallback(async () => {
     try {
-      const modelUrl = 'https://justadudewhohacks.github.io/face-api.js/models';
       await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
-        faceapi.nets.faceLandmark68Net.loadFromUri(modelUrl),
-        faceapi.nets.faceRecognitionNet.loadFromUri(modelUrl),
-        faceapi.nets.faceExpressionNet.loadFromUri(modelUrl),
+      faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
+      faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
+      faceapi.nets.faceRecognitionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
+      faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models')
+
       ]);
       if (isMounted.current) setModelsLoaded(true);
     } catch (error) {
