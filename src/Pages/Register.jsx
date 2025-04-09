@@ -104,11 +104,11 @@ const Register = () => {
         <>
 
 
-            <div className='bg-blue-400 h-[1000px]'>
+            <div className='bg-blue-400 min-h-screen'>
 
                 <div className='flex justify-center '>
 
-                    <div className='shadow-2xl max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-4'>
+                    <div className='shadow-2xl max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-6'>
                         <span className='text-4xl text-center p-4 font-semibold text-white'>Register</span>
                         <h1>Persional Details</h1>
 

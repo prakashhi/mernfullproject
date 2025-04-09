@@ -47,7 +47,7 @@ const Admin_login = () => {
     }
     return (
         <>
-            <div className='h-[1000px] bg-blue-400 '>
+            <div className='min-h-screen bg-blue-400 '>
                 <Timer />
                 <div className='flex justify-center mt-[10%]'>
 
