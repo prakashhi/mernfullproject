@@ -75,7 +75,7 @@ const Admin_Dashboard = () => {
     document.getElementById('hamb').style.left = "0";
   }
   const close = () => {
-    document.getElementById('hamb').style.left = "-1000px";
+    document.getElementById('hamb').style.left = "-10000px";
   }
 
   const searchdata = async () => {
@@ -99,7 +99,7 @@ const Admin_Dashboard = () => {
   return (
     <>
 
-      <div id='hamb' style={{ left: -1000 }} className='duration-[0.5s] bg-blue-400 text-white p-5 absolute h-[120vh] rounded max-[550px]:w-[70vw] w-[40vw] z-[1] transition-all  m-1'>
+      <div id='hamb' style={{ left: -100000 }} className='duration-[0.5s] bg-blue-400 text-white p-5 absolute h-[120vh] rounded max-[550px]:w-[70vw] w-[40vw] z-[1] transition-all  m-1'>
         <div className='grid gap-5 hover:cursor-pointer'>
           <div onClick={close} className='text-2xl'>
             <IoCloseCircle />
