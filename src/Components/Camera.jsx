@@ -9,7 +9,7 @@ import ButtonFun from "../Components/ButtonFun";
 const EXPRESSIONS = ["happy", "angry", "surprised"];
 const DETECTION_INTERVAL = 500; // 1 second interval for smooth performance
 
-const Camera = () => {
+const Camera = ({setShowCamera}) => {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [textualAnalysis, setTextualAnalysis] = useState("Initializing...");
   const [faceEncodings, setFaceEncodings] = useState(null);
@@ -54,7 +54,6 @@ const Camera = () => {
       if (webcamRef.current?.stream) {
         webcamRef.current.stream.getTracks().forEach((track) => track.stop());
       }
-      // faceapi.tf.dispose();
     };
   }, [loadModels]);
 
@@ -65,6 +64,7 @@ const Camera = () => {
       if (faceEncodings) {
         const faceEncodingArray = Array.from(faceEncodings);
         navigate("/Register", { state: { savedEncodings: faceEncodingArray } });
+        setShowCamera(false)
         toast.info("FaceData set Sucessfully");
       } else {
         toast.error("No valid face encodings to save");
@@ -131,9 +131,9 @@ const Camera = () => {
 
         // metadata
         setFaceEncodings(detections.descriptor);
-        // setFaceDetected(true);
+
         let Accuracy = (detections.detection.score * 100).toFixed(2);
-        // setDetectionAccuracy(Accuracy);
+
         setTextualAnalysis(`Face detected with ${Accuracy}% confidence`);
 
         if (!expressionMatched.current) {
@@ -146,15 +146,13 @@ const Camera = () => {
             mostLikelyExpression === expectedExpression;
         }
       } else {
-        // setFaceDetected(false);
         expressionMatched.current = false;
         setTextualAnalysis("No face detected. Please adjust your position.");
       }
 
-      // faceapi.tf.dispose(); // Dispose tensors
     } catch (error) {
       console.error("Detection error:", error);
-      // if (isMounted.current)
+
       setTextualAnalysis("Error during face detection");
     }
   }, [expectedExpression, getMostLikelyExpression]);
@@ -210,12 +208,7 @@ const Camera = () => {
       </div>
       {expressionMatched.current && (
         <ButtonFun
-          onClick={() => {
-            if (!faceEncodings) {
-              saveFaceEncoding();
-            }
-            toast.info("Data is already Save!");
-          }}
+          onClick={saveFaceEncoding}
           Text={"Save Encoding"}
           className={
             "hover:px-9   duration-[0.5s] px-10 py-2 text-white bg-black rounded-md mt-5 flex justify-center"

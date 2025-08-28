@@ -16,6 +16,7 @@ import ButtonFun from "../../Components/ButtonFun";
 import { useForm } from "react-hook-form";
 import Error from "../../Components/Error/Error";
 import { Message } from "../../Components/Error/ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const {
@@ -25,6 +26,7 @@ const Register = () => {
   } = useForm();
 
   const location = useLocation();
+  const navigate = useNavigate()
 
   const [load, setload] = useState(false);
   const { savedEncodings = [] } = location.state || {};
@@ -41,11 +43,11 @@ const Register = () => {
         ...values,
         savedEncodings,
       });
-
+      navigate("/");
       toast.success("Registration is sucessfull");
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error(error?.response?.data?.msg);
     } finally {
       setload(false);
     }
@@ -141,7 +143,7 @@ const Register = () => {
                     <IoCloseCircle color="black" />
                   </div>
 
-                  <Camera />
+                  <Camera setShowCamera={setShowCamera}/>
                 </div>
               </div>
             )}

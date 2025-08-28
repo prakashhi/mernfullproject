@@ -38,14 +38,14 @@ const Admin_login = () => {
     <>
       <div className="min-h-screen">
         <Timer />
-        <div className="flex justify-center max-[500px]:mt-[25%] mt-[10%]">
-          <div className="shadow-xl border border-gray inline-grid max-[800px]:p-4 p-10 rounded-xl w-[40%] max-[800px]:w-[95%] duration-[0.5s]">
-            <span className="text-4xl max-[500px]:text-2xl text-center p-4 font-semibold">
+        <div className="flex justify-center xs:mt-[25%] mt-[10%]">
+          <div className="shadow-xl border border-gray inline-grid xs:p-4 p-10 rounded-xl md:w-[40%] sm:w-[60%] xs:w-[95%] duration-[0.5s]">
+            <span className="text-4xl xs:text-2xl text-center p-4 font-semibold">
               Admin Login
             </span>
             <div className=" border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded mb-3">
               <div className="flex items-center justify-between">
-                <span className="text-md max-[500px]:text-[16px] ">
+                <span className="text-md xs:text-[16px] ">
                   Username
                 </span>
                 <FaUser className=" text-md" />
@@ -60,7 +60,7 @@ const Admin_login = () => {
             </div>
             <div className="border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded">
               <div className="flex items-center justify-between">
-                <span className="text-md max-[500px]:text-[16px] ">
+                <span className="text-md xs:text-[16px] ">
                   Password
                 </span>
                 <FaKey className=" text-md" />
@@ -76,7 +76,7 @@ const Admin_login = () => {
               <ButtonFun
                 id="btn"
                 onClick={handleSubmit(submit)}
-                className="hover:px-9 duration-[0.5s]  text-white bg-black rounded-md font-bold px-9 py-2"
+                className="hover:px-9 duration-[0.5s]  xs:text-md text-white bg-black rounded-md font-bold px-9 py-2"
                 Loading={load}
                 Text={"Log in"}
               />

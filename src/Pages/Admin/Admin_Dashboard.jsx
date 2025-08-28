@@ -26,6 +26,7 @@ const Admin_Dashboard = () => {
       let response = await apiClent.get("/Admin/loaddata/Admin");
       setalldata(response.data.Data);
     } catch (err) {
+      console.log(err)
       toast.error(err);
     } finally {
       setisLoading(false);

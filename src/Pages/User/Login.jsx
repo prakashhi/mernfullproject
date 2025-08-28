@@ -93,7 +93,7 @@ const Login = () => {
       navigate("/login_camera");
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.msg)
+      toast.error(error?.response?.data?.msg)
     } finally {
       setData((prev) => ({ ...prev, load: false }));
     }
@@ -104,15 +104,15 @@ const Login = () => {
       <div className="min-h-screen ">
         <Timer />
 
-        <div className="flex justify-center xs:mt-[25%] mt-[5%] ">
+        <div className="flex justify-center xs:mt-[20%] mt-[5%] ">
           <div className="shadow-xl border border-gray backdrop-blur-sm inline-grid xs:p-3 p-10 rounded-xl md:w-[40%] sm:w-[60%] xs:w-[95%] duration-[0.5s]">
-            <span className="text-4xl text-center p-4 mb-3 font-semibold">
+            <span className="text-4xl xs:text-2xl text-center p-4 mb-3 font-semibold">
               Login
             </span>
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
               <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">Username</span>
+                <span className="text-md xs:text-[16px] font-semibold">Username</span>
                 <FaUser className="text-md" />
               </div>
 
@@ -126,7 +126,7 @@ const Login = () => {
 
             <div className=" border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded">
               <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">Password</span>
+                <span className="text-md xs:text-[16px] font-semibold">Password</span>
                 <FaKey className="text-md" />
               </div>
               <input
