@@ -104,8 +104,8 @@ const Login = () => {
       <div className="min-h-screen ">
         <Timer />
 
-        <div className="flex justify-center max-[800px]:mt-[25%] mt-[5%] ">
-          <div className="shadow-xl border border-gray backdrop-blur-sm inline-grid max-[800px]:p-4 p-10 rounded-xl w-[40%] max-[800px]:w-[95%] duration-[0.5s]">
+        <div className="flex justify-center xs:mt-[25%] mt-[5%] ">
+          <div className="shadow-xl border border-gray backdrop-blur-sm inline-grid xs:p-3 p-10 rounded-xl md:w-[40%] sm:w-[60%] xs:w-[95%] duration-[0.5s]">
             <span className="text-4xl text-center p-4 mb-3 font-semibold">
               Login
             </span>

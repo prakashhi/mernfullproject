@@ -26,7 +26,7 @@ const Timer = () => {
   return (
     <>
       <div className="p-4 flex justify-end">
-        <div className="text-center bg-[#F7F7F7] border border-gray text-gray-600 w-[15%] rounded-xl p-2 text-gray-600  max-[800px]:w-[40%] max-[800px]:text-[11px] duration-[0.5s]">
+        <div className="text-center bg-[#F7F7F7] border border-gray text-gray-600 md:w-[15%] rounded-xl p-2 text-gray-600 sm:w-[20%] xs:w-[40%] xs:text-[11px] sm:text-[13px] duration-[0.5s]">
           <p>Date: {dateTime.toLocaleDateString()}</p>
           <p>Time: {dateTime.toLocaleTimeString()}</p>
           <p>Day: {day}</p>

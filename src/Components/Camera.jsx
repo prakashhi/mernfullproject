@@ -177,7 +177,7 @@ const Camera = () => {
   }, [modelsLoaded, detectionLoop]);
 
   return (
-    <div className="inline-grid justify-center p-2 rounded mb-3">
+    <div className="inline-grid justify-center p-2 rounded mb-3  ">
       <div className="relative  mb-3 height-[20dvh] mx-auto">
         <Webcam
           className="w-full h-full rounded-xl"

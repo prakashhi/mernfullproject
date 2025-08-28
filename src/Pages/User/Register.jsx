@@ -55,7 +55,7 @@ const Register = () => {
     <>
       <div className=" min-h-screen">
         <div className="flex justify-center ">
-          <div className="shadow-xl border border-gray max-[800px]:p-4 backdrop-blur-sm bg-white/30 inline-grid p-7 rounded-xl w-[40%] max-[800px]:w-[95%] duration-[0.5s] my-6">
+          <div className="shadow-xl border border-gray xs:p-4 backdrop-blur-sm bg-white/30 inline-grid p-7 rounded-xl md:w-[40%] sm:w-[60%] xs:w-[95%] duration-[0.5s] my-6">
             <span className="text-4xl text-center p-4 font-semibold ">
               Register
             </span>
@@ -129,7 +129,7 @@ const Register = () => {
             {showCamera && (
               <div
                 id="hamb"
-                className="duration-[0.5s] border border-gray backdrop-blur-md text-white p-5 absolute h-[100%] rounded-xl  w-[100%] z-[1] transition-all  m-1"
+                className="duration-[0.5s] border border-gray backdrop-blur-md bg-gray-100 text-white p-5 absolute h-[100%] rounded-xl  w-[100%] z-[1] transition-all  "
               >
                 <div className="grid gap-5 ">
                   <div
