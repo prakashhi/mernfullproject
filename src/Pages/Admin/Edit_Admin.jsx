@@ -1,8 +1,6 @@
 import React from "react";
-import { IoCloseCircle } from "react-icons/io5";
-import { IoReorderThreeOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
 import NavBar from "../../Components/Admin/DashBoard/NavBar";
+import ButtonFun from '../../Components/ButtonFun'
 
 const Edit_Admin = () => {
   const ham = () => {
@@ -17,17 +15,18 @@ const Edit_Admin = () => {
         <NavBar />
 
         <div className=" flex m-2 p-2 gap-5 items-center max-[400px]:gap-3">
-          <span>Enter Userid</span>
+          {/* <span>Enter Userid</span> */}
           <input
             type={"text"}
-            className="p-1 rounded"
+            className="p-2 rounded-md bg-gray-100 outline-none border border-gary-2 text-sm"
             placeholder="Search..."
           />
-          <button className="backdrop-blur-sm bg-white/30 rounded px-4 py-2 max-[400px]:px-3 max-[400px]:py-1">
-            Edit
-          </button>
+          <ButtonFun
+          Text={"Search"}
+          className={"bg-black p-1 px-3 rounded-md text-white text-md"}
+          />
+          
         </div>
-
       </div>
     </>
   );

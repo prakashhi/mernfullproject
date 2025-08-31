@@ -26,7 +26,7 @@ const Register = () => {
   } = useForm();
 
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [load, setload] = useState(false);
   const { savedEncodings = [] } = location.state || {};
@@ -34,10 +34,9 @@ const Register = () => {
 
   const submit = async (values) => {
     setload(true);
-    if (savedEncodings) {
+    if (savedEncodings.length < 0) {
       toast.error("Face Data is not Avialble");
     }
-
     try {
       const res = await apiClent.post("/register_data", {
         ...values,
@@ -143,7 +142,7 @@ const Register = () => {
                     <IoCloseCircle color="black" />
                   </div>
 
-                  <Camera setShowCamera={setShowCamera}/>
+                  <Camera setShowCamera={setShowCamera} />
                 </div>
               </div>
             )}
@@ -190,10 +189,6 @@ const Register = () => {
               <input
                 {...register("workLoctioncode", {
                   required: Message.Required,
-                  pattern: {
-                    value: /^\d+$/,
-                    message: Message.NumberRequired,
-                  },
                 })}
                 className=" rounded border-[0px] duration-[0.5s] bg-transparent text-sm p-1 outline-none"
                 type="text"

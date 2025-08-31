@@ -1,52 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { FaLocationDot } from "react-icons/fa6";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import apiClent from "../../services/api";
-import NavBar from "../../Components/Admin/DashBoard/NavBar";
-import ButtonFun from "../../Components/ButtonFun";
 import { useForm } from "react-hook-form";
-import { Message } from "../../Components/Error/ErrorMessage";
-import Error from "../../Components/Error/Error";
+import { Message } from "../../../Components/Error/ErrorMessage";
+import Error from "../../../Components/Error/Error";
+import { FaLocationDot } from "react-icons/fa6";
+import ButtonFun from "../../../Components/ButtonFun";
+import { IoClose } from "react-icons/io5";
+import apiClient from "../../../services/api";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
-const Admin_worklocation = () => {
+const Location_EditForm = ({ Data, setisLoading ,GetLocation}) => {
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      WorkCode: Data?.Work_Code,
+      WorkName: Data?.WorkLocation_Name,
+      latitude: Data?.WorkCode_Latitude,
+      longitude: Data?.WorkCode_Longitude,
+      validrange: Data?.WorkLocation_VaildRange,
+    },
+  });
+  const [load, setLoad] = useState(false);
 
-  const [load, setload] = useState(false);
+  console.log(Data)
 
   const submit = async (values) => {
-    setload(true);
+    setLoad(true);
     try {
-      let res = await apiClent.post("/Admin/setwotkloaction/Admin", { ...values });
-      toast.success(res?.data?.msg);
-      reset({
-        latitude: "",
-        longitude: "",
-        validrange: "",
-        WorkCode: "",
-        WorkName: "",
+      let res = await apiClient.post(`/Admin/EditLocation/Admin/${Data.WorkCode_id}`, {
+        ...values,
       });
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.msg);
+      toast.success(res.data.msg);
+      GetLocation()
+      setisLoading((prev) => ({ ...prev, Model: false }));
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.msg)
     } finally {
-      setload(false);
+      setLoad(false);
     }
   };
 
   return (
     <>
-      <NavBar />
-      <div className=" h-[100dvh]">
-        <div className="flex justify-center ">
-          <div className="shadow-xl xs:mt-20 mt-10 border xs:p-4 backdrop-blur-sm bg-white/30 inline-grid p-10 rounded-xl w-[50%] xs:w-[95%] duration-[0.5s] my-4  m-[20px] xs:mx-[10px]">
+      <div className=" z-10 absolute top-0  backdrop-blur-md w-full">
+        <div className="flex justify-center">
+          <div className="shadow-xl relative xs:mt-20 mt-10 border xs:p-4  bg-white/30 inline-grid p-10 rounded-xl w-[40%] xs:w-[95%] duration-[0.5s] my-4  m-[20px] xs:mx-[10px]">
+            <IoClose
+              size={20}
+              className="cursor-pointer absolute left-[92%] top-4"
+              onClick={() => {
+                setisLoading((prev) => ({ ...prev, Model: false }));
+              }}
+            />
             <h1 className="flex justify-center font-bold text-xl xs:text-md mb-5">
-              Work Location data
+              Edit Location
             </h1>
 
             <div className=" p-2  relative rounded mb-3 border border-gray bg-[#F7F7F7] ">
@@ -129,7 +140,7 @@ const Admin_worklocation = () => {
                     message: Message.NumberRequired,
                   },
                 })}
-                className="rounded border-[0px] duration-[0.5s] text-sm bg-transparent  p-1 outline-none "
+                className="rounded border-[0px] duration-[0.5s] text-sm bg-transparent  p-1 outline-none w-full"
                 type="text"
               />
               {errors.validrange && (
@@ -153,4 +164,4 @@ const Admin_worklocation = () => {
   );
 };
 
-export default Admin_worklocation;
+export default Location_EditForm;

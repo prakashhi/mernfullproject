@@ -12,7 +12,7 @@ const NavBar = () => {
 
   return (
     <React.Fragment>
-      <div className="flex justify-between p-3 shadow-md">
+      <div className="flex justify-between p-3 duration-[0.5s] shadow-md">
         <div
           className=" cursor-pointer border px-1   rounded-md items-center"
           onClick={() => {

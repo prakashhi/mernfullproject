@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
-import Timer from "../../Components/Timer";
 
 import { Link } from "react-router-dom";
-import { IoCloseCircle } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { IoMdRefreshCircle } from "react-icons/io";
 import apiClent from "../../services/api";
-
-import Profile from "../../Components/Admin/DashBoard/Profile.jsx";
-import Menu from "../../Components/Admin/DashBoard/Menu";
 import NavBar from "../../Components/Admin/DashBoard/NavBar";
+import moment from "moment";
+import ButtonFun from "../../Components/ButtonFun"
 
 const Admin_Dashboard = () => {
   const navigate = useNavigate();
@@ -26,7 +23,7 @@ const Admin_Dashboard = () => {
       let response = await apiClent.get("/Admin/loaddata/Admin");
       setalldata(response.data.Data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error(err);
     } finally {
       setisLoading(false);
@@ -36,7 +33,6 @@ const Admin_Dashboard = () => {
   useEffect(() => {
     loaddata();
   }, [loaddata]);
-
   return (
     <>
       <NavBar />
@@ -49,33 +45,30 @@ const Admin_Dashboard = () => {
               onChange={(e) => {
                 setadminsearch(e.target.value);
               }}
-              className="p-2  border focus:outline-none text-sm rounded-md"
+              className="p-2  border bg-gray-100 focus:outline-none xs:text-[10px] xs:p-1 text-sm rounded-md "
               placeholder="Search..."
             />
-            <button className="text-white bg-black rounded-md px-6 py-1 max-[400px]:px-3 max-[400px]:py-1">
+            {/* <button className="text-white bg-black xs:text-[10px] rounded-md px-6 py-1 xs:px-3 xs:py-1">
               Search
-            </button>
+            </button> */}
           </div>
           <div className="flex cursor-pointer gap-1 items-center ">
             <IoMdRefreshCircle
               onClick={loaddata}
-              className="text-2xl cursor-pointer  duration-[0.5s]"
+              className="text-2xl xs:text-sm cursor-pointer  duration-[0.5s]"
             />
-            <span>Refreash</span>
+            <span className="xs:text-sm">Refreash</span>
           </div>
         </div>
         <div className="duration-[0.5s] height-full overflow-auto m-3 rounded-xl shadow-md bg-[#F7F7F7] ">
           <table className=" max-[400px]:text-[15px] w-full text-center font-light ">
             <thead className="">
               <tr className="border-b-2 sticky top-0  backdrop-blur-2xl cursor-pointer ">
-                <td className=" py-3 font-bold">User Id</td>
-                <td className=" font-bold"> Fullname</td>
-                <td className="  font-bold"> Username</td>
-                <td className="  font-bold">Email</td>
-                <td className="  font-bold">Lastlogin</td>
-                <td className="  font-bold">Workcode</td>
-                <td className="  font-bold">Latitude</td>
-                <td className="  font-bold">Longitude</td>
+                <td className=" py-3 font-bold xs:hidden">User Id</td>
+                <td className="xs:text-[12px] xs:py-2  font-bold"> Username</td>
+                <td className=" xs:text-[12px] font-bold">Email</td>
+                <td className=" xs:text-[12px] font-bold">Lastlogin</td>
+                <td className="  xs:text-[12px] font-bold">Workcode</td>
                 <td className="  font-bold"></td>
               </tr>
             </thead>
@@ -85,39 +78,34 @@ const Admin_Dashboard = () => {
                 alldata.length > 0 &&
                 alldata.map((user) => (
                   <tr key={user._id} className=" cursor-pointer">
-                    <td className="border-r-2   p-3 font-semibold">
+                    <td className="border-r-2   px-2 py-3  font-semibold xs:hidden ">
                       {user.User_id}
                     </td>
-                    <td className="border-r-2  p-3 font-semibold">
-                      {user.User_fullname}
-                    </td>
-                    <td className="border-r-2 rounded p-3 font-semibold">
+                    <td className="border-r-2 rounded px-2 py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {user.Username}
                     </td>
-                    <td className="border-r-2 rounded p-3 font-semibold">
+                    <td className="border-r-2 rounded px-2 py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {user.User_email}
                     </td>
-                    <td className="border-r-2 rounded p-3 font-semibold">
-                      {user.User_lastlogin.split(" ").splice(0, 5).join(" ")}
+                    <td className="border-r-2 rounded px-2 py-3 xs:p-1 font-semibold xs:text-[11px]">
+                      {moment(user.User_lastlogin).format("DD MMM-YYYY hh:MM a")}
                     </td>
-                    <td className="border-r-2 rounded p-3 font-semibold">
+                    <td className="border-r-2 rounded px-2 py-3  xs:p-1 font-semibold xs:text-[11px]">
                       {user.User_Workcode}
                     </td>
-                    <td className="border-r-2 rounded p-3 font-semibold">
-                      {user.User_workLatitude}
-                    </td>
-                    <td className="rounded p-3 font-semibold">
-                      {user.User_workLongitude}
-                    </td>
-
-                    <td className="rounded p-3">
+                    <td className="border-r-2 px-2 py-3 ">
                       <Link
                         to="/Admin_datali"
                         state={{ id: user.User_id, username: user.Username }}
-                        className="shadow-md px-6 max-[750px]:text-[12px] hover:cursor-pointer text-[14px] p-1 text-white bg-purple-900 font-bold rounded-full"
+                        className="shadow-md px-6 xs:text-[12px] hover:cursor-pointer text-sm p-1 text-white bg-black font-bold rounded-xl"
                       >
                         DATA
                       </Link>
+                    </td>
+                    <td className="px-2 py-3">
+                      <ButtonFun Text={"EDIT"}
+                      className={"bg-black font-bold text-sm rounded-xl px-6 p-1 text-white"}
+                      />
                     </td>
                   </tr>
                 ))}

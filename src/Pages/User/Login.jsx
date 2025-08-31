@@ -15,7 +15,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -93,7 +92,7 @@ const Login = () => {
       navigate("/login_camera");
     } catch (error) {
       console.log(error);
-      toast.error(error?.response?.data?.msg)
+      toast.error(error?.response?.data?.msg);
     } finally {
       setData((prev) => ({ ...prev, load: false }));
     }
@@ -112,7 +111,9 @@ const Login = () => {
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
               <div className="flex items-center justify-between">
-                <span className="text-md xs:text-[16px] font-semibold">Username</span>
+                <span className="text-md xs:text-[16px] font-semibold">
+                  Username
+                </span>
                 <FaUser className="text-md" />
               </div>
 
@@ -126,7 +127,9 @@ const Login = () => {
 
             <div className=" border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded">
               <div className="flex items-center justify-between">
-                <span className="text-md xs:text-[16px] font-semibold">Password</span>
+                <span className="text-md xs:text-[16px] font-semibold">
+                  Password
+                </span>
                 <FaKey className="text-md" />
               </div>
               <input

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+
 import Login from "./Pages/User/Login";
 import Register from "./Pages/User/Register";
 import Dashboard from "./Pages/User/Dashboard";
@@ -12,6 +12,9 @@ import Admin_Datali from "./Pages/Admin/Admin_Datali";
 import Admin_worklocation from "./Pages/Admin/Admin_worklocation";
 import Login_cameras from "./Pages/User/Login_camers";
 import ProtectedRoute from "./services/ProtectedRoute";
+import Admin_LocationList from "./Pages/Admin/Admin_LocationList";
+import './App.css'
+
 
 const App = () => {
   return (
@@ -52,6 +55,14 @@ const App = () => {
             element={
               <ProtectedRoute Role="Admin">
                 <Admin_worklocation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/AdminLocation-List"
+            element={
+              <ProtectedRoute Role="Admin">
+                <Admin_LocationList />
               </ProtectedRoute>
             }
           />
