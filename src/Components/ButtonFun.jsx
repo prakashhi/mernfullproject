@@ -1,5 +1,5 @@
 import React from "react";
-import Loader from '../assets/spinner.svg'
+import Loader from "../assets/spinner.svg";
 
 const ButtonFun = ({ Text, onClick, Loading, className }) => {
   return (

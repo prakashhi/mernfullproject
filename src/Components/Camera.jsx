@@ -9,7 +9,7 @@ import ButtonFun from "../Components/ButtonFun";
 const EXPRESSIONS = ["happy", "angry", "surprised"];
 const DETECTION_INTERVAL = 500; // 1 second interval for smooth performance
 
-const Camera = ({setShowCamera}) => {
+const Camera = ({ setShowCamera, Role, FaceEncoding }) => {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [textualAnalysis, setTextualAnalysis] = useState("Initializing...");
   const [faceEncodings, setFaceEncodings] = useState(null);
@@ -57,15 +57,25 @@ const Camera = ({setShowCamera}) => {
     };
   }, [loadModels]);
 
+
+
   // Save face encoding
-  const saveFaceEncoding = () => {
+  const saveFaceEncoding = async() => {
     setLoad(true);
     try {
       if (faceEncodings) {
         const faceEncodingArray = Array.from(faceEncodings);
-        navigate("/Register", { state: { savedEncodings: faceEncodingArray } });
-        setShowCamera(false)
-        toast.info("FaceData set Sucessfully");
+
+
+        if (Role === "UserCamera") {
+         await FaceEncoding(faceEncodingArray);
+        } else {
+          navigate("/Register", {
+            state: { savedEncodings: faceEncodingArray },
+          });
+          setShowCamera(false);
+          toast.info("FaceData set Sucessfully");
+        }
       } else {
         toast.error("No valid face encodings to save");
       }
@@ -149,7 +159,6 @@ const Camera = ({setShowCamera}) => {
         expressionMatched.current = false;
         setTextualAnalysis("No face detected. Please adjust your position.");
       }
-
     } catch (error) {
       console.error("Detection error:", error);
 

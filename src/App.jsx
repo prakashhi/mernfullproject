@@ -13,8 +13,7 @@ import Admin_worklocation from "./Pages/Admin/Admin_worklocation";
 import Login_cameras from "./Pages/User/Login_camers";
 import ProtectedRoute from "./services/ProtectedRoute";
 import Admin_LocationList from "./Pages/Admin/Admin_LocationList";
-import './App.css'
-
+import "./App.css";
 
 const App = () => {
   return (
@@ -23,9 +22,24 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/Register" element={<Register />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route
+            path="/Dashboard"
+            element={
+              <ProtectedRoute Role="User">
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/User_data" element={<User_datali />} />
           <Route path="/Admin" element={<Admin_login />} />
+          <Route
+            path="/Login-Camera"
+            element={
+              <ProtectedRoute Role="User">
+                <Login_cameras />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/A_Dash"
             element={
@@ -66,7 +80,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-           
+
           {/* Add other routes here */}
         </Routes>
       </div>

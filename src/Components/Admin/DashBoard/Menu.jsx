@@ -27,7 +27,7 @@ const Menu = () => {
         },
       ],
     },
-    { Text: "Edit User", img: <FaUserEdit />, link: "/Admin_Edit" },
+ /*    { Text: "Edit User", img: <FaUserEdit />, link: "/Admin_Edit" }, */
     { Text: "DashBoard", img: <MdSpaceDashboard />, link: "/A_Dash" },
   ];
 

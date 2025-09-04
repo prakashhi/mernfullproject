@@ -4,6 +4,7 @@ import apiClient from "../../services/api";
 import { Link } from "react-router-dom";
 import ButtonFun from "../../Components/ButtonFun";
 import Location_EditForm from "../../Components/Admin/LocationList/Location_EditForm";
+import LoadingCom from "../../Components/LoadingCom";
 
 const Admin_LocationList = () => {
   const [locationData, setlocationData] = useState({
@@ -36,7 +37,7 @@ const Admin_LocationList = () => {
             <tr className="border-b-2 sticky top-0  backdrop-blur-2xl cursor-pointer p-2">
               <td className="xs:hidden py-3 font-bold ">WorkCode id</td>
               <td className="xs:hidden font-bold"> WorkLocation Name</td>
-              <td className="  font-bold xs:text-[11px]"> Work Code</td>
+              <td className=" py-3 font-bold xs:text-[11px]"> Work Code</td>
               <td className="  font-bold xs:text-[11px]">WorkCode Latitude</td>
               <td className="  font-bold xs:text-[11px]">WorkCode Longitude</td>
               <td className="  font-bold"></td>
@@ -90,27 +91,25 @@ const Admin_LocationList = () => {
                 </>
               ))}
 
-            {locationData.Location.length <= 0 && (
+            {(locationData.Location.length <= 0 && isLoading.Loading === false) && (
               <tr>
-                <td colSpan="3" className="text-center">
+                <td colSpan="4" className="text-center font-semibold ">
                   No Data Available
                 </td>
               </tr>
             )}
+			{isLoading.Loading === true && (
+                <tr>
+                  <td
+                    colSpan="100%"
+                    className="font-semiboldpy-6  text-center"
+                  >
+                    <LoadingCom />
+                  </td>
+                </tr>
+              )}
           </tbody>
         </table>
-        {isLoading.Loading && locationData.Location == false && (
-          <div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
-            <div className="text-lg font-semibold text-gray-700">
-              Loading data...
-            </div>
-            <div className="flex space-x-2">
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

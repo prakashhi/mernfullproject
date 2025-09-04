@@ -86,10 +86,10 @@ const Login = () => {
   const submit = async (values) => {
     setData((prev) => ({ ...prev, load: true }));
     try {
-      const res = await apiClent.post("/login", { ...values, Data });
-
+      let res = await apiClent.post("/login", { ...values, Data });
+      localStorage.setItem("User", JSON.stringify(res?.data?.Data));
+      navigate("/Login-Camera");
       toast.success("Login sucessfull");
-      navigate("/login_camera");
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.msg);
@@ -105,7 +105,7 @@ const Login = () => {
 
         <div className="flex justify-center xs:mt-[20%] mt-[5%] ">
           <div className="shadow-xl border border-gray backdrop-blur-sm inline-grid xs:p-3 p-10 rounded-xl md:w-[40%] sm:w-[60%] xs:w-[95%] duration-[0.5s]">
-            <span className="text-4xl xs:text-2xl text-center p-4 mb-3 font-semibold">
+            <span className="text-4xl xs:text-2xl text-center p-4 mb-3 font-semibold ">
               Login
             </span>
 

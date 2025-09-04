@@ -8,7 +8,12 @@ import { IoMdRefreshCircle } from "react-icons/io";
 import apiClent from "../../services/api";
 import NavBar from "../../Components/Admin/DashBoard/NavBar";
 import moment from "moment";
-import ButtonFun from "../../Components/ButtonFun"
+import ButtonFun from "../../Components/ButtonFun";
+import { TfiMoreAlt } from "react-icons/tfi";
+import { MdViewAgenda } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import LoadingCom from "../../Components/LoadingCom";
 
 const Admin_Dashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +21,25 @@ const Admin_Dashboard = () => {
   const [alldata, setalldata] = useState([]);
   const [adminsearch, setadminsearch] = useState("");
   const [isLoading, setisLoading] = useState(true);
+  const [state, setState] = useState({
+    MoreMenu: false,
+    id: "",
+  });
+
+  const MenuItem = [
+    {
+      Name: "View Details",
+      img: <MdViewAgenda size={11} />,
+      textColor: "text-blue-600",
+      link:'/Admin_datali'
+    },
+    { Name: "Edit Item", img: <FaEdit size={11} />, textColor: "text-orange-600" },
+    {
+      Name: "Delete Item",
+      img: <MdDeleteForever size={11} />,
+      textColor: "text-red-600",
+    },
+  ];
 
   const loaddata = useCallback(async () => {
     setisLoading(true);
@@ -29,6 +53,8 @@ const Admin_Dashboard = () => {
       setisLoading(false);
     }
   }, []);
+  
+  console.log(alldata)
 
   useEffect(() => {
     loaddata();
@@ -45,7 +71,7 @@ const Admin_Dashboard = () => {
               onChange={(e) => {
                 setadminsearch(e.target.value);
               }}
-              className="p-2  border bg-gray-100 focus:outline-none xs:text-[10px] xs:p-1 text-sm rounded-md "
+              className="p-2  border bg-gray absolute-100 focus:outline-none xs:text-[10px] xs:p-1 text-sm rounded-md "
               placeholder="Search..."
             />
             {/* <button className="text-white bg-black xs:text-[10px] rounded-md px-6 py-1 xs:px-3 xs:py-1">
@@ -57,11 +83,11 @@ const Admin_Dashboard = () => {
               onClick={loaddata}
               className="text-2xl xs:text-sm cursor-pointer  duration-[0.5s]"
             />
-            <span className="xs:text-sm">Refreash</span>
+            <span className="xs:text-sm">Refresh</span>
           </div>
         </div>
-        <div className="duration-[0.5s] height-full overflow-auto m-3 rounded-xl shadow-md bg-[#F7F7F7] ">
-          <table className=" max-[400px]:text-[15px] w-full text-center font-light ">
+        <div className="duration-[0.5s] height-full overflow-auto m-3 xs:mx-2 rounded-xl shadow-md bg-[#F7F7F7] ">
+          <table className=" w-full text-center font-light ">
             <thead className="">
               <tr className="border-b-2 sticky top-0  backdrop-blur-2xl cursor-pointer ">
                 <td className=" py-3 font-bold xs:hidden">User Id</td>
@@ -77,59 +103,83 @@ const Admin_Dashboard = () => {
               {alldata &&
                 alldata.length > 0 &&
                 alldata.map((user) => (
-                  <tr key={user._id} className=" cursor-pointer">
-                    <td className="border-r-2   px-2 py-3  font-semibold xs:hidden ">
+                  <tr key={user._id} className=" cursor-pointer relative">
+                    <td className="border-r-2  py-3  font-semibold xs:hidden ">
                       {user.User_id}
                     </td>
-                    <td className="border-r-2 rounded px-2 py-3 xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2 rounded  py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {user.Username}
                     </td>
-                    <td className="border-r-2 rounded px-2 py-3 xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2 rounded  py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {user.User_email}
                     </td>
-                    <td className="border-r-2 rounded px-2 py-3 xs:p-1 font-semibold xs:text-[11px]">
-                      {moment(user.User_lastlogin).format("DD MMM-YYYY hh:MM a")}
+                    <td className="border-r-2 rounded  py-3 xs:p-1 font-semibold xs:text-[11px]">
+                      {moment(user.User_lastlogin).format(
+                        "DD MMM-YYYY hh:MM a"
+                      )}
                     </td>
-                    <td className="border-r-2 rounded px-2 py-3  xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2 rounded  py-3  xs:p-1 font-semibold xs:text-[11px]">
                       {user.User_Workcode}
                     </td>
-                    <td className="border-r-2 px-2 py-3 ">
-                      <Link
-                        to="/Admin_datali"
-                        state={{ id: user.User_id, username: user.Username }}
-                        className="shadow-md px-6 xs:text-[12px] hover:cursor-pointer text-sm p-1 text-white bg-black font-bold rounded-xl"
-                      >
-                        DATA
-                      </Link>
-                    </td>
-                    <td className="px-2 py-3">
-                      <ButtonFun Text={"EDIT"}
-                      className={"bg-black font-bold text-sm rounded-xl px-6 p-1 text-white"}
+                    <td className=" px-6 py-3 flex justify-center ">
+                      <TfiMoreAlt
+                        className="hover:bg-gray-300  rounded-sm"
+                        onClick={() => {
+                          setState((prev) => ({
+                            ...prev,
+                            MoreMenu: !state.MoreMenu,
+                            id: user.User_id,
+                          }));
+                        }}
                       />
                     </td>
+            
+                      {state.MoreMenu && user.User_id === state.id && (
+                        <div className="border bg-gray-100 absolute  right-3 xs:px-2  px-4 py-2 z-10 rounded-xl shadow-md">
+                          <div classNAme="flex flex-col gap-1">
+                            {MenuItem.map((val, index) => (
+                              <div key={index}>
+                              <p
+                                onClick={()=>{ 
+	
+									navigate(`${val?.link}`,{state: {id: user.User_id ,Username:user.Username}})
+								
+								}
+								
+								}
+                                className="flex gap-2 items-center cursor-pointer  hover:bg-white px-2 rounded-full"
+                              >
+                                {val.img}
+                                <span className={`cursor-pointer ${val.textColor} font-semibold xs:text-sm text-md`}>
+                                  {val.Name}
+                                </span>
+                              </p></div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    
                   </tr>
                 ))}
               {alldata.length <= 0 && isLoading == false && (
                 <tr>
-                  <td colSpan="3" className="text-center">
+                  <td colSpan="4" className="text-center font-semibold p-3  xs:text-sm">
                     No Data Available
+                  </td>
+                </tr>
+              )}
+			   {isLoading === true && (
+                <tr>
+                  <td
+                    colSpan="100%"
+                    className="font-semiboldpy-6  text-center"
+                  >
+                    <LoadingCom />
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
-          {isLoading && alldata == false && (
-            <div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
-              <div className="text-lg font-semibold text-gray-700">
-                Loading data...
-              </div>
-              <div className="flex space-x-2">
-                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </>
