@@ -31,16 +31,16 @@ const Admin_LocationList = () => {
     <>
       <NavBar />
 
-      <div className="duration-[0.5s] height-full overflow-auto m-3 rounded-xl shadow-md bg-[#F7F7F7] xs:mx-2">
-        <table className=" max-[400px]:text-[15px] w-full text-center font-light ">
+      <div className="duration-[0.5s]  overflow-auto m-3 rounded-xl shadow-md bg-[#F7F7F7] xs:mx-2">
+        <table className=" w-full text-center font-light border-separate border-spacing-0">
           <thead className="">
-            <tr className="border-b-2 sticky top-0  backdrop-blur-2xl cursor-pointer p-2">
-              <td className="xs:hidden py-3 font-bold ">WorkCode id</td>
-              <td className="xs:hidden font-bold"> WorkLocation Name</td>
-              <td className=" py-3 font-bold xs:text-[11px]"> Work Code</td>
-              <td className="  font-bold xs:text-[11px]">WorkCode Latitude</td>
-              <td className="  font-bold xs:text-[11px]">WorkCode Longitude</td>
-              <td className="  font-bold"></td>
+            <tr className="sticky top-0 backdrop-blur-3xl bg-gray-100  border-b-2 cursor-pointer p-2">
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2 xs:hidden py-3 font-bold ">WorkCode id</th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2 xs:hidden font-bold"> WorkLocation Name</th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  py-3 font-bold xs:text-[11px]"> Work Code</th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold xs:text-[11px]">WorkCode Latitude</th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold xs:text-[11px]">WorkCode Longitude</th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold"></th>
             </tr>
           </thead>
 
@@ -91,23 +91,21 @@ const Admin_LocationList = () => {
                 </>
               ))}
 
-            {(locationData.Location.length <= 0 && isLoading.Loading === false) && (
-              <tr>
-                <td colSpan="4" className="text-center font-semibold ">
-                  No Data Available
-                </td>
-              </tr>
-            )}
-			{isLoading.Loading === true && (
+            {locationData.Location.length <= 0 &&
+              isLoading.Loading === false && (
                 <tr>
-                  <td
-                    colSpan="100%"
-                    className="font-semiboldpy-6  text-center"
-                  >
-                    <LoadingCom />
+                  <td colSpan="4" className="text-center font-semibold p-2">
+                    No Data Available
                   </td>
                 </tr>
               )}
+            {isLoading.Loading === true && (
+              <tr>
+                <td colSpan="100%" className="font-semiboldpy-6  text-center">
+                  <LoadingCom />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

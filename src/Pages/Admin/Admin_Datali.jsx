@@ -125,10 +125,10 @@ const Admin_Datali = () => {
           /> */}
         </div>
 
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center cursor-pointer" onClick={getdata}>
           <IoMdRefreshCircle
-            onClick={getdata}
-            className="duration-[0.5s] text-3xl cursor-pointer xs:text-xl"
+           
+            className="duration-[0.5s] text-3xl  xs:text-xl"
           />
 		   <span className="xs:text-sm">Refresh</span>
         </div>

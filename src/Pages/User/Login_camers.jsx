@@ -28,7 +28,7 @@ const Login_camers = () => {
   return (
     <>
       <div className="flex justify-center">
-        <div className="flex justify-center  border w-1/3 mt-10 rounded-xl m-3 xs:w-full xs:mt-20">
+        <div className="flex justify-center shadow-md border w-1/3 mt-10 rounded-xl m-3 xs:w-full xs:mt-20">
           <Camera Role={"UserCamera"} FaceEncoding={FaceEncoding} />
         </div>
       </div>

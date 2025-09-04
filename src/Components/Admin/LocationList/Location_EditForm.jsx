@@ -46,9 +46,9 @@ const Location_EditForm = ({ Data, setisLoading ,GetLocation}) => {
 
   return (
     <>
-      <div className=" z-10 absolute top-0  backdrop-blur-md w-full">
-        <div className="flex justify-center">
-          <div className="shadow-xl relative xs:mt-20 mt-10 border xs:p-4  bg-white/30 inline-grid p-10 rounded-xl w-[40%] xs:w-[95%] duration-[0.5s] my-4  m-[20px] xs:mx-[10px]">
+      <div className=" z-10 absolute top-0 left-0 right-0 backdrop-blur-md w-full">
+        <div className="">
+          <div className="shadow-xl  relative xs:mt-20 mt-10 border xs:p-4  bg-white/30 inline-grid p-10 rounded-xl w-[40%] xs:w-[95%] duration-[0.5s] my-4  m-[20px] xs:mx-[10px]">
             <IoClose
               size={20}
               className="cursor-pointer absolute left-[92%] top-4"

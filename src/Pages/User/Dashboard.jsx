@@ -8,12 +8,12 @@ import { HiUserAdd } from "react-icons/hi";
 import Timer from "../../Components/Timer";
 import { toast } from "react-toastify";
 import apiClent from "../../services/api";
-import NavBar from '../../Components/User/NavBar'
+import NavBar from "../../Components/User/NavBar";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const { id, Username } = JSON.parse(localStorage.getItem("User"));
+  const { id, Username } = JSON.parse(localStorage?.getItem("User"));
 
   const [loading, setLoading] = useState(true);
   const [logbtn, setlogbtn] = useState(false);
@@ -115,21 +115,11 @@ const Dashboard = () => {
 
   return (
     <>
-    <NavBar/>
-      <div className="max-[750px]:p-2 p-3 h-[100%] duration-[0.5s]">
-        <div className="bg-blue-200 shadow-2xl  rounded ">
+      <NavBar />
+      <div className="  duration-[0.5s]">
+        {/* HEader */}
+        <div className="">
           <Timer />
-          <div className="max-[380px]:grid flex justify-between p-3 items-center my-3 rounded">
-            <div className="grid">
-              <p className="max-[750px]:text-[11px] text-xl font-extralight">
-                Id:{id}{" "}
-              </p>
-              <p className="max-[750px]:text-[11px]  text-xl font-extralight">
-                Username:{Username}
-              </p>
-            </div>
-            {/* <Link to='/User_data' state={{ id: userdata.userId,username:userdata.username }} className='shadow-2xl  duration-[0.5s] px-6 max-[750px]:text-[11px] hover:cursor-pointer text-[14px] hover:text-[15px] font-bold p-2 text-white bg-fuchsia-600 rounded-full'>View Data</Link> */}
-          </div>
         </div>
 
         <div className="shadow-2xl max-[750px]:p-2  p-5 py-10 bg-blue-400 rounded h-[50vh]">
