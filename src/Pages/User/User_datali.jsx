@@ -1,262 +1,200 @@
-import React, { useState } from 'react';
-import Timer from '../../Components/Timer';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef } from "react";
+import Timer from "../../Components/Timer";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack, IoMdRefreshCircle } from "react-icons/io";
-import { useEffect ,useCallback } from 'react';
-import { toast } from 'react-toastify';
-import apiClent from '../../services/api'
+import { useEffect, useCallback } from "react";
+import { toast } from "react-toastify";
+import apiClent from "../../services/api";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
 const User_datali = () => {
-
   const navigate = useNavigate();
 
+  const { id, Username } = JSON.parse(localStorage?.getItem("User"));
+
   const location = useLocation();
-  const st = location.state || {}
-  const [userdata, setUserdata] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [listdata, setlistdata] = useState({});
-  const [month, setmonth] = useState('');
+  const [month, setmonth] = useState("");
   const [daywork, setdaywork] = useState(0);
-  const [isSerach,setisSerach] = useState(false);
-  const [isLoading,setisLoading] = useState(false);
+  const [isSerach, setisSerach] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
+  const timeoutRef = useRef(null);
+  const startDate = useRef(moment());
+  const [state, setState] = useState({
+    loading: false,
+    userData: [],
+  });
 
-
- useEffect(() => {
-    if (!st.id) {
-      return navigate('/');
-    }
-
-  }) 
-
- if (!st) {
-    return <div>Redirecting...</div>;
-  }
-
-
-  const m = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-
-
-
-
- 
-
-
-
-
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/'); // Redirect to login if no token
-    } else {
-      try {
-        // Decode the token (using the base64 payload)
-        const payload = JSON.parse(atob(token.split('.')[1]));
-
-        // Check if the token is expired
-        const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
-
-        if (payload.exp && payload.exp < currentTime) {
-          toast.info('Sessionhas expired');
-          sessionStorage.removeItem('token'); // Clear the expired token
-          navigate('/'); // Redirect to login
-        } else {
-
-          setUserdata(payload); // Token is valid, set user data
-        }
-      } catch (error) {
-        console.error('Invalid token:', error);
-        sessionStorage.removeItem('token'); // Clear invalid token
-        navigate('/'); // Redirect if token is invalid
-      }
-      finally {
-        setLoading(false); // Ensure loading is set to false regardless of the outcome
-      }
-    }
-
-  }, [navigate]);
-
-
-
-  const id = st.id;
-
-
-  const getdata = useCallback(async () => { 
-
-        setisLoading(true);
+  const getdata = useCallback(async () => {
+    setState((prev) => ({ ...prev, loading: true }));
 
     try {
-      const res = await apiClent.post('/getdta', { id });
-      setlistdata(res.data.workdta[0].work_entries);
-       setisLoading(false);
-    }
-    catch (err) {
+      let res = await apiClent.get(`/User/Getdata/${id}/${startDate.current}`);
+      setState((prev) => ({ ...prev, userData: res.data.data }));
+    } catch (err) {
       console.log(err);
-      setisLoading(false);
-
+    } finally {
+      setState((prev) => ({ ...prev, loading: false }));
     }
+  }, []);
 
-
-  },[])
-
-  useEffect(()=>{
+  useEffect(() => {
     getdata();
-  },[])
+  }, []);
 
-
-  const countday =  useCallback(async () => {
+  const countday = useCallback(async () => {
     setisSerach(true);
-     setisLoading(true);
+    setisLoading(true);
 
     try {
       setlistdata({});
 
-      const kl = await apiClent.post('/daycount', { id, month });
+      const kl = await apiClent.post("/daycount", { id, month });
 
-      if(kl.data.workdta.length <= 0 )
-      {
-         setdaywork(0);
-      }
-      else
-      {
+      if (kl.data.workdta.length <= 0) {
+        setdaywork(0);
+      } else {
         setlistdata(kl.data.workdta[0].work_entries);
 
-      const alldata = kl.data.workdta[0].work_entries
+        const alldata = kl.data.workdta[0].work_entries;
 
         // Calculate full day counts if data exists
         let countfullday = 0;
         alldata.forEach((entry) => {
-          if (entry.FullDay === 'P') {
+          if (entry.FullDay === "P") {
             countfullday++;
           }
         });
         // Update the day work count state
         setdaywork(countfullday);
-    
       }
-         
-      
-     
-    
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
       setdaywork(0);
-      
-
-    }
-    finally
-    {
+    } finally {
       setisSerach(false);
-       setisLoading(false);
+      setisLoading(false);
     }
+  }, [month]);
 
-  },[month]);
+
 
   return (
     <>
-    <div className='bg-gradient-to-r m-1 rounded bg-blue-300 shadow-2xl'>
-
-        <Timer />
-        <div onClick={() => { navigate('/Dashboard'); }} className='w-[10%] m-1 rounded mb-1 flex items-center gap-1 p-2 cursor-pointer'>
-           <IoMdArrowBack className='text-xl hover:bg-cyan-500 duration-[0.4s] rounded-full hover:text-2xl' />
-          <span className='text-xl max-[700px]:hidden'>Back</span>
+      {/* Header */}
+      <div className="flex justify-between mb-10 border-b-1 shadow-md">
+        <div
+          onClick={() => {
+            navigate("/Dashboard");
+          }}
+          className="w-[10%] m-1 rounded mb-1 flex  items-center  gap-1 p-3 cursor-pointer"
+        >
+          <IoMdArrowBack size={22} className="" />
+        </div>
+        <div className=" flex  justify-between m-2 p-2 gap-5 items-center xs:gap-3">
+          <div className="grid border rounded-xl bg-[#F7F7F7] text-gray-600  p-2 rounded cursor-pointer">
+            <span className="xs:text-[13px] text-md font-semibold">
+              Id : {id}
+            </span>
+            <span className="xs:text-[13px] text-md font-semibold">
+              Username : {Username}
+            </span>
+          </div>
         </div>
       </div>
-      <div id='contain' className=' duration-[0.5s]  bg-blue-400 shadow-2xl m-2 rounded'>
-        <div className=' flex  justify-between m-2 p-2 gap-5 items-center max-[400px]:gap-3' >
-          <div className='grid  bg-cyan-400 font-extrabold p-2 rounded'>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Id:{id} </span>
-            <span className='max-[750px]:text-[15px] text-xl font-extralight'>Username:{st.username} </span>
-          </div>
 
-          <div>
-            <IoMdRefreshCircle onClick={getdata} className='duration-[0.5s] text-3xl cursor-pointer hover:text-4xl' />
-          </div>
+      {/* Second Haeder */}
+      <div className="flex items-center justify-between duration-[0.5s]  p-5 xs:p-2 xs:mb-5">
+        <div className="gap-2 flex cursor-pointer ">
+          <DatePicker
+            className="bg-gray-200 p-2 rounded-md border outline-none font-semibold text-center xs:w-1/2 xs:p-1 "
+            selected={startDate.current}
+            onChange={(date) => {
+              clearTimeout(timeoutRef.current);
+              startDate.current = moment(date).format();
+              timeoutRef.current = setTimeout(() => {
+                getdata();
+              }, 450);
+            }}
+            dateFormat="MMM - yyyy" // show month + year
+            showMonthYearPicker // disables day selection
+          />
         </div>
-        <div className='p-3 gap-2 flex'>
-          <select onChange={(e) => { setmonth(e.target.value); }} name="months" id="month" className='rounded p-2 bg-purple-900 text-white font-bold' value={month}>
-            <option value="" disabled>
-              -- Select a Month --
-            </option>
-            {m.map((m, index) => (
-              <option key={index} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
 
-          {
-
-             isSerach ? (<div className='bg-white px-4 opacity-50 py-1 rounded'>Loading...</div>) :(<button onClick={countday} className='bg-white px-4 py-1 rounded'>Show Month</button>)
-          }
-          
+        <div
+          className="flex gap-1 items-center cursor-pointer"
+          onClick={getdata}
+        >
+          <IoMdRefreshCircle className="duration-[0.5s] text-3xl  xs:text-sm" />
+          <span className="xs:text-sm">Refresh</span>
         </div>
-        <div className='duration-[0.5s] m-2 p-2 overflow-auto  backdrop-blur-sm bg-white rounded '>
-          <table className=' max-[400px]:text-[15px] w-full text-center '>
+      </div>
+
+      <div id="contain" className=" duration-[0.5s]">
+        <div className="duration-[0.5s] m-4 xs:m-1 p-2 overflow-auto border rounded-[13px] shadow-md bg-[#F7F7F7]">
+          <table className="  xs:text-[15px] w-full text-center   ">
             <thead>
-              <tr className='border-b-2 sticky'>
-                <td className=' rounded font-semibold'>Workday</td>
-                <td className=' rounded font-semibold'>Date of Workday</td>
-                <td className=' rounded font-semibold'>EntryTime</td>
-                <td className=' rounded font-semibold'>ExitTime</td>
-                <td className=' rounded font-semibold'>FullDay</td>
+              <tr className="border-b-2 sticky top-0">
+                <td className=" rounded font-semibold xs:text-[11px] xs:py-2">Workday</td>
+                <td className=" rounded font-semibold xs:text-[11px]">Date</td>
+                <td className=" rounded font-semibold xs:text-[11px]">EntryTime</td>
+                <td className=" rounded font-semibold xs:text-[11px]">ExitTime</td>
+                <td className=" rounded font-semibold xs:text-[11px]">FullDay</td>
               </tr>
             </thead>
             <tbody>
-              {
-                listdata && listdata.length > 0 ? (
-                  listdata.map((user) => (
-
-                    <tr key={user._id} className="">
-                      <td className="border-r-2 rounded p-3">{user.day_of_work}</td>
-                      <td className="border-r-2 rounded p-3">{user.date_of_work}</td>
-                      <td className="border-r-2 rounded p-3">{user.entry_time}</td>
-                      <td className="border-r-2 rounded p-3">{user.exit_time}</td>
-                      <td className=" rounded p-3">{user.FullDay}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3" className="text-center">
-                      No Data Available
+              {listdata &&
+                state?.userData.length > 0 &&
+                state?.userData?.map((user) => (
+                  <tr key={user._id} className="">
+                    <td className="border-r-2 rounded p-3 xs:text-sm">
+                      {moment(user.Date).format("ddd")}
                     </td>
+                    <td className="border-r-2 rounded p-3 xs:text-sm">
+                      {moment(user.Date).format("DD-MM")}
+                    </td>
+                    <td className="border-r-2 rounded p-3 xs:text-sm">
+                      {moment(user.Entry_time).format("hh:mm:ss a")}
+                    </td>
+                    <td className="border-r-2 rounded p-3 xs:text-sm">{moment(user.Exit_time).format("hh:mm:ss a")}</td>
+                    <td className=" rounded p-3">{user.FullDay}</td>
                   </tr>
-                )
-              }
+                ))}
+              {state?.userData?.length <= 0 && state.loading === false && (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="text-center font-semibold p-3  xs:text-sm"
+                  >
+                    No Data Available
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
 
-
-          {
-            isLoading && (<div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
-        <div className="text-lg font-semibold text-gray-700">Loading data...</div>
-        <div className="flex space-x-2">
-          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+          {state.loading === true && (
+            <div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
+              <div className="text-lg font-semibold text-gray-700">
+                Loading data...
+              </div>
+              <div className="flex space-x-2">
+                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
+                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
+                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>)
-          }
-
-        </div>
-        <div className='m-2 p-2 flex gap-5 items-center'>
+        <div className="m-2 p-2 flex gap-5 items-center">
           <span>Month Of Working Days : {daywork} Days</span>
-
-
         </div>
-
       </div>
-
     </>
   );
 };
-
-
 
 export default User_datali;

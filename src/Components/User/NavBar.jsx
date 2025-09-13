@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EmpLogo from "../../../public/EmpLogo.svg";
+import EmpLogo from "../../assets/EmpLogo.svg";
 import { FaCircleUser } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { FaUserAlt } from "react-icons/fa";
@@ -48,7 +48,7 @@ const NavBar = () => {
 
       {state.UserDataModel === true && (
         <div className="relative">
-          <div className="flex flex-col border shadow-sm w-[23%] xs:w-[60%] bg-gray-100 rounded-md absolute right-2 p-2 top-2">
+          <div className="flex flex-col border shadow-sm md:w-[23%] xs:w-[60%] bg-gray-100 rounded-md absolute right-2 p-2 top-2 z-10">
             <span className="xs:text:[11px] text-sm xs:text-[11px] font-semibold text-gray-600">
               Id : {id}
             </span>
@@ -65,7 +65,7 @@ const NavBar = () => {
               </div>
               <div className="flex gap-2 items-center font-semibold text-sm xs:text-[11px]  text-gray-600 cursor-pointer">
                 <FiLogOut />
-                <span>View Data</span>
+                <span>Log Out</span>
               </div>
             </div>
           </div>

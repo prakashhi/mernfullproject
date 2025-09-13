@@ -117,12 +117,6 @@ const Admin_Datali = () => {
             dateFormat="MMM - yyyy" // show month + year
             showMonthYearPicker // disables day selection
           />
-
-          {/* <ButtonFun
-            className={"bg-black text-white px-4 py-1 rounded-md"}
-            Text={"Show Month"}
-            onClick={countday}
-          /> */}
         </div>
 
         <div className="flex gap-1 items-center cursor-pointer" onClick={getdata}>
@@ -136,7 +130,7 @@ const Admin_Datali = () => {
 
       <div id="contain" className=" duration-[0.5s]  ">
         <div className="duration-[0.5s] m-4 xs:m-1 p-2 overflow-auto  rounded-xl shadow-md bg-[#F7F7F7] ">
-          <table className=" max-[400px]:text-[15px] w-full text-center  ">
+          <table className=" xs:text-[15px] w-full text-center  ">
             <thead>
               <tr className="border-b-2 sticky top-0 ">
                 <td className="py-2 xs:py-1 rounded font-bold xs:text-[11px]">

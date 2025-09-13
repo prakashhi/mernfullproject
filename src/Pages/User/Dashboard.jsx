@@ -1,116 +1,46 @@
 import React from "react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiLogOut } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import { IoRefreshOutline } from "react-icons/io5";
-import { HiUserAdd } from "react-icons/hi";
 import Timer from "../../Components/Timer";
 import { toast } from "react-toastify";
 import apiClent from "../../services/api";
 import NavBar from "../../Components/User/NavBar";
+import { FaSignInAlt } from "react-icons/fa";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   const { id, Username } = JSON.parse(localStorage?.getItem("User"));
 
-  const [loading, setLoading] = useState(true);
-  const [logbtn, setlogbtn] = useState(false);
-  const [userdata, setUserdata] = useState(null);
-  const [userdb, setuserdb] = useState(false);
-  const [entryc, setentryc] = useState(false);
-  const [exitc, setexitc] = useState(false);
+  const [state, setState] = useState({
+    Loading: false,
+  });
 
-  // }, [navigate]);
-
-  // if (loading) {
-  //     return <div>Loading...</div>;
-  // }
-
-  // if (!userdata) {
-  //     return <div>Redirecting...</div>;
-  // }
-
-  // const no = userdata.userId;
-
-  const checkbtn = async () => {
+  const PunchInFun = async () => {
     try {
-      await apiClent.post("/check", { no });
-      setlogbtn(true);
+      setState((prev) => ({ ...prev, Loading: true }));
+      let res = await apiClent.post("/User/PunchIn", { id });
+      toast.success(res?.data?.msg);
     } catch (error) {
-      if (error.response.status === 404) {
-        setuserdb(true);
-        setentryc(false);
-        setexitc(false);
-      } else if (error.response.status === 400) {
-        setuserdb(false);
-        setentryc(true);
-        setexitc(false);
-      } else if (error.response.status === 401) {
-        setexitc(true);
-        setentryc(false);
-        setuserdb(false);
-      }
+      console.log(error);
+      toast.error(error?.response?.data?.msg);
+    } finally {
+      setState((prev) => ({ ...prev, Loading: false }));
     }
   };
 
-  const newuserdata = async () => {
+  const PunchOutFun = async () => {
     try {
-      await apiClent.post("/newuserdata", { no });
-      toast.success("User Created in Database");
+      setState((prev) => ({ ...prev, Loading: true }));
+      let res = await apiClent.post("/User/PunchOut", { id });
+      toast.success(res?.data?.msg);
     } catch (error) {
-      if (error.response.status === 400) {
-        toast.info("UserData Exiting");
-      } else {
-        toast.error(
-          `Error: ${error.response.status} - ${error.response.statusText}`
-        );
-      }
+      console.log(error);
+      toast.error(error?.response?.data?.msg);
+    } finally {
+      setState((prev) => ({ ...prev, Loading: false }));
     }
-  };
-
-  const AddIndata = async () => {
-    try {
-      await apiClent.post("/Enter_data", { no });
-      toast.success("Today's entry data has been successfully saved!");
-    } catch (error) {
-      if (error.response) {
-        console.error("Error Response Data:", error.response.data);
-        if (error.response.status === 400) {
-          toast.info("You’ve already registered your Entry time for today!");
-        } else {
-          toast.error(
-            `Error: ${error.response.status} - ${error.response.statusText}`
-          );
-        }
-      } else {
-        console.error("Network Error:", error);
-        toast.error("DataSave Failed: Network or server issue.");
-      }
-    }
-  };
-
-  const Exitdata = async () => {
-    setlogbtn(true);
-    try {
-      await apiClent.post("/Exit_data", { no });
-      toast.success("Today's Exitdata has been successfully saved!");
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        toast.info("You’ve already registered your Exitentry time for today!");
-      } else {
-        toast.error(
-          `Error: ${error.response.status} - ${error.response.statusText}`
-        );
-      }
-    }
-  };
-
-  const logout = () => {
-    sessionStorage.removeItem("token");
-    navigate("/");
-    toast.info("Log Out!");
   };
 
   return (
@@ -118,67 +48,70 @@ const Dashboard = () => {
       <NavBar />
       <div className="  duration-[0.5s]">
         {/* HEader */}
-        <div className="">
+        <div className="relative top-0 xs:right-[55%] right-[83%] w-full text-center">
           <Timer />
         </div>
 
-        <div className="shadow-2xl max-[750px]:p-2  p-5 py-10 bg-blue-400 rounded h-[50vh]">
-          <div className="flex justify-end p-[10px]">
-            <IoRefreshOutline
-              onClick={checkbtn}
-              className="duration-[0.5s] text-2xl cursor-pointer hover:text-3xl"
-            />
+        <div className="p-8 flex flex-col items-center space-y-6 mt-10 md:mt-5">
+          {/* Title Section */}
+          <div className="text-center">
+            <h1 className="text-3xl xs:text-2xl font-semibold text-gray-800">
+              Employee Time Tracking
+            </h1>
+            <p className="text-lg xs:text-md text-gray-600 mt-2">
+              Manage your work hours with ease. Punch In to start, and Punch Out
+              when you're done.
+            </p>
           </div>
-          <div className="p-2 rounded-lg backdrop-blur-sm bg-white/20  shadow-xl ">
-            {userdb === true && (
-              <div className="max-[450px]:grid flex ">
-                <button
-                  onClick={newuserdata}
-                  className=" duration-[0.5s] p-6 font-bold shadow-3xl bg-purple-900 text-white rounded-full m-5 flex justify-center items-center gap-3 hover:text-2xl text-xl"
-                >
-                  <HiUserAdd className=" duration-[0.5s] text-2xl " />
-                  Create Newuser
-                </button>
-              </div>
-            )}
 
-            {entryc === true && (
-              <div className="max-[750px]:grid flex justify-between my-9">
-                <div className="bg-blue-900 grid items-center text-xl font-bold text-white p-3 rounded m-3 max-[750px]:w-[60vw] max-[750px]:justify-center  w-[40%] ">
-                  Toady Time Check In
+          {/* Button Group Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl">
+            {/* Punch In Button */}
+            <div>
+              <button
+                disabled={state.Loading}
+                onClick={PunchInFun}
+                className="bg-gray-200 text-gray-800 rounded-lg p-4 transition-all duration-300 ease-in-out transform hover:bg-gray-300 hover:scale-105 shadow-md hover:shadow-xl w-full"
+              >
+                <div className="flex items-center space-x-3">
+                  {/* Icon */}
+                  <FaSignInAlt className="text-3xl text-gray-800 transition-all duration-300 ease-in-out transform hover:text-teal-500" />
+                  {/* Text */}
+                  <div>
+                    <span className="text-lg font-semibold tracking-wide transition-all duration-300 ease-in-out hover:text-teal-500">
+                      Punch In
+                    </span>
+                    <p className="text-xs mt-1 text-gray-500 transition-all duration-300 ease-in-out hover:text-teal-400">
+                      Tap here to record your check-in time
+                    </p>
+                  </div>
                 </div>
-                <button
-                  onClick={AddIndata}
-                  className="duration-[0.5s] shadow-2xl p-3 px-5 hover:text-xl bg-white rounded-full  font-bold m-5"
-                >
-                  Check In
-                </button>
-              </div>
-            )}
+              </button>
+            </div>
 
-            {exitc === true && (
-              <div className="max-[750px]:grid flex justify-between">
-                <div className="bg-blue-900 grid items-center text-xl font-bold text-white p-3 rounded m-3 max-[750px]:w-[60vw] max-[750px]:justify-center  w-[40%] ">
-                  Toady Time Check Out
+            {/* Punch Out Button */}
+            <div>
+              <button
+                disabled={state.Loading}
+                onClick={PunchOutFun}
+                className="bg-orange-200 text-gray-800 rounded-lg p-4 transition-all duration-300 ease-in-out transform hover:bg-orange-300 hover:scale-105 shadow-md hover:shadow-xl w-full"
+              >
+                <div className="flex items-center space-x-3">
+                  {/* Icon */}
+                  <FaSignOutAlt className="text-3xl text-gray-800 transition-all duration-300 ease-in-out transform hover:text-orange-600" />
+                  {/* Text */}
+                  <div>
+                    <span className="text-lg font-semibold tracking-wide transition-all duration-300 ease-in-out hover:text-orange-600">
+                      Punch Out
+                    </span>
+                    <p className="text-xs mt-1 text-gray-500 transition-all duration-300 ease-in-out hover:text-orange-400">
+                      Tap here to record your punch-out time
+                    </p>
+                  </div>
                 </div>
-                <button
-                  onClick={Exitdata}
-                  className="duration-[0.5s] shadow-2xl p-3 px-5 hover:text-xl bg-white rounded-full font-bold m-5"
-                >
-                  Check Out
-                </button>
-              </div>
-            )}
+              </button>
+            </div>
           </div>
-          {logbtn === true && (
-            <button
-              onClick={logout}
-              className="duration-[0.5s] flex items-center hover:text-xl font-semibold gap-2 my-8  px-6  max-[750px]:text-[15px] hover:cursor-pointer text-xl p-2  bg-purple-900 text-white rounded-full"
-            >
-              Log out
-              <FiLogOut className="font-semibold" />
-            </button>
-          )}
         </div>
       </div>
     </>

@@ -35,11 +35,23 @@ const Admin_LocationList = () => {
         <table className=" w-full text-center font-light border-separate border-spacing-0">
           <thead className="">
             <tr className="sticky top-0 backdrop-blur-3xl bg-gray-100  border-b-2 cursor-pointer p-2">
-              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2 xs:hidden py-3 font-bold ">WorkCode id</th>
-              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2 xs:hidden font-bold"> WorkLocation Name</th>
-              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  py-3 font-bold xs:text-[11px]"> Work Code</th>
-              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold xs:text-[11px]">WorkCode Latitude</th>
-              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold xs:text-[11px]">WorkCode Longitude</th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2 xs:hidden py-3 font-bold ">
+                WorkCode id
+              </th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2 xs:hidden font-bold">
+                {" "}
+                WorkLocation Name
+              </th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  py-3 font-bold xs:text-[11px]">
+                {" "}
+                Work Code
+              </th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold xs:text-[11px]">
+                WorkCode Latitude
+              </th>
+              <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold xs:text-[11px]">
+                WorkCode Longitude
+              </th>
               <th className="sticky top-0 backdrop-blur-3xl bg-gray-100 z-10 border-b-2  font-bold"></th>
             </tr>
           </thead>
@@ -94,7 +106,7 @@ const Admin_LocationList = () => {
             {locationData.Location.length <= 0 &&
               isLoading.Loading === false && (
                 <tr>
-                  <td colSpan="4" className="text-center font-semibold p-2">
+                  <td colSpan="5" className="text-center font-semibold p-2">
                     No Data Available
                   </td>
                 </tr>
