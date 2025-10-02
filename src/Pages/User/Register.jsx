@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import Error from "../../Components/Error/Error";
 import { Message } from "../../Components/Error/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Register = () => {
   const {
@@ -31,6 +32,16 @@ const Register = () => {
   const [load, setload] = useState(false);
   const { savedEncodings = [] } = location.state || {};
   const [showCamera, setShowCamera] = useState(false);
+  const [state, setState] = useState({
+    RevealPass: false,
+  });
+
+  const PasswordReavel = () => {
+    setState((prev) => ({
+      ...prev,
+      RevealPass: !state.RevealPass,
+    }));
+  };
 
   const submit = async (values) => {
     setload(true);
@@ -63,9 +74,9 @@ const Register = () => {
             <h1 className="pb-2">Persional Details</h1>
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">Full Name</span>
+              <div className="flex items-center gap-2">
                 <FaUser className=" text-md" />
+                <span className="text-md font-semibold">Full Name</span>
               </div>
               <input
                 {...register("fname", {
@@ -79,9 +90,9 @@ const Register = () => {
             </div>
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">User Email</span>
+              <div className="flex items-center gap-2">
                 <MdEmail className=" text-md" />
+                <span className="text-md font-semibold">User Email</span>
               </div>
               <input
                 {...register("uemail", {
@@ -97,9 +108,9 @@ const Register = () => {
               {errors.uemail && <Error erorText={errors.uemail.message} />}
             </div>
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">User MobileNo</span>
+              <div className="flex items-center gap-2">
                 <FaMobile className=" text-md" />
+                <span className="text-md font-semibold">User MobileNo</span>
               </div>
               <input
                 {...register("umobile", {
@@ -166,9 +177,9 @@ const Register = () => {
 
             <h1 className="pb-2">Profissonal Details</h1>
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">Username</span>
+              <div className="flex items-center gap-2">
                 <FaUser className=" text-md" />
+                <span className="text-md font-semibold">Username</span>
               </div>
               <input
                 {...register("username", {
@@ -182,9 +193,9 @@ const Register = () => {
             </div>
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">WorkLoactioncode</span>
+              <div className="flex items-center gap-2">
                 <FaLocationDot className=" text-md" />
+                <span className="text-md font-semibold">WorkLoactioncode</span>
               </div>
               <input
                 {...register("workLoctioncode", {
@@ -199,18 +210,32 @@ const Register = () => {
             </div>
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-semibold">Password</span>
+              <div className="flex items-center gap-2">
                 <FaKey className=" text-md" />
+                <span className="text-md font-semibold">Password</span>
               </div>
-              <input
-                {...register("upass", {
-                  required: Message.Required,
-                  minLength: { value: 6, message: Message.Password6Digit },
-                })}
-                className=" rounded border-[0px] duration-[0.5s] bg-transparent text-sm  p-1 outline-none"
-                type="password"
-              />
+              <div className="flex w-full items-center">
+                <input
+                  {...register("upass", {
+                    required: Message.Required,
+                    minLength: { value: 6, message: Message.Password6Digit },
+                  })}
+                  className=" rounded border-[0px] duration-[0.5s] bg-transparent text-sm  p-1 outline-none w-full"
+                  type={state.RevealPass === false ? "password" : "text"}
+                />
+                {state.RevealPass === false ? (
+                  <IoMdEye
+                    onClick={PasswordReavel}
+                    className="text-sm cursor-pointer"
+                  />
+                ) : (
+                  <IoMdEyeOff
+                    onClick={PasswordReavel}
+                    className="text-sm cursor-pointer"
+                  />
+                )}
+              </div>
+
               {errors.upass && <Error erorText={errors.upass.message} />}
             </div>
 

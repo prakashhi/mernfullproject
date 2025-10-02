@@ -1,88 +1,47 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { IoMdArrowBack, IoMdRefreshCircle } from "react-icons/io";
 import { useEffect } from "react";
 import apiClent from "../../services/api";
-import ButtonFun from "../../Components/ButtonFun";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import LoadingCom from "../../Components/LoadingCom";
+import { ExitTimeval } from "../utils/function";
 
 const Admin_Datali = () => {
   const navigate = useNavigate();
-
-  const [userdata, setUserdata] = useState(null);
-
-  const [listdata, setlistdata] = useState([]);
-
-  const [month, setmonth] = useState("");
-  const [daywork, setdaywork] = useState(0);
-  const [isLoading, setisLoading] = useState(false);
-
-  const [startDate, setStartDate] = useState(moment());
-
   const location = useLocation();
-  const { id ,Username} = location.state || {};
+  const { id, Username } = location.state || {};
+  const startDate = useRef(moment());
+  const timeoutRef = useRef(null);
 
-  console.log(location);
-  
+  const [state, setState] = useState({
+    isLoading: false,
+    userData: [],
+    DayWork: 0,
+  });
+
   const getdata = useCallback(async () => {
-    setisLoading(true);
+    setState((prev) => ({ ...prev, loading: true }));
     try {
-      const res = await apiClent.get(`Admin/getdata/${id}`);
-
-      setlistdata(res.data.workdta[0].work_entries);
+      let res = await apiClent.get(`/User/Getdata/${id}/${startDate.current}`);
+      setState((prev) => ({ ...prev, userData: res.data.data }));
+      let count = res.data.data.filter((val) => val.FullDay === "P").length;
+      setState((prev) => ({ ...prev, DayWork: count }));
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.msg);
     } finally {
-      setisLoading(false);
+      setState((prev) => ({ ...prev, loading: false }));
     }
-  }, [id]);
+  }, []);
 
   useEffect(() => {
-    if (!location.state) {
-      navigate("/A_Dash");
-    }
     getdata();
   }, []);
 
-  const countday = async () => {
-    setisLoading(true);
-
-    try {
-      const kl = await apiClent.post("/daycount", { id, month });
-
-      if (kl.data.workdta.length <= 0) {
-        setdaywork(0);
-      } else {
-        const data = kl.data.workdta[0].work_entries;
-
-        setlistdata(data);
-
-        const alldata = kl.data.workdta[0].work_entries;
-
-        // Calculate full day counts if data exists
-        let countfullday = 0;
-        alldata.forEach((entry) => {
-          if (entry.FullDay === "P") {
-            countfullday++;
-          }
-        });
-
-        // Update the day work count state
-        setdaywork(countfullday);
-      }
-    } catch (error) {
-      console.log(error);
-      setdaywork(0);
-    } finally {
-      setisLoading(false);
-    }
-  };
-
-  console.log(listdata, isLoading);
   return (
     <>
       {/* Header */}
@@ -109,76 +68,79 @@ const Admin_Datali = () => {
 
       {/* Second Haeder */}
       <div className="flex items-center justify-between duration-[0.5s]  p-5 xs:p-2 xs:mb-5">
-        <div className="gap-2 flex">
+        <div className="gap-2 flex cursor-pointer ">
           <DatePicker
-            className="bg-gray-200 p-2 rounded-xl outline-none font-semibold text-center xs:w-1/2 xs:p-1 "
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            className="bg-gray-200 p-2 rounded-md border outline-none font-semibold text-center xs:w-1/2 xs:p-1 "
+            selected={startDate.current}
+            onChange={(date) => {
+              clearTimeout(timeoutRef.current);
+              startDate.current = moment(date).format();
+              timeoutRef.current = setTimeout(() => {
+                getdata();
+              }, 450);
+            }}
             dateFormat="MMM - yyyy" // show month + year
             showMonthYearPicker // disables day selection
           />
         </div>
 
-        <div className="flex gap-1 items-center cursor-pointer" onClick={getdata}>
-          <IoMdRefreshCircle
-           
-            className="duration-[0.5s] text-3xl  xs:text-xl"
-          />
-		   <span className="xs:text-sm">Refresh</span>
+        <div
+          className="flex gap-1 items-center cursor-pointer"
+          onClick={getdata}
+        >
+          <IoMdRefreshCircle className="duration-[0.5s] text-xl  xs:text-sm" />
+          <span className="xs:text-sm">Refresh</span>
         </div>
       </div>
 
       <div id="contain" className=" duration-[0.5s]  ">
-        <div className="duration-[0.5s] m-4 xs:m-1 p-2 overflow-auto  rounded-xl shadow-md bg-[#F7F7F7] ">
+        <div className="duration-[0.5s] m-4 xs:m-1 p-2 overflow-auto  border rounded-[10px] shadow-md bg-[#F7F7F7] ">
           <table className=" xs:text-[15px] w-full text-center  ">
             <thead>
               <tr className="border-b-2 sticky top-0 ">
                 <td className="py-2 xs:py-1 rounded font-bold xs:text-[11px]">
                   Workday
                 </td>
-                <td className=" rounded font-bold xs:text-[11px]">
-                  Date of Workday
-                </td>
+                <td className=" rounded font-bold xs:text-[11px]">Date</td>
                 <td className=" rounded font-bold xs:text-[11px]">EntryTime</td>
                 <td className=" rounded font-bold xs:text-[11px]">ExitTime</td>
                 <td className=" rounded font-bold xs:text-[11px]">FullDay</td>
               </tr>
             </thead>
             <tbody>
-              {listdata &&
-                listdata.length > 0 &&
-                listdata.map((user) => (
+              {state.userData.length > 0 &&
+                state.userData.map((user) => (
                   <tr key={user._id} className="">
                     <td className="border-r-2  p-3 xs:p-2 font-semibold xs:text-sm">
-                      {user.day_of_work}
+                      {moment(user.Date).format("dddd")}
                     </td>
                     <td className="border-r-2 p-3 xs:p-2 font-semibold xs:text-sm">
-                      {user.date_of_work}
+                      {moment(user.Date).format("DD MMM")}
                     </td>
                     <td className="border-r-2  p-3 xs:p-2 font-semibold xs:text-sm">
-                      {user.entry_time}
+                      {moment(user.Entry_time).format("hh:mm:ss a")}
                     </td>
                     <td className="border-r-2  p-3 xs:p-2 font-semibold xs:text-sm">
-                      {user.exit_time}
+                      {ExitTimeval(user)}
                     </td>
                     <td className="p-3 font-semibold xs:p-2 xs:text-sm">
                       {user.FullDay}
                     </td>
                   </tr>
                 ))}
-              {listdata.length <= 0 && isLoading === false && (
+              {state.userData.length <= 0 && state.isLoading === false && (
                 <tr className="">
-                  <td colSpan="5" className="text-center font-semibold p-3  xs:text-sm">
+                  <td
+                    colSpan="5"
+                    className="text-center font-semibold p-3  xs:text-sm"
+                  >
                     No Data Available
                   </td>
                 </tr>
-              )} {" "}
-              {isLoading === true && (
+              )}{" "}
+              {state.isLoading === true && (
                 <tr>
-                  <td
-                    colSpan="100%"
-                    className="font-semiboldpy-6  text-center"
-                  >
+                  <td colSpan="100%" className="font-semiboldpy-6  text-center">
                     <LoadingCom />
                   </td>
                 </tr>
@@ -187,7 +149,7 @@ const Admin_Datali = () => {
           </table>
         </div>
         <div className="m-2 p-2 flex gap-5 items-center">
-          <span>Month Of Working Days : {daywork} Days</span>
+          <span>Month Of Working Days : {state.DayWork} Days</span>
         </div>
       </div>
     </>

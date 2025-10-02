@@ -1,6 +1,4 @@
 import React, { useState, useRef } from "react";
-import Timer from "../../Components/Timer";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack, IoMdRefreshCircle } from "react-icons/io";
 import { useEffect, useCallback } from "react";
@@ -8,24 +6,19 @@ import { toast } from "react-toastify";
 import apiClent from "../../services/api";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import LoadingCom from "../../Components/LoadingCom";
 
 const User_datali = () => {
   const navigate = useNavigate();
 
   const { id, Username } = JSON.parse(localStorage?.getItem("User"));
 
-  const location = useLocation();
-  const [listdata, setlistdata] = useState({});
-  const [month, setmonth] = useState("");
-  const [daywork, setdaywork] = useState(0);
-  const [isSerach, setisSerach] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
-
   const timeoutRef = useRef(null);
   const startDate = useRef(moment());
   const [state, setState] = useState({
     loading: false,
     userData: [],
+    DayWork: 0,
   });
 
   const getdata = useCallback(async () => {
@@ -34,8 +27,11 @@ const User_datali = () => {
     try {
       let res = await apiClent.get(`/User/Getdata/${id}/${startDate.current}`);
       setState((prev) => ({ ...prev, userData: res.data.data }));
+      let count = res.data.data.filter((val) => val.FullDay === "P").length;
+      setState((prev) => ({ ...prev, DayWork: count }));
     } catch (err) {
       console.log(err);
+      toast.error();
     } finally {
       setState((prev) => ({ ...prev, loading: false }));
     }
@@ -44,43 +40,6 @@ const User_datali = () => {
   useEffect(() => {
     getdata();
   }, []);
-
-  const countday = useCallback(async () => {
-    setisSerach(true);
-    setisLoading(true);
-
-    try {
-      setlistdata({});
-
-      const kl = await apiClent.post("/daycount", { id, month });
-
-      if (kl.data.workdta.length <= 0) {
-        setdaywork(0);
-      } else {
-        setlistdata(kl.data.workdta[0].work_entries);
-
-        const alldata = kl.data.workdta[0].work_entries;
-
-        // Calculate full day counts if data exists
-        let countfullday = 0;
-        alldata.forEach((entry) => {
-          if (entry.FullDay === "P") {
-            countfullday++;
-          }
-        });
-        // Update the day work count state
-        setdaywork(countfullday);
-      }
-    } catch (error) {
-      console.log(error);
-      setdaywork(0);
-    } finally {
-      setisSerach(false);
-      setisLoading(false);
-    }
-  }, [month]);
-
-
 
   return (
     <>
@@ -128,38 +87,41 @@ const User_datali = () => {
           className="flex gap-1 items-center cursor-pointer"
           onClick={getdata}
         >
-          <IoMdRefreshCircle className="duration-[0.5s] text-3xl  xs:text-sm" />
+          <IoMdRefreshCircle className="duration-[0.5s] text-xl  xs:text-sm" />
           <span className="xs:text-sm">Refresh</span>
         </div>
       </div>
 
       <div id="contain" className=" duration-[0.5s]">
-        <div className="duration-[0.5s] m-4 xs:m-1 p-2 overflow-auto border rounded-[13px] shadow-md bg-[#F7F7F7]">
+        <div className="duration-[0.5s] m-4 xs:m-1 p-2 overflow-auto border rounded-[10px] shadow-md bg-[#F7F7F7]">
           <table className="  xs:text-[15px] w-full text-center   ">
             <thead>
               <tr className="border-b-2 sticky top-0">
-                <td className=" rounded font-semibold xs:text-[11px] xs:py-2">Workday</td>
-                <td className=" rounded font-semibold xs:text-[11px]">Date</td>
-                <td className=" rounded font-semibold xs:text-[11px]">EntryTime</td>
-                <td className=" rounded font-semibold xs:text-[11px]">ExitTime</td>
-                <td className=" rounded font-semibold xs:text-[11px]">FullDay</td>
+                <td className=" rounded font-bold xs:text-[11px] py-2">
+                  Workday
+                </td>
+                <td className=" rounded font-bold xs:text-[11px]">Date</td>
+                <td className=" rounded font-bold xs:text-[11px]">EntryTime</td>
+                <td className=" rounded font-bold xs:text-[11px]">ExitTime</td>
+                <td className=" rounded font-bold xs:text-[11px]">FullDay</td>
               </tr>
             </thead>
             <tbody>
-              {listdata &&
-                state?.userData.length > 0 &&
+              {state?.userData.length > 0 &&
                 state?.userData?.map((user) => (
                   <tr key={user._id} className="">
                     <td className="border-r-2 rounded p-3 xs:text-sm">
-                      {moment(user.Date).format("ddd")}
+                      {moment(user.Date).format("dddd")}
                     </td>
                     <td className="border-r-2 rounded p-3 xs:text-sm">
-                      {moment(user.Date).format("DD-MM")}
+                      {moment(user.Date).format("DD MMM")}
                     </td>
                     <td className="border-r-2 rounded p-3 xs:text-sm">
                       {moment(user.Entry_time).format("hh:mm:ss a")}
                     </td>
-                    <td className="border-r-2 rounded p-3 xs:text-sm">{moment(user.Exit_time).format("hh:mm:ss a")}</td>
+                    <td className="border-r-2 rounded p-3 xs:text-sm">
+                      {ExitTimeval(user)}
+                    </td>
                     <td className=" rounded p-3">{user.FullDay}</td>
                   </tr>
                 ))}
@@ -173,24 +135,18 @@ const User_datali = () => {
                   </td>
                 </tr>
               )}
+              {state.loading === true && (
+                <tr>
+                  <td colSpan="100%" className="font-semiboldpy-6  text-center">
+                    <LoadingCom />
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
-
-          {state.loading === true && (
-            <div className=" mt-[10%] flex flex-col items-center justify-center space-y-3">
-              <div className="text-lg font-semibold text-gray-700">
-                Loading data...
-              </div>
-              <div className="flex space-x-2">
-                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-                <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
-              </div>
-            </div>
-          )}
         </div>
         <div className="m-2 p-2 flex gap-5 items-center">
-          <span>Month Of Working Days : {daywork} Days</span>
+          <span>Month Of Working Days : {state.DayWork} Days</span>
         </div>
       </div>
     </>

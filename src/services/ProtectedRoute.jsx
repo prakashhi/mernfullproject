@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, Role }) => {
 
   const AuthCheck = async () => {
     try {
-      let res = await apiClent.get(`/auth/${Role}`);
+      await apiClent.get(`/auth/${Role}`);
       setflag(true);
     } catch (err) {
       console.log(err);

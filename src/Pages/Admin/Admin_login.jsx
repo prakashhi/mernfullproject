@@ -8,6 +8,7 @@ import apiClent from "../../services/api";
 import ButtonFun from "../../Components/ButtonFun";
 import { useForm } from "react-hook-form";
 import Error from "../../Components/Error/Error";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Admin_login = () => {
   const navigate = useNavigate();
@@ -19,12 +20,22 @@ const Admin_login = () => {
   } = useForm();
 
   const [load, setload] = useState(false);
+  const [Data, setData] = useState({
+    RevealPass: false,
+  });
+
+  const PasswordReavel = () => {
+    setData((prev) => ({
+      ...prev,
+      RevealPass: !Data.RevealPass,
+    }));
+  };
 
   const submit = async (values) => {
     setload(true);
     try {
       const res = await apiClent.post("/Admin/admin_login", { ...values });
-      localStorage.setItem("AdminAdata",JSON.stringify(res.data.Data) )
+      localStorage.setItem("AdminAdata", JSON.stringify(res.data.Data));
       toast.success(res?.data?.msg);
       navigate("/A_Dash");
     } catch (error) {
@@ -44,11 +55,9 @@ const Admin_login = () => {
               Admin Login
             </span>
             <div className=" border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-md xs:text-[16px] ">
-                  Username
-                </span>
+              <div className="flex items-center gap-2">
                 <FaUser className=" text-md" />
+                <span className="text-md xs:text-[16px] ">Username</span>
               </div>
 
               <input
@@ -59,18 +68,29 @@ const Admin_login = () => {
               {errors.uuser && <Error erorText={"Required"} />}
             </div>
             <div className="border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded">
-              <div className="flex items-center justify-between">
-                <span className="text-md xs:text-[16px] ">
-                  Password
-                </span>
+              <div className="flex items-center gap-2">
                 <FaKey className=" text-md" />
+                <span className="text-md xs:text-[16px] ">Password</span>
               </div>
-              <input
-                {...register("upass", { required: true })}
-                className=" rounded border-[0px] duration-[0.5s] bg-transparent text-sm p-1 outline-none"
-                type="password"
-              />
-              {errors.upass && <Error erorText={"Required"} />}
+              <div className="flex w-full items-center">
+                <input
+                  {...register("upass", { required: true })}
+                  className=" rounded border-[0px] duration-[0.5s] bg-transparent text-sm p-1 outline-none w-full"
+                  type={Data.RevealPass === false ? "password" : "text"}
+                />
+                {errors.upass && <Error erorText={"Required"} />}
+                {Data.RevealPass === false ? (
+                  <IoMdEye
+                    onClick={PasswordReavel}
+                    className="text-sm cursor-pointer"
+                  />
+                ) : (
+                  <IoMdEyeOff
+                    onClick={PasswordReavel}
+                    className="text-sm cursor-pointer"
+                  />
+                )}
+              </div>
             </div>
             <div className="w-full flex justify-center m-2">
               <ButtonFun

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Login from "./Pages/User/Login";
@@ -30,7 +30,14 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/User_data" element={<User_datali />} />
+          <Route
+            path="/User_data"
+            element={
+              <ProtectedRoute Role="User">
+                <User_datali />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/Admin" element={<Admin_login />} />
           <Route
             path="/Login-Camera"

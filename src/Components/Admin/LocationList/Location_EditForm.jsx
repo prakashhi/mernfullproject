@@ -8,7 +8,7 @@ import apiClient from "../../../services/api";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const Location_EditForm = ({ Data, setisLoading ,GetLocation}) => {
+const Location_EditForm = ({ Data, setisLoading, GetLocation }) => {
   const {
     register,
     reset,
@@ -25,20 +25,21 @@ const Location_EditForm = ({ Data, setisLoading ,GetLocation}) => {
   });
   const [load, setLoad] = useState(false);
 
-  console.log(Data)
-
   const submit = async (values) => {
     setLoad(true);
     try {
-      let res = await apiClient.post(`/Admin/EditLocation/Admin/${Data.WorkCode_id}`, {
-        ...values,
-      });
+      let res = await apiClient.post(
+        `/Admin/EditLocation/Admin/${Data.WorkCode_id}`,
+        {
+          ...values,
+        }
+      );
       toast.success(res.data.msg);
-      GetLocation()
+      GetLocation();
       setisLoading((prev) => ({ ...prev, Model: false }));
     } catch (err) {
       console.log(err);
-      toast.error(err?.response?.data?.msg)
+      toast.error(err?.response?.data?.msg);
     } finally {
       setLoad(false);
     }

@@ -52,7 +52,7 @@ const Admin_Dashboard = () => {
     setisLoading(true);
     try {
       let response = await apiClent.get("/Admin/loaddata/Admin");
-      setalldata(response.data.Data)
+      setalldata(response.data.Data);
       setState((prev) => ({ ...prev, NewDataSet: response.data.Data }));
     } catch (err) {
       console.log(err);
@@ -100,15 +100,15 @@ const Admin_Dashboard = () => {
               placeholder="Search..."
             />
           </div>
-          <div className="flex cursor-pointer gap-1 items-center " onClick={loaddata}>
-            <IoMdRefreshCircle
-              
-              className="text-2xl xs:text-sm cursor-pointer  duration-[0.5s]"
-            />
+          <div
+            className="flex cursor-pointer gap-1 items-center "
+            onClick={loaddata}
+          >
+            <IoMdRefreshCircle className="text-xl xs:text-sm cursor-pointer  duration-[0.5s]" />
             <span className="xs:text-sm">Refresh</span>
           </div>
         </div>
-        <div className="duration-[0.5s]  overflow-auto m-3 xs:mx-2 rounded-xl shadow-md bg-[#F7F7F7] ">
+        <div className="duration-[0.5s]  overflow-auto m-3 xs:mx-2 border rounded-[10px] shadow-md bg-[#F7F7F7] ">
           <table className=" w-full text-center font-light border-separate border-spacing-0">
             <thead className="  cursor-pointer">
               <tr className="">
@@ -139,18 +139,18 @@ const Admin_Dashboard = () => {
                     <td className="border-r-2  py-3  font-semibold xs:hidden ">
                       {user.User_id}
                     </td>
-                    <td className="border-r-2 rounded  py-3 xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2   py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {user.Username}
                     </td>
-                    <td className="border-r-2 rounded  py-3 xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2   py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {user.User_email}
                     </td>
-                    <td className="border-r-2 rounded  py-3 xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2   py-3 xs:p-1 font-semibold xs:text-[11px]">
                       {moment(user.User_lastlogin).format(
                         "DD MMM-YYYY hh:MM a"
                       )}
                     </td>
-                    <td className="border-r-2 rounded  py-3  xs:p-1 font-semibold xs:text-[11px]">
+                    <td className="border-r-2   py-3  xs:p-1 font-semibold xs:text-[11px]">
                       {user.User_Workcode}
                     </td>
                     <td className=" px-6 py-3 flex justify-center ">

@@ -10,6 +10,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import ButtonFun from "../../Components/ButtonFun";
 import Error from "../../Components/Error/Error";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Login = () => {
   const {
@@ -25,7 +26,16 @@ const Login = () => {
     address: "",
     load: false,
     More: false,
+    RevealPass: false,
   });
+
+  const PasswordReavel = () => {
+    setData((prev) => ({
+      ...prev,
+      RevealPass: !Data.RevealPass,
+    }));
+  };
+  
   const navigate = useNavigate();
 
   const getLocation = useCallback(async () => {
@@ -110,11 +120,11 @@ const Login = () => {
             </span>
 
             <div className=" border border-gray bg-[#F7F7F7]  inline-grid p-2 relative rounded mb-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FaUser className="text-sm" />
                 <span className="text-md xs:text-[16px] font-semibold">
                   Username
                 </span>
-                <FaUser className="text-md" />
               </div>
 
               <input
@@ -126,18 +136,32 @@ const Login = () => {
             </div>
 
             <div className=" border border-gray bg-[#F7F7F7] inline-grid p-2 relative rounded">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FaKey className="text-sm" />
                 <span className="text-md xs:text-[16px] font-semibold">
                   Password
                 </span>
-                <FaKey className="text-md" />
               </div>
-              <input
-                {...register("luserpass", { required: true })}
-                className="text-sm rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none"
-                type="password"
-              />
-              {errors.luserpass && <Error erorText={"Required"} />}
+              <div className="flex w-full items-center">
+                <input
+                  {...register("luserpass", { required: true })}
+                  className="text-sm rounded border-[0px] duration-[0.5s] bg-transparent  p-1 outline-none w-full"
+                  type={Data.RevealPass === false ? "password" : "text"}
+                  icon
+                />
+                {errors.luserpass && <Error erorText={"Required"} />}
+                {Data.RevealPass === false ? (
+                  <IoMdEye
+                    onClick={PasswordReavel}
+                    className="text-sm cursor-pointer"
+                  />
+                ) : (
+                  <IoMdEyeOff
+                    onClick={PasswordReavel}
+                    className="text-sm cursor-pointer"
+                  />
+                )}
+              </div>
             </div>
 
             <div
