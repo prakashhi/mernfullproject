@@ -149,7 +149,7 @@ const Login = () => {
                   type={Data.RevealPass === false ? "password" : "text"}
                   icon
                 />
-                {errors.luserpass && <Error erorText={"Required"} />}
+             
                 {Data.RevealPass === false ? (
                   <IoMdEye
                     onClick={PasswordReavel}
@@ -161,7 +161,8 @@ const Login = () => {
                     className="text-sm cursor-pointer"
                   />
                 )}
-              </div>
+              </div>   
+              {errors.luserpass && <Error erorText={"Required"} />}
             </div>
 
             <div
