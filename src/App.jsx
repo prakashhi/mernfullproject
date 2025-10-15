@@ -56,7 +56,7 @@ const App = () => {
             }
           />
           <Route
-            path="/Admin_Edit"
+            path="/Admin-Edit_User"
             element={
               <ProtectedRoute Role="Admin">
                 <Edit_Admin />

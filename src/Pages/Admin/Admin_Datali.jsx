@@ -13,7 +13,7 @@ import { ExitTimeval } from "../utils/function";
 const Admin_Datali = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id, Username } = location.state || {};
+  const User = location.state.user || {};
   const startDate = useRef(moment());
   const timeoutRef = useRef(null);
 
@@ -26,7 +26,9 @@ const Admin_Datali = () => {
   const getdata = useCallback(async () => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
-      let res = await apiClent.get(`/User/Getdata/${id}/${startDate.current}`);
+      let res = await apiClent.get(
+        `/User/Getdata/${User.User_id}/${startDate.current}/Admin`
+      );
       setState((prev) => ({ ...prev, userData: res.data.data }));
       let count = res.data.data.filter((val) => val.FullDay === "P").length;
       setState((prev) => ({ ...prev, DayWork: count }));
@@ -57,10 +59,10 @@ const Admin_Datali = () => {
         <div className=" flex  justify-between m-2 p-2 gap-5 items-center xs:gap-3">
           <div className="grid border rounded-xl bg-[#F7F7F7] text-gray-600  p-2 rounded">
             <span className="xs:text-[13px] text-md font-semibold">
-              Id : {id}
+              Id : {User?.User_id}
             </span>
             <span className="xs:text-[13px] text-md font-semibold">
-              Username : {Username}
+              Username : {User?.Username}
             </span>
           </div>
         </div>
@@ -70,7 +72,7 @@ const Admin_Datali = () => {
       <div className="flex items-center justify-between duration-[0.5s]  p-5 xs:p-2 xs:mb-5">
         <div className="gap-2 flex cursor-pointer ">
           <DatePicker
-            className="bg-gray-200 p-2 rounded-md border outline-none font-semibold text-center xs:w-1/2 xs:p-1 "
+            className="bg-gray-200 p-2 rounded-md border outline-none font-semibold text-center xs:w-1/2 xs:p-1 xs:text-sm"
             selected={startDate.current}
             onChange={(date) => {
               clearTimeout(timeoutRef.current);

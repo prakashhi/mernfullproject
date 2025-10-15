@@ -37,12 +37,13 @@ const Admin_Dashboard = () => {
       link: "/Admin_datali",
     },
     {
-      Name: "Edit Item",
+      Name: "Edit User",
       img: <FaEdit size={11} />,
       textColor: "text-orange-600",
+      link: "/Admin-Edit_User",
     },
     {
-      Name: "Delete Item",
+      Name: "Delete User",
       img: <MdDeleteForever size={12} />,
       textColor: "text-red-600",
     },
@@ -96,7 +97,7 @@ const Admin_Dashboard = () => {
                   SerchFilter();
                 }, 450);
               }}
-              className="p-2  border bg-gray absolute-100 focus:outline-none xs:text-[10px] xs:p-1 text-sm rounded-md "
+              className="p-2  border bg-gray-100 absolute-100 focus:outline-none xs:text-[10px] xs:p-1 text-sm rounded-md "
               placeholder="Search..."
             />
           </div>
@@ -174,10 +175,7 @@ const Admin_Dashboard = () => {
                               <p
                                 onClick={() => {
                                   navigate(`${val?.link}`, {
-                                    state: {
-                                      id: user.User_id,
-                                      Username: user.Username,
-                                    },
+                                    state: { user },
                                   });
                                 }}
                                 className="flex gap-2 items-center cursor-pointer  hover:bg-white px-2 rounded-full"
